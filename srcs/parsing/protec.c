@@ -73,6 +73,8 @@ char	*args(char *whole_cmd, t_copy *copy, size_t i)// retrouver les arguments da
 	copy->i--;
 	while (whole_cmd[copy->i] && whole_cmd[++copy->i] != ' ')
 	{
+		if ((whole_cmd[copy->i] == '1' || whole_cmd[copy->i] == '2') && whole_cmd[copy->i + 1] == '>' && whole_cmd[copy->i - 1] == ' ')
+			copy->i++;
 		c = 'x';
 		if (whole_cmd[copy->i] == '\'')
 			c = '\'';
@@ -100,6 +102,7 @@ char	*args(char *whole_cmd, t_copy *copy, size_t i)// retrouver les arguments da
 
 int		options(char *whole_cmd, t_copy *copy)
 {
+	// ajouter arg[0] = cmd et arg[dernier] = NULL
 	char	**tmp;
 	char	*arg;
 	size_t	i;
@@ -129,7 +132,7 @@ int		options(char *whole_cmd, t_copy *copy)
 		arg = args(whole_cmd, copy, i);
 		if (!arg || !arg[0])
 			break;
-		printf("%s\n", copy->args[i]);
+		printf("arg[%zu] = %s\n", i, copy->args[i]);
 		i++;
 	}
 	return (1);
