@@ -1,8 +1,8 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-
 #include <stdio.h>
+#include <string.h>
 #include <unistd.h>
 #include "../libft/libft.h"
 
@@ -35,6 +35,16 @@ typedef struct		s_copy
 	char **args;
 }					t_copy;
 
+typedef	struct	s_redir
+{
+	int			sstdout;
+	int 		sstderr;
+	int			sstdin;
+	int			end; // a 1 si >> sinon a 0
+	char		*out1; // file out pour stdout
+	char		*out2; // file out pour stderr
+}				t_redir;
+
 //PARSING
 //----------sep.c---------//
 t_sep	*parse_sep();
@@ -43,7 +53,17 @@ void	print_list(t_sep *list);
 void    parse_pip(t_sep *list);
 void	print_pip_list(t_pip *piplist);
 //----------redir.c---------//
-int		redir_out(char *whole_cmd, t_copy *copy);
+int		redir(char *whole_cmd, t_copy *copy);
+//----------cmdargs.c---------//
+char	*args(char *whole_cmd, t_copy *copy, size_t i);
+int		options(char *whole_cmd, t_copy *copy);
+char	*cmd(char *whole_cmd);
+//----------protec.c---------//
+int		double_quote(char *whole_cmd, t_copy *copy);
+int		simple_quote(char *whole_cmd, t_copy *copy);
+int		double_quote_arg(char *whole_cmd, t_copy *copy, size_t i);
+int		simple_quote_arg(char *whole_cmd, t_copy *copy, size_t i);
+
 
 void    ft_pipe(char *str);
 int     sys_call(char *cmd, char **paths, char *arg, char **env);
