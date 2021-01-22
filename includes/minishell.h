@@ -44,6 +44,7 @@ typedef	struct	s_redir
 	char		*out1; // file out pour stdout
 	char		*out2; // file out pour stderr
 	char		*in; // file in
+	int			i;
 }				t_redir;
 
 //PARSING
@@ -64,7 +65,8 @@ int		double_quote(char *whole_cmd, t_copy *copy);
 int		simple_quote(char *whole_cmd, t_copy *copy);
 int		double_quote_arg(char *whole_cmd, t_copy *copy, size_t i);
 int		simple_quote_arg(char *whole_cmd, t_copy *copy, size_t i);
-
+int		simple_quote_redir(char *whole_cmd, t_copy *copy, int i, t_redir *redir);
+int		double_quote_redir(char *whole_cmd, t_copy *copy, int i, t_redir *redir);
 
 void    ft_pipe(char *str);
 int     sys_call(char *cmd, char **paths, char *arg, char **env);

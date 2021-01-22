@@ -9,6 +9,7 @@ void	init_redir(t_redir *redir)
 	redir->out1 = NULL;
 	redir->out2 = NULL;
 	redir->in = NULL;
+	redir->i = -1;
 }
 
 int		redir_out_error(char *whole_cmd, t_copy *copy, t_redir *redir) // retourner la char * de l'argument a mettre dans arg
@@ -37,6 +38,7 @@ int		redir_out(char *whole_cmd, t_copy *copy, t_redir *redir)
 {
 	int i = -1;
 	int j = 0;
+	char c;
 
 	copy->i++;
 	if (whole_cmd[copy->i] == '>')
@@ -52,10 +54,26 @@ int		redir_out(char *whole_cmd, t_copy *copy, t_redir *redir)
 		copy->i++;
 	while (whole_cmd[copy->i] && whole_cmd[copy->i] != ' ') // recuperer le fichier derriere '>'
 	{
-		redir->out1[++i] = whole_cmd[copy->i]; // recuperer le fichier derriere '>'
+		c = 'x';
+		if (whole_cmd[copy->i] == '\'')
+			c = '\'';
+		else if (whole_cmd[copy->i] == '"')
+			c = '"';
+		if (whole_cmd[copy->i] == c)
+		{
+			while (whole_cmd[copy->i] == '"')
+			{
+				if ((double_quote_redir(whole_cmd, copy, i, redir)) == -1)
+					return (1);
+			}
+			while (whole_cmd[copy->i] == '\'')
+				if ((simple_quote_redir(whole_cmd, copy, i, redir)) == -1)
+					return (1);
+		}
+		redir->out1[++redir->i] = whole_cmd[copy->i]; // recuperer le fichier derriere '>'
 		copy->i++;
 	}
-	redir->out1[i + 1] = 0;
+	redir->out1[redir->i + 1] = 0;
 	redir->sstdout = open(redir->out1, O_CREAT, O_WRONLY);
 	printf("file stdout = %s\n", redir->out1);
 	printf("fd stdout = %d\n", redir->sstdout);
