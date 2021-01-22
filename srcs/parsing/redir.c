@@ -8,6 +8,7 @@ void	init_redir(t_redir *redir)
 	redir->end = 0;
 	redir->out1 = NULL;
 	redir->out2 = NULL;
+	redir->in = NULL;
 }
 
 int		redir_out_error(char *whole_cmd, t_copy *copy, t_redir *redir) // retourner la char * de l'argument a mettre dans arg
@@ -25,7 +26,7 @@ int		redir_out_error(char *whole_cmd, t_copy *copy, t_redir *redir) // retourner
 		copy->i++;
 	}
 	redir->out2[i + 1] = 0;
-	redir->sstderr = open(redir->out2, O_CREAT);
+	redir->sstderr = open(redir->out2, O_CREAT, O_WRONLY);
 	printf("file stderr = %s\n", redir->out2);
 	printf("fd stderr = %d\n", redir->sstderr);
 	printf("fin du fichier ? = %d\n", redir->end);
@@ -55,7 +56,7 @@ int		redir_out(char *whole_cmd, t_copy *copy, t_redir *redir)
 		copy->i++;
 	}
 	redir->out1[i + 1] = 0;
-	redir->sstdout = open(redir->out1, O_CREAT);
+	redir->sstdout = open(redir->out1, O_CREAT, O_WRONLY);
 	printf("file stdout = %s\n", redir->out1);
 	printf("fd stdout = %d\n", redir->sstdout);
 	printf("fin du fichier ? = %d\n", redir->end);
@@ -64,6 +65,25 @@ int		redir_out(char *whole_cmd, t_copy *copy, t_redir *redir)
 
 int		redir_in(char *whole_cmd, t_copy *copy, t_redir *redir)
 {
+	int i = -1;
+	int j = 0;
+
+	copy->i++;
+	if (!(redir->in = malloc(sizeof(char) * strlen(whole_cmd) + 1)))
+		return (-1);
+	while (whole_cmd[copy->i] && whole_cmd[copy->i] == ' ')
+		copy->i++;
+	while (whole_cmd[copy->i] && whole_cmd[copy->i] != ' ') // recuperer le fichier derriere '>'
+	{
+		redir->in[++i] = whole_cmd[copy->i]; // recuperer le fichier derriere '>'
+		copy->i++;
+	}
+	redir->in[i + 1] = 0;
+	redir->sstdin = open(redir->in, O_RDONLY);
+	printf("file stdin = %s\n", redir->in);
+	printf("fd stdin = %d\n", redir->sstdin);
+	printf("fin du fichier ? = %d\n", redir->end);
+	return (1);
 	
 }
 

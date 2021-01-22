@@ -43,6 +43,7 @@ typedef	struct	s_redir
 	int			end; // a 1 si >> sinon a 0
 	char		*out1; // file out pour stdout
 	char		*out2; // file out pour stderr
+	char		*in; // file in
 }				t_redir;
 
 //PARSING
