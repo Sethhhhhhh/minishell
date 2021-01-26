@@ -35,6 +35,7 @@ void	loop(t_env *tenv)
 		list = parse_sep();
 		parse_pip(list);
 		print_list(list);
+		execution(list);
 	}
 }
 

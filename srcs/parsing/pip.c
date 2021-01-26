@@ -42,32 +42,32 @@ void	print_pip_list(t_pip *piplist)
 	}
 }
 
-int    charinstr(char c, char *str)
+int		charinstr(char c, char *str)
 {
-    int i = -1;
-    while (str[++i])
-    {
-        if (str[i] == c)
-            return (i);
-    }
-    return (-1);
+	int i = -1;
+	while (str[++i])
+	{
+		if (str[i] == c)
+			return (i);
+	}
+	return (-1);
 }
 
 void    parse_pip(t_sep *list)
 {
-    char	**cmds;
-    t_sep   *prec;
+	char	**cmds;
+	t_sep   *prec;
 	t_sep   *cur = list; //la celule qu'on est en train de parcourir
-    int     j = -1;
+	int     j = -1;
 
-    while (cur)
-    {
-        if ((charinstr('|', cur->cmd_sep)) > -1)
-        {
-            cmds = ft_split(cur->cmd_sep, '|');
-            while (cmds[++j])
-                cur->pipcell = add_pip_cell(cur->pipcell, cmds[j], j);
-        }
+	while (cur)
+	{
+		if ((charinstr('|', cur->cmd_sep)) > -1)
+		{
+			cmds = ft_split(cur->cmd_sep, '|');
+			while (cmds[++j])
+				cur->pipcell = add_pip_cell(cur->pipcell, cmds[j], j);
+		}
 		prec = cur;
 		cur = cur->next;
 	}
