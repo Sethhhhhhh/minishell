@@ -43,7 +43,7 @@ int		simple_quote_arg(char *whole_cmd, t_copy *copy, size_t i)
 	return (1);
 }
 
-int		simple_quote_redir(char *whole_cmd, t_copy *copy, int i, t_redir *redir)
+int		simple_quote_redir(char *whole_cmd, t_copy *copy, int i, t_redir *redir, char *str)
 {
 	if (copy->i == (strlen(whole_cmd) -1)) // si le ' ouvrant est le dernier caractere de la chaine
 	{
@@ -51,7 +51,7 @@ int		simple_quote_redir(char *whole_cmd, t_copy *copy, int i, t_redir *redir)
 		return (-1);
 	}
 	while (whole_cmd[copy->i] && whole_cmd[++copy->i] != '\'') //++copy->i; //on decale de 1 car on est sur le ' ouvrant
-		redir->out1[++redir->i] = whole_cmd[copy->i];
+		str[++redir->i] = whole_cmd[copy->i];
 	if ((copy->i == strlen(whole_cmd)) && whole_cmd[copy->i] != '\'') // si y a pas de ' fermant
 	{
 		printf("erreur pas de \' fermant\n");
@@ -117,7 +117,7 @@ int		double_quote_arg(char *whole_cmd, t_copy *copy, size_t i)
 	return (1);
 }
 
-int		double_quote_redir(char *whole_cmd, t_copy *copy, int i, t_redir *redir)
+int		double_quote_redir(char *whole_cmd, t_copy *copy, int i, t_redir *redir, char *str)
 {
 	if (copy->i == (strlen(whole_cmd) -1)) // si le " ouvrant est le dernier caractere de la chaine
 	{
@@ -134,7 +134,7 @@ int		double_quote_redir(char *whole_cmd, t_copy *copy, int i, t_redir *redir)
 					|| whole_cmd[copy->i + 1] == '"')
 				copy->i++;
 		}
-		redir->out1[++redir->i] = whole_cmd[copy->i];
+		str[++redir->i] = whole_cmd[copy->i];
 	}
 	if ((copy->i == strlen(whole_cmd)) && whole_cmd[copy->i] != '"') // si y a pas de " fermant
 	{

@@ -2,7 +2,6 @@
 
 char	*args(char *whole_cmd, t_copy *copy, size_t i)// retrouver les arguments dans whole_cmd et mettre dans un char**
 {
-	char c;
 	copy->args[i] = NULL;
 	copy->j = -1;
 
@@ -10,6 +9,11 @@ char	*args(char *whole_cmd, t_copy *copy, size_t i)// retrouver les arguments da
 		return (NULL);
 	if (!(copy->args[i] = malloc(sizeof(char) * (strlen(whole_cmd) + 1))))
 		return (NULL);
+	if (i == 0)
+	{
+		copy->args[i] = ft_strdup(copy->cmd);
+		return (copy->args[i]);
+	}
 	while (whole_cmd[copy->i] && whole_cmd[copy->i] == ' ')
 		copy->i++;
 	copy->i--;
@@ -18,12 +22,7 @@ char	*args(char *whole_cmd, t_copy *copy, size_t i)// retrouver les arguments da
 	{
 		if ((whole_cmd[copy->i] == '1' || whole_cmd[copy->i] == '2') && whole_cmd[copy->i + 1] == '>' && whole_cmd[copy->i - 1] == ' ')
 			copy->i++;
-		c = 'x';
-		if (whole_cmd[copy->i] == '\'')
-			c = '\'';
-		else if (whole_cmd[copy->i] == '"')
-			c = '"';
-		if (whole_cmd[copy->i] == c)
+		if (whole_cmd[copy->i] == '\'' || whole_cmd[copy->i] == '"')
 		{
 			while (whole_cmd[copy->i] == '"')
 				if ((double_quote_arg(whole_cmd, copy, i)) == -1)
@@ -69,19 +68,15 @@ char	*args(char *whole_cmd, t_copy *copy, size_t i)// retrouver les arguments da
 
 int		options(char *whole_cmd, t_copy *copy)
 {
-	// ajouter arg[0] = cmd 
 	char	**tmp;
 	char	*arg;
-	copy->args = NULL;
 	size_t	i;
 	size_t	j;
+	copy->args = NULL;
 
 	i = 0;
 	if (!(whole_cmd[copy->i]))
-	{
-		//add_cmdarg(copy, i);
 		return (-1);
-	}
 	while (1)
 	{
 		if (i > 0)
@@ -116,7 +111,6 @@ int		options(char *whole_cmd, t_copy *copy)
 
 char	*cmd(char *whole_cmd) // retrouver la commande dans whole_cmd (peut etre une variable d'environnement)
 {
-	char c;
 	t_copy copy;
 	copy.i = 0;
 	copy.j = -1;
@@ -131,12 +125,7 @@ char	*cmd(char *whole_cmd) // retrouver la commande dans whole_cmd (peut etre un
 		copy.i++;
 	while (whole_cmd[copy.i] && whole_cmd[copy.i] != ' ')
 	{
-		c = 'x';
-		if (whole_cmd[copy.i] == '\'')
-			c = '\'';
-		else if (whole_cmd[copy.i] == '"')
-			c = '"';
-		if (whole_cmd[copy.i] == c)
+		if (whole_cmd[copy.i] == '\'' || whole_cmd[copy.i] == '"')
 		{
 			while (whole_cmd[copy.i] == '"')
 				if ((double_quote(whole_cmd, &copy)) == -1)
@@ -154,6 +143,6 @@ char	*cmd(char *whole_cmd) // retrouver la commande dans whole_cmd (peut etre un
 	}
 	copy.cmd[copy.j + 1] = 0;
 	printf("cmd = %s\n", copy.cmd);
-    options(whole_cmd, &copy);
+	options(whole_cmd, &copy);
 	return (copy.cmd);
 }

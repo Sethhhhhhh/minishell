@@ -12,7 +12,7 @@ void	init_redir(t_redir *redir)
 	redir->i = -1;
 }
 
-int		redir_out_error(char *whole_cmd, t_copy *copy, t_redir *redir) // retourner la char * de l'argument a mettre dans arg
+int		redir_out_error(char *whole_cmd, t_copy *copy, t_redir *redir) // redirection de stderr : recuperer out2, et le fd sstderr
 {
 	int i = -1;
 	if (redir->end == 1)
@@ -23,10 +23,19 @@ int		redir_out_error(char *whole_cmd, t_copy *copy, t_redir *redir) // retourner
 		copy->i++;
 	while (whole_cmd[copy->i] && whole_cmd[copy->i] != ' ') // recuperer le fichier derriere '>'
 	{
-		redir->out2[++i] = whole_cmd[copy->i]; // recuperer le fichier derriere '>'
+		if (whole_cmd[copy->i] == '\'' || whole_cmd[copy->i] == '"')
+		{
+			while (whole_cmd[copy->i] == '"')
+				if ((double_quote_redir(whole_cmd, copy, i, redir, redir->out2)) == -1)
+					return (1);
+			while (whole_cmd[copy->i] == '\'')
+				if ((simple_quote_redir(whole_cmd, copy, i, redir, redir->out2)) == -1)
+					return (1);
+		}
+		redir->out2[++redir->i] = whole_cmd[copy->i]; // recuperer le fichier derriere '>'
 		copy->i++;
 	}
-	redir->out2[i + 1] = 0;
+	redir->out2[redir->i + 1] = 0;
 	redir->sstderr = open(redir->out2, O_CREAT, O_WRONLY);
 	printf("file stderr = %s\n", redir->out2);
 	printf("fd stderr = %d\n", redir->sstderr);
@@ -34,16 +43,15 @@ int		redir_out_error(char *whole_cmd, t_copy *copy, t_redir *redir) // retourner
 	return (1);
 }
 
-int		redir_out(char *whole_cmd, t_copy *copy, t_redir *redir)
+int		redir_out(char *whole_cmd, t_copy *copy, t_redir *redir) // redirection de stdout : recuperer out1, et le fd sstdout
 {
 	int i = -1;
 	int j = 0;
-	char c;
 
 	copy->i++;
 	if (whole_cmd[copy->i] == '>')
 		redir->end = 1;
-	if (whole_cmd[copy->i - 2] == '2' && whole_cmd[copy->i - 3] == ' ') // pour distinguer que c'est le stderr et pas par defaut stdout
+	if (whole_cmd[copy->i - 2] == '2' && whole_cmd[copy->i - 3] == ' ') // pour distinguer que c'est le stderr ou pas (par defaut stdout)
 		if ((j = (redir_out_error(whole_cmd, copy, redir))))
 			return (j);
 	if (redir->end == 1)
@@ -54,20 +62,13 @@ int		redir_out(char *whole_cmd, t_copy *copy, t_redir *redir)
 		copy->i++;
 	while (whole_cmd[copy->i] && whole_cmd[copy->i] != ' ') // recuperer le fichier derriere '>'
 	{
-		c = 'x';
-		if (whole_cmd[copy->i] == '\'')
-			c = '\'';
-		else if (whole_cmd[copy->i] == '"')
-			c = '"';
-		if (whole_cmd[copy->i] == c)
+		if (whole_cmd[copy->i] == '\'' || whole_cmd[copy->i] == '"')
 		{
 			while (whole_cmd[copy->i] == '"')
-			{
-				if ((double_quote_redir(whole_cmd, copy, i, redir)) == -1)
+				if ((double_quote_redir(whole_cmd, copy, i, redir, redir->out1)) == -1)
 					return (1);
-			}
 			while (whole_cmd[copy->i] == '\'')
-				if ((simple_quote_redir(whole_cmd, copy, i, redir)) == -1)
+				if ((simple_quote_redir(whole_cmd, copy, i, redir, redir->out1)) == -1)
 					return (1);
 		}
 		redir->out1[++redir->i] = whole_cmd[copy->i]; // recuperer le fichier derriere '>'
@@ -81,7 +82,7 @@ int		redir_out(char *whole_cmd, t_copy *copy, t_redir *redir)
 	return (1);
 }
 
-int		redir_in(char *whole_cmd, t_copy *copy, t_redir *redir)
+int		redir_in(char *whole_cmd, t_copy *copy, t_redir *redir) // redirection de stdin : recuperer in et le fd sstdin
 {
 	int i = -1;
 	int j = 0;
@@ -93,6 +94,15 @@ int		redir_in(char *whole_cmd, t_copy *copy, t_redir *redir)
 		copy->i++;
 	while (whole_cmd[copy->i] && whole_cmd[copy->i] != ' ') // recuperer le fichier derriere '>'
 	{
+		if (whole_cmd[copy->i] == '\'' || whole_cmd[copy->i] == '"')
+		{
+			while (whole_cmd[copy->i] == '"')
+				if ((double_quote_redir(whole_cmd, copy, i, redir, redir->in)) == -1)
+					return (1);
+			while (whole_cmd[copy->i] == '\'')
+				if ((simple_quote_redir(whole_cmd, copy, i, redir, redir->in)) == -1)
+					return (1);
+		}
 		redir->in[++i] = whole_cmd[copy->i]; // recuperer le fichier derriere '>'
 		copy->i++;
 	}
@@ -102,7 +112,6 @@ int		redir_in(char *whole_cmd, t_copy *copy, t_redir *redir)
 	printf("fd stdin = %d\n", redir->sstdin);
 	printf("fin du fichier ? = %d\n", redir->end);
 	return (1);
-	
 }
 
 int		redir(char *whole_cmd, t_copy *copy)

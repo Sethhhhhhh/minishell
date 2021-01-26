@@ -65,8 +65,8 @@ int		double_quote(char *whole_cmd, t_copy *copy);
 int		simple_quote(char *whole_cmd, t_copy *copy);
 int		double_quote_arg(char *whole_cmd, t_copy *copy, size_t i);
 int		simple_quote_arg(char *whole_cmd, t_copy *copy, size_t i);
-int		simple_quote_redir(char *whole_cmd, t_copy *copy, int i, t_redir *redir);
-int		double_quote_redir(char *whole_cmd, t_copy *copy, int i, t_redir *redir);
+int		simple_quote_redir(char *whole_cmd, t_copy *copy, int i, t_redir *redir, char *str);
+int		double_quote_redir(char *whole_cmd, t_copy *copy, int i, t_redir *redir, char *str);
 
 void    ft_pipe(char *str);
 int     sys_call(char *cmd, char **paths, char *arg, char **env);
