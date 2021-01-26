@@ -144,7 +144,7 @@ int		double_quote_redir(char *whole_cmd, t_copy *copy, int i, t_redir *redir, ch
 	copy->i++; // on decale de 1 car on est sur le " fermant
 	return (1);
 }
-
+/*
 int		main(int argc, char **argv, char **env)
 {
 	//char *str;
@@ -153,4 +153,4 @@ int		main(int argc, char **argv, char **env)
 	ret = read(0, buff, 100);
 	buff[ret - 1] = 0;
 	cmd(buff);
-}
+}*/

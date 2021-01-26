@@ -45,27 +45,6 @@ char	*args(char *whole_cmd, t_copy *copy, size_t i)// retrouver les arguments da
 	return (copy->args[i]);
 }
 
-/*int		add_cmdarg(t_copy *copy, size_t i)
-{
-	char	**tmp;
-	int j = 0;
-	tmp = copy->args;
-	if (!(copy->args = (char **)malloc(sizeof(char *) * (i + 1))))
-		return (-1);
-	while (j < i)
-	{
-		copy->args[j] = ft_strdup(tmp[j]);
-		j++;
-	}
-	while (i >= 0)
-	{
-		printf("copy de arg[%zu] = %s\n", i, copy->args[i]);
-		i--;
-	}
-	return (0);
-}*/
-
-
 int		options(char *whole_cmd, t_copy *copy)
 {
 	char	**tmp;
@@ -105,7 +84,6 @@ int		options(char *whole_cmd, t_copy *copy)
 	}
 	copy->args[i] = NULL;
 	printf("arg[%zu] = %s\n", i, copy->args[i]);
-	//add_cmdarg(copy, i);
 	return (1);
 }
 

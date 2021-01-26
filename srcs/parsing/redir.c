@@ -90,6 +90,8 @@ int		redir_in(char *whole_cmd, t_copy *copy, t_redir *redir) // redirection de s
 	copy->i++;
 	if (!(redir->in = malloc(sizeof(char) * strlen(whole_cmd) + 1)))
 		return (-1);
+	//if (whole_cmd[copy->i] == '>')
+	//	printf("special case\n");
 	while (whole_cmd[copy->i] && whole_cmd[copy->i] == ' ')
 		copy->i++;
 	while (whole_cmd[copy->i] && whole_cmd[copy->i] != ' ') // recuperer le fichier derriere '>'
