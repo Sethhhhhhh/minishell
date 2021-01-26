@@ -1,6 +1,6 @@
 #include "../../includes/minishell.h"
 
-char	*args(char *whole_cmd, t_copy *copy, size_t i)// retrouver les arguments dans whole_cmd et mettre dans un char**
+char	*args(char *whole_cmd, t_copy *copy, size_t i, t_redir *redir)// retrouver les arguments dans whole_cmd et mettre dans un char**
 {
 	copy->args[i] = NULL;
 	copy->j = -1;
@@ -34,7 +34,7 @@ char	*args(char *whole_cmd, t_copy *copy, size_t i)// retrouver les arguments da
 		if (whole_cmd[copy->i] == '\\')
 			copy->i++;
 		if ((whole_cmd[copy->i] == '>' || whole_cmd[copy->i] == '<') && whole_cmd[copy->i - 1] != '\\')
-			if (redir(whole_cmd, copy) == -1)
+			if (redirection(whole_cmd, copy, redir) == -1)
 				return (NULL);
 		if (whole_cmd[copy->i] == ' ' && copy->args[i][0])
 			break;
@@ -45,7 +45,7 @@ char	*args(char *whole_cmd, t_copy *copy, size_t i)// retrouver les arguments da
 	return (copy->args[i]);
 }
 
-int		options(char *whole_cmd, t_copy *copy)
+int		options(char *whole_cmd, t_copy *copy, t_redir *redir)
 {
 	char	**tmp;
 	char	*arg;
@@ -76,7 +76,7 @@ int		options(char *whole_cmd, t_copy *copy)
 				j++;
 			}
 		}
-		arg = args(whole_cmd, copy, i);
+		arg = args(whole_cmd, copy, i, redir);
 		if (!arg || !arg[0])
 			break;
 		printf("arg[%zu] = %s\n", i, copy->args[i]);
@@ -87,40 +87,38 @@ int		options(char *whole_cmd, t_copy *copy)
 	return (1);
 }
 
-char	*cmd(char *whole_cmd) // retrouver la commande dans whole_cmd (peut etre une variable d'environnement)
+char	*cmd(char *whole_cmd, t_copy *copy, t_redir *redir) // retrouver la commande dans whole_cmd (peut etre une variable d'environnement)
 {
-	t_copy copy;
-	copy.i = 0;
-	copy.j = -1;
-	copy.cmd = NULL;
+	copy->i = 0;
+	copy->j = -1;
+	copy->cmd = NULL;
 
 	if (!(whole_cmd))
 		return (NULL);
-	if (!(copy.cmd = malloc(sizeof(char) * (strlen(whole_cmd) + 1))))
+	if (!(copy->cmd = malloc(sizeof(char) * (strlen(whole_cmd) + 1))))
 		return (NULL);
-	copy.cmd[0] = 0;
-	while (whole_cmd[copy.i] && whole_cmd[copy.i] == ' ')
-		copy.i++;
-	while (whole_cmd[copy.i] && whole_cmd[copy.i] != ' ')
+	copy->cmd[0] = 0;
+	while (whole_cmd[copy->i] && whole_cmd[copy->i] == ' ')
+		copy->i++;
+	while (whole_cmd[copy->i] && whole_cmd[copy->i] != ' ')
 	{
-		if (whole_cmd[copy.i] == '\'' || whole_cmd[copy.i] == '"')
+		if (whole_cmd[copy->i] == '\'' || whole_cmd[copy->i] == '"')
 		{
-			while (whole_cmd[copy.i] == '"')
-				if ((double_quote(whole_cmd, &copy)) == -1)
+			while (whole_cmd[copy->i] == '"')
+				if ((double_quote(whole_cmd, copy)) == -1)
 					return (NULL);
-			while (whole_cmd[copy.i] == '\'')
-				if ((simple_quote(whole_cmd, &copy)) == -1)
+			while (whole_cmd[copy->i] == '\'')
+				if ((simple_quote(whole_cmd, copy)) == -1)
 					return (NULL);
 		}
-		if (whole_cmd[copy.i] == '\\')
-			copy.i++;
-		if (whole_cmd[copy.i] == ' ' && copy.cmd[0])
+		if (whole_cmd[copy->i] == '\\')
+			copy->i++;
+		if (whole_cmd[copy->i] == ' ' && copy->cmd[0])
 			break;
-		copy.cmd[++copy.j] = whole_cmd[copy.i];
-		copy.i++;
+		copy->cmd[++copy->j] = whole_cmd[copy->i];
+		copy->i++;
 	}
-	copy.cmd[copy.j + 1] = 0;
-	printf("cmd = %s\n", copy.cmd);
-	options(whole_cmd, &copy);
-	return (copy.cmd);
+	copy->cmd[copy->j + 1] = 0;
+	options(whole_cmd, copy, redir);
+	return (copy->cmd);
 }

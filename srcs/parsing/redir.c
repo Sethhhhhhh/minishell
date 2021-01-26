@@ -116,14 +116,13 @@ int		redir_in(char *whole_cmd, t_copy *copy, t_redir *redir) // redirection de s
 	return (1);
 }
 
-int		redir(char *whole_cmd, t_copy *copy)
+int		redirection(char *whole_cmd, t_copy *copy, t_redir *redir)
 {
-	t_redir redir;
 	int i;
-	init_redir(&redir);
+	init_redir(redir);
 	if (whole_cmd[copy->i] == '>')
-		i = redir_out(whole_cmd, copy, &redir);
+		i = redir_out(whole_cmd, copy, redir);
 	if (whole_cmd[copy->i] == '<')
-		i = redir_in(whole_cmd, copy, &redir);
+		i = redir_in(whole_cmd, copy, redir);
 	return (i);
 }

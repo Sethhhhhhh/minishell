@@ -55,11 +55,11 @@ void	print_list(t_sep *list);
 void    parse_pip(t_sep *list);
 void	print_pip_list(t_pip *piplist);
 //----------redir.c---------//
-int		redir(char *whole_cmd, t_copy *copy);
+int		redirection(char *whole_cmd, t_copy *copy, t_redir *redir);
 //----------cmdargs.c---------//
-char	*args(char *whole_cmd, t_copy *copy, size_t i);
-int		options(char *whole_cmd, t_copy *copy);
-char	*cmd(char *whole_cmd);
+char	*args(char *whole_cmd, t_copy *copy, size_t i, t_redir *redir);
+int		options(char *whole_cmd, t_copy *copy, t_redir *redir);
+char	*cmd(char *whole_cmd, t_copy *copy, t_redir *redir);
 //----------protec.c---------//
 int		double_quote(char *whole_cmd, t_copy *copy);
 int		simple_quote(char *whole_cmd, t_copy *copy);
@@ -69,6 +69,9 @@ int		simple_quote_redir(char *whole_cmd, t_copy *copy, int i, t_redir *redir, ch
 int		double_quote_redir(char *whole_cmd, t_copy *copy, int i, t_redir *redir, char *str);
 //----------execution.c---------//
 void	execution(t_sep *list);
+
+
+
 
 void    ft_pipe(char *str);
 int     sys_call(char *cmd, char **paths, char *arg, char **env);
