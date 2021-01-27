@@ -53,6 +53,7 @@ int		options(char *whole_cmd, t_copy *copy, t_redir *redir)
 	size_t	j;
 	copy->args = NULL;
 
+
 	i = 0;
 	while (1)
 	{
@@ -87,12 +88,24 @@ int		options(char *whole_cmd, t_copy *copy, t_redir *redir)
 	return (1);
 }
 
-char	*cmd(char *whole_cmd, t_copy *copy, t_redir *redir) // retrouver la commande dans whole_cmd (peut etre une variable d'environnement)
+void	init_redir_copy(t_copy *copy, t_redir *redir)
 {
 	copy->i = 0;
 	copy->j = -1;
 	copy->cmd = NULL;
+	redir->sstdout = 1;
+	redir->sstderr = 2;
+	redir->sstdin = 1;
+	redir->end = 0;
+	redir->out1 = NULL;
+	redir->out2 = NULL;
+	redir->in = NULL;
+	redir->i = -1;
+}
 
+char	*cmd(char *whole_cmd, t_copy *copy, t_redir *redir) // retrouver la commande dans whole_cmd (peut etre une variable d'environnement)
+{
+	init_redir_copy(copy, redir);
 	if (!(whole_cmd))
 		return (NULL);
 	if (!(copy->cmd = malloc(sizeof(char) * (strlen(whole_cmd) + 1))))

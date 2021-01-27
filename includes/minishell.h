@@ -57,8 +57,6 @@ void	print_pip_list(t_pip *piplist);
 //----------redir.c---------//
 int		redirection(char *whole_cmd, t_copy *copy, t_redir *redir);
 //----------cmdargs.c---------//
-char	*args(char *whole_cmd, t_copy *copy, size_t i, t_redir *redir);
-int		options(char *whole_cmd, t_copy *copy, t_redir *redir);
 char	*cmd(char *whole_cmd, t_copy *copy, t_redir *redir);
 //----------protec.c---------//
 int		double_quote(char *whole_cmd, t_copy *copy);
@@ -68,9 +66,8 @@ int		simple_quote_arg(char *whole_cmd, t_copy *copy, size_t i);
 int		simple_quote_redir(char *whole_cmd, t_copy *copy, int i, t_redir *redir, char *str);
 int		double_quote_redir(char *whole_cmd, t_copy *copy, int i, t_redir *redir, char *str);
 //----------execution.c---------//
-void	execution(t_sep *list);
-
-
+void	minishell(t_sep *list);
+void	execution(t_copy *cmdarg, t_redir *redir);
 
 
 void    ft_pipe(char *str);

@@ -1,17 +1,5 @@
 #include "../../includes/minishell.h"
 
-void	init_redir(t_redir *redir)
-{
-	redir->sstdout = 1;
-	redir->sstderr = 2;
-	redir->sstdin = 1;
-	redir->end = 0;
-	redir->out1 = NULL;
-	redir->out2 = NULL;
-	redir->in = NULL;
-	redir->i = -1;
-}
-
 int		redir_out_error(char *whole_cmd, t_copy *copy, t_redir *redir) // redirection de stderr : recuperer out2, et le fd sstderr
 {
 	int i = -1;
@@ -119,7 +107,6 @@ int		redir_in(char *whole_cmd, t_copy *copy, t_redir *redir) // redirection de s
 int		redirection(char *whole_cmd, t_copy *copy, t_redir *redir)
 {
 	int i;
-	init_redir(redir);
 	if (whole_cmd[copy->i] == '>')
 		i = redir_out(whole_cmd, copy, redir);
 	if (whole_cmd[copy->i] == '<')

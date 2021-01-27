@@ -33,9 +33,8 @@ void	loop(t_env *tenv)
 	{
 		write(0, "~$ ", 3); //pour le prompt
 		list = parse_sep();
-		parse_pip(list);
 		print_list(list);
-		execution(list);
+		minishell(list);
 	}
 }
 

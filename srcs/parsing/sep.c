@@ -64,5 +64,6 @@ t_sep	*parse_sep()
 			list = add_cell(list, cmds[i], i);
 		free(line);
 	}
+	parse_pip(list);
 	return (list);
 }
