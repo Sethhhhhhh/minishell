@@ -19,6 +19,7 @@ void	execution(t_sep *list)
 		}
 		else
 		{
+			printf("%s\n", list->cmd_sep);
 			cmd(list->cmd_sep, &cmdarg, &redir);
 			printf("\n");
 		}

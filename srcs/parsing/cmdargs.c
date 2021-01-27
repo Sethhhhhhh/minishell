@@ -54,8 +54,6 @@ int		options(char *whole_cmd, t_copy *copy, t_redir *redir)
 	copy->args = NULL;
 
 	i = 0;
-	if (!(whole_cmd[copy->i]))
-		return (-1);
 	while (1)
 	{
 		if (i > 0)
@@ -78,7 +76,9 @@ int		options(char *whole_cmd, t_copy *copy, t_redir *redir)
 		}
 		arg = args(whole_cmd, copy, i, redir);
 		if (!arg || !arg[0])
+		{
 			break;
+		}
 		printf("arg[%zu] = %s\n", i, copy->args[i]);
 		i++;
 	}
