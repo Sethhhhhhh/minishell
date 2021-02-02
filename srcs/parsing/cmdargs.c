@@ -105,11 +105,9 @@ void	init_redir_copy(t_copy *copy, t_redir *redir)
 	redir->sstdout = 1;
 	redir->sstderr = 2;
 	redir->sstdin = 1;
-	redir->end = 0;
 	redir->out1 = NULL;
 	redir->out2 = NULL;
 	redir->in = NULL;
-	redir->i = -1;
 }
 
 char	*cmd(char *whole_cmd, t_copy *copy, t_redir *redir) // retrouver la commande dans whole_cmd (peut etre une variable d'environnement)

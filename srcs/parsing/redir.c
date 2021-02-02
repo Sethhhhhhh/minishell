@@ -3,6 +3,7 @@
 int		redir_out_error(char *whole_cmd, t_copy *copy, t_redir *redir) // redirection de stderr : recuperer out2, et le fd sstderr
 {
 	int i = -1;
+
 	if (redir->end == 1)
 		copy->i++;
 	if (!(redir->out2 = malloc(sizeof(char) * strlen(whole_cmd) + 1)))
@@ -25,12 +26,10 @@ int		redir_out_error(char *whole_cmd, t_copy *copy, t_redir *redir) // redirecti
 			copy->i--;
 			break;
 		}
-		redir->out2[++redir->i] = whole_cmd[copy->i]; // recuperer le fichier derriere '>'
+		redir->out2[++redir->i] = whole_cmd[copy->i]; // recuperer le fichier derriere '>'git
 		copy->i++;
 	}
 	redir->out2[redir->i + 1] = 0;
-	redir->i = -1; //dans le cas ou y a plusieurs redirections : echo mdr >hey >hey2
-	redir->end = 0; //dans le cas ou y a plusieurs redirections : echo mdr >hey >hey2
 	redir->sstderr = open(redir->out2, O_CREAT, O_WRONLY);
 	printf("file stderr = %s\n", redir->out2);
 	printf("fd stderr = %d\n", redir->sstderr);
@@ -75,8 +74,6 @@ int		redir_out(char *whole_cmd, t_copy *copy, t_redir *redir) // redirection de 
 		copy->i++;
 	}
 	redir->out1[redir->i + 1] = 0;
-	redir->i = -1; //dans le cas ou y a plusieurs redirections : echo mdr >hey >hey2
-	redir->end = 0; //dans le cas ou y a plusieurs redirections : echo mdr >hey >hey2
 	redir->sstdout = open(redir->out1, O_CREAT, O_WRONLY);
 	printf("file stdout = %s\n", redir->out1);
 	printf("fd stdout = %d\n", redir->sstdout);
@@ -112,10 +109,10 @@ int		redir_in(char *whole_cmd, t_copy *copy, t_redir *redir) // redirection de s
 			copy->i--;
 			break;
 		}
-		redir->in[++i] = whole_cmd[copy->i]; // recuperer le fichier derriere '>'
+		redir->in[++redir->i] = whole_cmd[copy->i]; // recuperer le fichier derriere '>'
 		copy->i++;
 	}
-	redir->in[i + 1] = 0;
+	redir->in[redir->i + 1] = 0;
 	redir->sstdin = open(redir->in, O_RDONLY);
 	printf("file stdin = %s\n", redir->in);
 	printf("fd stdin = %d\n", redir->sstdin);
@@ -126,6 +123,9 @@ int		redir_in(char *whole_cmd, t_copy *copy, t_redir *redir) // redirection de s
 int		redirection(char *whole_cmd, t_copy *copy, t_redir *redir)
 {
 	int i;
+
+	redir->end = 0;  //dans le cas ou y a plusieurs redirections : echo mdr >hey >hey2
+	redir->i = -1; //dans le cas ou y a plusieurs redirections : echo mdr >hey >hey2
 	if (whole_cmd[copy->i] == '>')
 		i = redir_out(whole_cmd, copy, redir);
 	if (whole_cmd[copy->i] == '<')
