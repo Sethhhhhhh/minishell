@@ -3,6 +3,7 @@
 char	*args(char *whole_cmd, t_copy *copy, size_t i, t_redir *redir)// retrouver les arguments dans whole_cmd et mettre dans un char**
 {
 	copy->args[i] = NULL;
+	int j;
 	copy->j = -1;
 
 	if (!(whole_cmd))
@@ -20,6 +21,7 @@ char	*args(char *whole_cmd, t_copy *copy, size_t i, t_redir *redir)// retrouver 
 	copy->args[i][0] = 0;
 	while (whole_cmd[copy->i] && whole_cmd[++copy->i] != ' ')
 	{
+		j = 0;
 		if ((whole_cmd[copy->i] == '1' || whole_cmd[copy->i] == '2') && whole_cmd[copy->i + 1] == '>' && whole_cmd[copy->i - 1] == ' ')
 			copy->i++;
 		if (whole_cmd[copy->i] == '\'' || whole_cmd[copy->i] == '"')
@@ -36,11 +38,16 @@ char	*args(char *whole_cmd, t_copy *copy, size_t i, t_redir *redir)// retrouver 
 		if (whole_cmd[copy->i] == '\\')
 			copy->i++;
 		if ((whole_cmd[copy->i] == '>' || whole_cmd[copy->i] == '<') && whole_cmd[copy->i - 1] != '\\')
-			if (redirection(whole_cmd, copy, redir) == -1)
+		{
+			j = redirection(whole_cmd, copy, redir);
+			if (j == -1)
+			{
 				return (NULL);
+			}
+		}
 		if (whole_cmd[copy->i] == ' ' && copy->args[i][0])
 			break;
-		if (whole_cmd[copy->i] != ' ')
+		if (whole_cmd[copy->i] != ' ' && j != 1)
 			copy->args[i][++copy->j] = whole_cmd[copy->i];
 	}
 	copy->args[i][copy->j + 1] = 0;
