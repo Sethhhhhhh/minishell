@@ -31,6 +31,8 @@ char	*args(char *whole_cmd, t_copy *copy, size_t i, t_redir *redir)// retrouver 
 				if ((simple_quote_arg(whole_cmd, copy, i)) == -1)
 					return (NULL);
 		}
+		if (whole_cmd[copy->i] == '$')
+			environnement();
 		if (whole_cmd[copy->i] == '\\')
 			copy->i++;
 		if ((whole_cmd[copy->i] == '>' || whole_cmd[copy->i] == '<') && whole_cmd[copy->i - 1] != '\\')
@@ -124,6 +126,8 @@ char	*cmd(char *whole_cmd, t_copy *copy, t_redir *redir) // retrouver la command
 				if ((simple_quote(whole_cmd, copy)) == -1)
 					return (NULL);
 		}
+		if (whole_cmd[copy->i] == '$')
+			environnement();
 		if (whole_cmd[copy->i] == '\\')
 			copy->i++;
 		if ((whole_cmd[copy->i] == '>' || whole_cmd[copy->i] == '<') && whole_cmd[copy->i - 1] != '\\')
