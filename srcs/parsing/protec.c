@@ -32,7 +32,7 @@ int		simple_quote_arg(char *whole_cmd, t_copy *copy, size_t i)
 		printf("erreur \' au bout de la chaine\n");
 		return (-1);
 	}
-	if (whole_cmd[copy->i + 1 == '\''])
+	if (whole_cmd[copy->i + 1] == '\'')
 		copy->args[i][++copy->j] = ' ';
 	while (whole_cmd[copy->i] && whole_cmd[++copy->i] != '\'') //++copy->i; //on decale de 1 car on est sur le ' ouvrant
 		copy->args[i][++copy->j] = whole_cmd[copy->i];
@@ -98,7 +98,7 @@ int		double_quote_arg(char *whole_cmd, t_copy *copy, size_t i)
 		printf("erreur \" au bout de la chaine\n");
 		return (-1);
 	}
-	if (whole_cmd[copy->i + 1 == '"'])
+	if (whole_cmd[copy->i + 1] == '"')
 		copy->args[i][++copy->j] = ' ';
 	while (whole_cmd[copy->i] && whole_cmd[++copy->i] != '"') //++copy->i; //on decale de 1 car on est sur le " ouvrant
 	{
