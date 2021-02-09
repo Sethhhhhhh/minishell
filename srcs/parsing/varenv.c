@@ -38,11 +38,12 @@ int	    environnement(char *whole_cmd, t_copy *copy, int arg, int i)
     char *value;
     int count = -1;
     
+    printf("ca rentre\n");
     if (!(name = malloc(sizeof(char) * strlen(whole_cmd) + 1)))
 		return (-1);
     if (whole_cmd[++copy->i] == '{')
         copy->i++;
-    while (whole_cmd[copy->i] && (whole_cmd[copy->i] != '}' && whole_cmd[copy->i] != ' '))
+    while (whole_cmd[copy->i] && (whole_cmd[copy->i] != '}' && whole_cmd[copy->i] != ' ' && whole_cmd[copy->i] != '$'))
     {
         name[++count] = whole_cmd[copy->i];
         copy->i++;
@@ -57,5 +58,7 @@ int	    environnement(char *whole_cmd, t_copy *copy, int arg, int i)
         remalloc_cmd(copy, value, whole_cmd);
     else
         remalloc_arg(copy, value, whole_cmd, i);
+    printf("caracete = %c\n", whole_cmd[copy->i]);
+    printf(" %d\n", copy->i);
     return (0);
 }

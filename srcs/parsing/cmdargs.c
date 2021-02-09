@@ -33,10 +33,10 @@ char	*args(char *whole_cmd, t_copy *copy, size_t i, t_redir *redir)// retrouver 
 				if ((simple_quote_arg(whole_cmd, copy, i)) == -1)
 					return (NULL);
 		}
-		if (whole_cmd[copy->i] == '$')
-			environnement(whole_cmd, copy, 1, i);
 		if (whole_cmd[copy->i] == '\\')
 			copy->i++;
+		if (whole_cmd[copy->i] == '$')
+			environnement(whole_cmd, copy, 1, i);
 		if ((whole_cmd[copy->i] == '>' || whole_cmd[copy->i] == '<') && whole_cmd[copy->i - 1] != '\\')
 		{
 			j = redirection(whole_cmd, copy, redir);
@@ -45,9 +45,14 @@ char	*args(char *whole_cmd, t_copy *copy, size_t i, t_redir *redir)// retrouver 
 		}
 		if (whole_cmd[copy->i] == ' ' && copy->args[i][0])
 			break;
-		if (whole_cmd[copy->i] != ' ' && j != 1)
+		if (whole_cmd[copy->i] != ' ' && j != 1 && (whole_cmd[copy->i] != '$' && whole_cmd[copy->i - 1] != '\\'))
+		{
+			printf("ca rentre pour i = %d\n", copy->i);
 			copy->args[i][++copy->j] = whole_cmd[copy->i];
+
+		}
 	}
+	printf(" %d\n", copy->i);
 	copy->args[i][copy->j + 1] = 0;
 	return (copy->args[i]);
 }
