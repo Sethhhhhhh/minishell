@@ -9,14 +9,23 @@ CC			=	gcc
 FLAGS		=	-Werror -Wall -Wextra -I $(HEADER) -fsanitize=address
 
 SRCS		=	srcs/main.c \
+				srcs/mainyohann.c \
 				srcs/parsing/sep.c \
 				srcs/parsing/pip.c \
 				srcs/parsing/cmdargs.c \
 				srcs/parsing/protec.c \
 				srcs/parsing/redir.c \
+				srcs/parsing/varenv.c \
 				srcs/shell/pipe.c \
-				srcs/shell/system.c \
+				srcs/shell/syscall.c \
 				srcs/shell/execution.c \
+				srcs/shell/env.c \
+				srcs/builtin/cd.c \
+				srcs/builtin/echo.c \
+				srcs/builtin/env.c \
+				srcs/builtin/pwd.c \
+				srcs/builtin/unset.c \
+				srcs/builtin/export.c \
 
 OBJS		=	$(SRCS:.c=.o)
 

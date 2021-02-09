@@ -1,3 +1,6 @@
 #include "../../includes/minishell.h"
 
-void	
+void	_env()
+{
+	print_envs();
+}

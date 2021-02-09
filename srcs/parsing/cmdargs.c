@@ -34,16 +34,14 @@ char	*args(char *whole_cmd, t_copy *copy, size_t i, t_redir *redir)// retrouver 
 					return (NULL);
 		}
 		if (whole_cmd[copy->i] == '$')
-			environnement();
+			environnement(whole_cmd, copy, 1, i);
 		if (whole_cmd[copy->i] == '\\')
 			copy->i++;
 		if ((whole_cmd[copy->i] == '>' || whole_cmd[copy->i] == '<') && whole_cmd[copy->i - 1] != '\\')
 		{
 			j = redirection(whole_cmd, copy, redir);
 			if (j == -1)
-			{
 				return (NULL);
-			}
 		}
 		if (whole_cmd[copy->i] == ' ' && copy->args[i][0])
 			break;
@@ -132,7 +130,7 @@ char	*cmd(char *whole_cmd, t_copy *copy, t_redir *redir) // retrouver la command
 					return (NULL);
 		}
 		if (whole_cmd[copy->i] == '$')
-			environnement();
+			environnement(whole_cmd, copy, 0, 0);
 		if (whole_cmd[copy->i] == '\\')
 			copy->i++;
 		if ((whole_cmd[copy->i] == '>' || whole_cmd[copy->i] == '<') && whole_cmd[copy->i - 1] != '\\')

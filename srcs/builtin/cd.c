@@ -1,0 +1,49 @@
+#include "../../includes/minishell.h"
+
+static void	set(char *path)
+{
+	struct stat st;
+	char	*pwd;
+
+	pwd = getcwd(NULL, 0);
+	if (!chdir(path))
+	{
+		set_env("OLDPWD", pwd);
+		set_env("PWD", getcwd(NULL, 0));
+		return;
+	}
+	ft_putstr_fd("cd: ", 2);
+	if (!stat(path, &st))
+	{
+		ft_putstr_fd("no such file or directory: ", 2);
+		return;
+	}
+	else if (!(st.st_mode & S_IXUSR))
+		ft_putstr_fd("permission denied: ", 2);
+	else
+		ft_putstr_fd("not a directory: ", 2);
+	ft_putstr_fd(path, 2);
+	ft_putchar_fd('\n', 2);
+}
+
+void	_cd(char **args)
+{
+	char	*home;
+
+	home = get_env("HOME");
+	if (!args[1])
+	{
+		set(home);
+		return;
+	}
+	if (!ft_strcmp(args[1], "-"))
+	{
+		set(get_env("OLDPWD"));
+		ft_putstr_fd(get_env("PWD"), 1);
+		ft_putchar_fd('\n', 1);
+	}
+	else if (!ft_strcmp(args[1], "--"))
+		set(home);
+	else
+		set(args[1]);
+}

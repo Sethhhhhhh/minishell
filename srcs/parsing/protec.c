@@ -1,12 +1,5 @@
 #include "../../includes/minishell.h"
 
-
-void	environnement()
-{
-	printf("appel a variable d'environnement\n");
-	//verifier si la variable d'environnement existe, sinon il faudra imprimer un \n (ex : echo $wshh ou wshh existe pas)
-}
-
 int		simple_quote(char *whole_cmd, t_copy *copy)
 {
 	if (copy->i == (strlen(whole_cmd) -1)) // si le ' ouvrant est le dernier caractere de la chaine
@@ -72,8 +65,8 @@ int		double_quote(char *whole_cmd, t_copy *copy)
 	}
 	while (whole_cmd[copy->i] && whole_cmd[++copy->i] != '"') //++copy->i; //on decale de 1 car on est sur le " ouvrant
 	{
-		if (whole_cmd[copy->i] == '$' && whole_cmd[copy->i - 1] != '\\') // $ conserve sa signification speciale
-			environnement();
+		//if (whole_cmd[copy->i] == '$' && whole_cmd[copy->i - 1] != '\\') // $ conserve sa signification speciale
+			//environnement();
 		if (whole_cmd[copy->i] == '\\')
 		{
 			if (whole_cmd[copy->i + 1] == '$' || whole_cmd[copy->i + 1] == '\\' // si \ suivit de " $ ou \ garde sa signification
@@ -102,8 +95,8 @@ int		double_quote_arg(char *whole_cmd, t_copy *copy, size_t i)
 		copy->args[i][++copy->j] = ' ';
 	while (whole_cmd[copy->i] && whole_cmd[++copy->i] != '"') //++copy->i; //on decale de 1 car on est sur le " ouvrant
 	{
-		if (whole_cmd[copy->i] == '$' && whole_cmd[copy->i - 1] != '\\') // $ conserve sa signification speciale
-			environnement();
+		//if (whole_cmd[copy->i] == '$' && whole_cmd[copy->i - 1] != '\\') // $ conserve sa signification speciale
+			//environnement();
 		if (whole_cmd[copy->i] == '\\')
 		{
 			if (whole_cmd[copy->i + 1] == '$' || whole_cmd[copy->i + 1] == '\\' // si \ suivit de " $ ou \ garde sa signification
@@ -130,8 +123,8 @@ int		double_quote_redir(char *whole_cmd, t_copy *copy, int i, t_redir *redir, ch
 	}
 	while (whole_cmd[copy->i] && whole_cmd[++copy->i] != '"') //++copy->i; //on decale de 1 car on est sur le " ouvrant
 	{
-		if (whole_cmd[copy->i] == '$' && whole_cmd[copy->i - 1] != '\\') // $ conserve sa signification speciale
-			environnement();
+		//if (whole_cmd[copy->i] == '$' && whole_cmd[copy->i - 1] != '\\') // $ conserve sa signification speciale
+			//environnement();
 		if (whole_cmd[copy->i] == '\\')
 		{
 			if (whole_cmd[copy->i + 1] == '$' || whole_cmd[copy->i + 1] == '\\' // si \ suivit de " $ ou \ garde sa signification

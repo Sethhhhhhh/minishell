@@ -2,9 +2,19 @@
 # define MINISHELL_H
 
 #include <stdio.h>
-#include <string.h>
 #include <unistd.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/stat.h>
 #include "../libft/libft.h"
+
+char **g_envs;
+
+typedef	struct	s_cmd
+{
+	char	**args;
+	char	*cmd;
+}				t_cmd;
 
 typedef	struct	s_sep
 {
@@ -29,10 +39,10 @@ typedef	struct	s_env
 
 typedef struct		s_copy
 {
-	int i;
-	int j;
-	char *cmd;
-	char **args;
+	int				i;
+	int				j;
+	char			*cmd;
+	char			**args;
 }					t_copy;
 
 typedef	struct	s_redir
@@ -65,10 +75,34 @@ int		double_quote_arg(char *whole_cmd, t_copy *copy, size_t i);
 int		simple_quote_arg(char *whole_cmd, t_copy *copy, size_t i);
 int		simple_quote_redir(char *whole_cmd, t_copy *copy, int i, t_redir *redir, char *str);
 int		double_quote_redir(char *whole_cmd, t_copy *copy, int i, t_redir *redir, char *str);
-void	environnement();
 //----------execution.c---------//
 void	minishell(t_sep *list);
 void	execution(t_copy *cmdarg, t_redir *redir);
+//----------varenv.c---------//
+int		environnement(char *whole_cmd, t_copy *copy, int arg, int i);
+
+//EXECUTION
+//----------syscall.c---------//
+void    call(char *cmd, char **args);
+t_cmd   *get_cmd(char *line);
+//----------env.c---------//
+char    *get_env(char *env);
+char    *set_env(char *env, char *new_env);
+void    print_envs();
+char	**get_path();
+char    **realloc_envs(size_t size);
+ssize_t	find_env(char *env);
+size_t  get_envs_count();
+
+//BUILTIN
+void	_echo(char **args);
+void	_cd(char **args);
+void    _pwd();
+void	_env();
+void	_unset(char **args);
+void	_export(char **args);
+
+
 
 
 void    ft_pipe(char *str);
