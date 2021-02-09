@@ -5,8 +5,10 @@ ssize_t	find_env(char *env)
 	size_t	i;	
 	size_t	len;
 
+	if (!env)
+		return (-1);
 	len = ft_strlen(env);
-	i = 0;
+	i = 0;	
 	while (g_envs[i])
 	{
 		if (!ft_strncmp(g_envs[i], env, len))
@@ -18,9 +20,11 @@ ssize_t	find_env(char *env)
 
 char	*get_env(char *env)
 {
-	size_t	i;
+	ssize_t	i;
 	size_t	len;
 
+	if (!env)
+		return (NULL);
 	len = ft_strlen(env);
 	if ((i = find_env(env)) != -1)
 		return (ft_substr(g_envs[i], (len + 1), ft_strlen(g_envs[i])));
