@@ -43,6 +43,7 @@ int	main(int ac, char **av, char **env)
 	int i = -1;
 	t_env tenv;
 	tenv.env = env;
+	g_envs = env;
 
 	if (!get_path(&tenv))
 		return (0);

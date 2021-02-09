@@ -22,7 +22,7 @@ char	*get_env(char *env)
 	size_t	len;
 
 	len = ft_strlen(env);
-	if ((i = find_env(env)) != -1) 	
+	if ((i = find_env(env)) != -1)
 		return (ft_substr(g_envs[i], (len + 1), ft_strlen(g_envs[i])));
 	return (NULL);
 }
