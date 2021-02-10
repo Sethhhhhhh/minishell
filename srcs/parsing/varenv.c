@@ -7,7 +7,7 @@ int    remalloc_cmd(t_copy *copy, char *value, char *whole_cmd)
     
     copy->cmd[copy->j + 1] = 0;
     tmp = ft_strjoin(copy->cmd, value);
-    if (!(copy->cmd = malloc(sizeof(char) * (strlen(whole_cmd) + strlen(value) + 1))))
+    if (!(copy->cmd = malloc(sizeof(char) * (strlen(tmp) + 1))))
         return (-1);
     while (tmp[++i])
         copy->cmd[i] = tmp[i];
@@ -43,7 +43,7 @@ int	    environnement(char *whole_cmd, t_copy *copy, int arg, int i)
 		return (-1);
     if (whole_cmd[++copy->i] == '{')
         copy->i++;
-    while (whole_cmd[copy->i] && (whole_cmd[copy->i] != '}' && whole_cmd[copy->i] != ' ' && whole_cmd[copy->i] != '$'))
+    while (whole_cmd[copy->i] && (whole_cmd[copy->i] != '}' && whole_cmd[copy->i] != ' ' && whole_cmd[copy->i] != '$' && whole_cmd[copy->i] != '"'))
     {
         name[++count] = whole_cmd[copy->i];
         copy->i++;
@@ -58,6 +58,7 @@ int	    environnement(char *whole_cmd, t_copy *copy, int arg, int i)
         remalloc_cmd(copy, value, whole_cmd);
     else
         remalloc_arg(copy, value, whole_cmd, i);
+    copy->i--;
     if (whole_cmd[copy->i] == '$')
         return (1);
     return (0);
