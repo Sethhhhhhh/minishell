@@ -12,10 +12,12 @@ int		redir_out_error(char *whole_cmd, t_copy *copy, t_redir *redir) // redirecti
 		copy->i++;
 	while (whole_cmd[copy->i] && whole_cmd[copy->i] != ' ') // recuperer le fichier derriere '>'
 	{
+		if (whole_cmd[copy->i] == '$' && whole_cmd[copy->i - 1] != '\\')
+			environnement_redir(whole_cmd, copy, 2, redir);
 		if (whole_cmd[copy->i] == '\'' || whole_cmd[copy->i] == '"')
 		{
 			while (whole_cmd[copy->i] == '"')
-				if ((double_quote_redir(whole_cmd, copy, i, redir, redir->out2)) == -1)
+				if ((double_quote_redir(whole_cmd, copy, redir, redir->out2, 2)) == -1)
 					return (1);
 			while (whole_cmd[copy->i] == '\'')
 				if ((simple_quote_redir(whole_cmd, copy, i, redir, redir->out2)) == -1)
@@ -56,10 +58,12 @@ int		redir_out(char *whole_cmd, t_copy *copy, t_redir *redir) // redirection de 
 		copy->i++;
 	while (whole_cmd[copy->i] && whole_cmd[copy->i] != ' ') // recuperer le fichier derriere '>'
 	{
+		if (whole_cmd[copy->i] == '$' && whole_cmd[copy->i - 1] != '\\')
+			environnement_redir(whole_cmd, copy, 1, redir);
 		if (whole_cmd[copy->i] == '\'' || whole_cmd[copy->i] == '"')
 		{
 			while (whole_cmd[copy->i] == '"')
-				if ((double_quote_redir(whole_cmd, copy, i, redir, redir->out1)) == -1)
+				if ((double_quote_redir(whole_cmd, copy, redir, redir->out1, 1)) == -1)
 					return (1);
 			while (whole_cmd[copy->i] == '\'')
 				if ((simple_quote_redir(whole_cmd, copy, i, redir, redir->out1)) == -1)
@@ -95,10 +99,12 @@ int		redir_in(char *whole_cmd, t_copy *copy, t_redir *redir) // redirection de s
 		copy->i++;
 	while (whole_cmd[copy->i] && whole_cmd[copy->i] != ' ') // recuperer le fichier derriere '>'
 	{
+		if (whole_cmd[copy->i] == '$' && whole_cmd[copy->i - 1] != '\\')
+			environnement_redir(whole_cmd, copy, 0, redir);
 		if (whole_cmd[copy->i] == '\'' || whole_cmd[copy->i] == '"')
 		{
 			while (whole_cmd[copy->i] == '"')
-				if ((double_quote_redir(whole_cmd, copy, i, redir, redir->in)) == -1)
+				if ((double_quote_redir(whole_cmd, copy, redir, redir->in, 0)) == -1)
 					return (1);
 			while (whole_cmd[copy->i] == '\'')
 				if ((simple_quote_redir(whole_cmd, copy, i, redir, redir->in)) == -1)

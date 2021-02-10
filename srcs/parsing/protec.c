@@ -114,7 +114,7 @@ int		double_quote_arg(char *whole_cmd, t_copy *copy, size_t i)
 	return (1);
 }
 
-int		double_quote_redir(char *whole_cmd, t_copy *copy, int i, t_redir *redir, char *str)
+int		double_quote_redir(char *whole_cmd, t_copy *copy, t_redir *redir, char *str, int std)
 {
 	if (copy->i == (strlen(whole_cmd) -1)) // si le " ouvrant est le dernier caractere de la chaine
 	{
@@ -123,8 +123,8 @@ int		double_quote_redir(char *whole_cmd, t_copy *copy, int i, t_redir *redir, ch
 	}
 	while (whole_cmd[copy->i] && whole_cmd[++copy->i] != '"') //++copy->i; //on decale de 1 car on est sur le " ouvrant
 	{
-		//if (whole_cmd[copy->i] == '$' && whole_cmd[copy->i - 1] != '\\') // $ conserve sa signification speciale
-			//environnement();
+		if (whole_cmd[copy->i] == '$' && whole_cmd[copy->i - 1] != '\\') // $ conserve sa signification speciale
+			environnement_redir(whole_cmd, copy, std, redir);
 		if (whole_cmd[copy->i] == '\\')
 		{
 			if (whole_cmd[copy->i + 1] == '$' || whole_cmd[copy->i + 1] == '\\' // si \ suivit de " $ ou \ garde sa signification

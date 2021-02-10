@@ -74,12 +74,13 @@ int		simple_quote(char *whole_cmd, t_copy *copy);
 int		double_quote_arg(char *whole_cmd, t_copy *copy, size_t i);
 int		simple_quote_arg(char *whole_cmd, t_copy *copy, size_t i);
 int		simple_quote_redir(char *whole_cmd, t_copy *copy, int i, t_redir *redir, char *str);
-int		double_quote_redir(char *whole_cmd, t_copy *copy, int i, t_redir *redir, char *str);
+int		double_quote_redir(char *whole_cmd, t_copy *copy, t_redir *redir, char *str, int std);
 //----------execution.c---------//
 void	minishell(t_sep *list);
 void	execution(t_copy *cmdarg, t_redir *redir);
 //----------varenv.c---------//
 int		environnement(char *whole_cmd, t_copy *copy, int arg, int i);
+int		environnement_redir(char *whole_cmd, t_copy *copy, int arg, t_redir *redir);
 
 //EXECUTION
 //----------syscall.c---------//
