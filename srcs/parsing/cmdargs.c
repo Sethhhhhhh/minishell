@@ -2,8 +2,8 @@
 
 char	*args(char *whole_cmd, t_copy *copy, size_t i, t_redir *redir)// retrouver les arguments dans whole_cmd et mettre dans un char**
 {
-	copy->args[i] = NULL;
 	int j;
+	copy->args[i] = NULL;
 	copy->j = -1;
 
 	if (!(whole_cmd))
@@ -35,7 +35,7 @@ char	*args(char *whole_cmd, t_copy *copy, size_t i, t_redir *redir)// retrouver 
 		}
 		if (whole_cmd[copy->i] == '\\')
 			copy->i++;
-		if (whole_cmd[copy->i] == '$')
+		while (whole_cmd[copy->i] == '$')
 			environnement(whole_cmd, copy, 1, i);
 		if ((whole_cmd[copy->i] == '>' || whole_cmd[copy->i] == '<') && whole_cmd[copy->i - 1] != '\\')
 		{
@@ -45,14 +45,9 @@ char	*args(char *whole_cmd, t_copy *copy, size_t i, t_redir *redir)// retrouver 
 		}
 		if (whole_cmd[copy->i] == ' ' && copy->args[i][0])
 			break;
-		if (whole_cmd[copy->i] != ' ' && j != 1 && (whole_cmd[copy->i] != '$' && whole_cmd[copy->i - 1] != '\\'))
-		{
-			printf("ca rentre pour i = %d\n", copy->i);
+		if (whole_cmd[copy->i] != ' ' && j != 1)
 			copy->args[i][++copy->j] = whole_cmd[copy->i];
-
-		}
 	}
-	printf(" %d\n", copy->i);
 	copy->args[i][copy->j + 1] = 0;
 	return (copy->args[i]);
 }

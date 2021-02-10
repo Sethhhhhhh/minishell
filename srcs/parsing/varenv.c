@@ -21,9 +21,10 @@ int    remalloc_arg(t_copy *copy, char *value, char *whole_cmd, int i)
     char *tmp;
     int j = -1;
     
+    tmp = NULL;
     copy->args[i][copy->j + 1] = 0;
     tmp = ft_strjoin(copy->args[i], value);
-    if (!(copy->args[i] = malloc(sizeof(char) * (strlen(whole_cmd) + strlen(value) + 1))))
+    if (!(copy->args[i] = malloc(sizeof(char) * (strlen(tmp) + 1))))
         return (-1);
     while (tmp[++j])
         copy->args[i][j] = tmp[j];
@@ -37,8 +38,7 @@ int	    environnement(char *whole_cmd, t_copy *copy, int arg, int i)
 	char *name;
     char *value;
     int count = -1;
-    
-    printf("ca rentre\n");
+
     if (!(name = malloc(sizeof(char) * strlen(whole_cmd) + 1)))
 		return (-1);
     if (whole_cmd[++copy->i] == '{')
@@ -58,7 +58,7 @@ int	    environnement(char *whole_cmd, t_copy *copy, int arg, int i)
         remalloc_cmd(copy, value, whole_cmd);
     else
         remalloc_arg(copy, value, whole_cmd, i);
-    printf("caracete = %c\n", whole_cmd[copy->i]);
-    printf(" %d\n", copy->i);
+    if (whole_cmd[copy->i] == '$')
+        return (1);
     return (0);
 }
