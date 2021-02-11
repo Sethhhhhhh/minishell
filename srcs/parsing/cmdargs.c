@@ -3,18 +3,13 @@
 char	*args(char *whole_cmd, t_copy *copy, size_t i, t_redir *redir)// retrouver les arguments dans whole_cmd et mettre dans un char**
 {
 	int j;
+
 	copy->args[i] = NULL;
 	copy->j = -1;
-
 	if (!(whole_cmd))
 		return (NULL);
 	if (!(copy->args[i] = malloc(sizeof(char) * (strlen(whole_cmd) + 1))))
 		return (NULL);
-	if (i == 0)
-	{
-		copy->args[i] = ft_strdup(copy->cmd);
-		return (copy->args[i]);
-	}
 	while (whole_cmd[copy->i] && whole_cmd[copy->i] == ' ')
 		copy->i++;
 	copy->i--;
@@ -58,40 +53,34 @@ int		options(char *whole_cmd, t_copy *copy, t_redir *redir)
 	char	*arg;
 	size_t	i;
 	size_t	j;
-	copy->args = NULL;
-
-
-	i = 0;
+	
+	if (!(copy->args = (char **)malloc(sizeof(char *) * 1)))
+		return (-1); 
+	copy->args[0] = ft_strdup(copy->cmd);
+//	printf("%s\n", copy->args[0]);
+	i = 1;
 	while (1)
 	{
-		if (i > 0)
-			tmp = copy->args;
+		tmp = copy->args;
 		if (!(copy->args = (char **)malloc(sizeof(char *) * (i + 1))))
 			return (-1);
-		if (i > 0)
+		j = i;
+		while (j)
 		{
-			j = i - 1;
-			while (j)
-			{
-				copy->args[j] = ft_strdup(tmp[j]);
-				j--;
-			}
-			while (j < i)
-			{
-				//free(tmp[j]);
-				j++;
-			}
+//			printf("%s\n", tmp[j - 1]);
+			copy->args[j - 1] = ft_strdup(tmp[j - 1]);
+			j--;
 		}
+		
 		arg = args(whole_cmd, copy, i, redir);
 		if (!arg || !arg[0])
-		{
 			break;
-		}
-		printf("arg[%zu] = %s\n", i, copy->args[i]);
+
+		//printf("arg[%zu] = %s\n", i, copy->args[i]);
 		i++;
 	}
 	copy->args[i] = NULL;
-	printf("arg[%zu] = %s\n", i, copy->args[i]);
+	//printf("arg[%zu] = %s\n", i, copy->args[i]);
 	return (1);
 }
 
@@ -144,5 +133,6 @@ char	*cmd(char *whole_cmd, t_copy *copy, t_redir *redir) // retrouver la command
 	}
 	copy->cmd[copy->j + 1] = 0;
 	options(whole_cmd, copy, redir);
+
 	return (copy->cmd);
 }

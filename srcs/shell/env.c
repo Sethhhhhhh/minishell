@@ -46,14 +46,14 @@ char	*set_env(char *env, char *new_env)
 	return (NULL);
 }
 
-/*char	**get_path()
+char	**get_path()
 {
-	size_t	i;
+	char	*path;
 
-	if ((i = find_env("PATH")) != -1)
-		return (ft_split(g_envs[i], ':'));
+	if ((path = get_env("PATH")))
+		return (ft_split(path, ':'));
 	return (NULL);
-}*/
+}
 
 size_t	get_envs_count()
 {

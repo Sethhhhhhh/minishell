@@ -9,7 +9,6 @@ CC			=	gcc
 FLAGS		=	-Werror -Wall -Wextra -I $(HEADER) -fsanitize=address
 
 SRCS		=	srcs/main.c \
-				srcs/mainyohann.c \
 				srcs/parsing/sep.c \
 				srcs/parsing/pip.c \
 				srcs/parsing/cmdargs.c \
@@ -20,6 +19,7 @@ SRCS		=	srcs/main.c \
 				srcs/shell/syscall.c \
 				srcs/shell/execution.c \
 				srcs/shell/env.c \
+				srcs/shell/signal.c \
 				srcs/builtin/cd.c \
 				srcs/builtin/echo.c \
 				srcs/builtin/env.c \

@@ -47,23 +47,3 @@ void	print_list(t_sep *list)
 		i++;
 	}
 }
-
-t_sep	*parse_sep()
-{
-	t_sep	*list = NULL;
-	char	*line;
-	char	**cmds;
-	int		i;
-
-	list = NULL;
-	i = -1;
-	if (get_next_line(0, &line))
-	{
-		cmds = ft_split(line, ';');
-		while (cmds[++i])
-			list = add_cell(list, cmds[i], i);
-		free(line);
-	}
-	parse_pip(list);
-	return (list);
-}
