@@ -5,7 +5,7 @@ void	ft_exit()
 	exit(0);
 }
 
-void	loop(t_env *tenv)
+void	loop()
 {
 	t_sep	*list;
 	char	*line;
@@ -43,10 +43,7 @@ void	prompt()
 
 int	main(int ac, char **av, char **env)
 {
-	t_env tenv;
-
-	tenv.env = env;
 	g_envs = env;
-	loop(&tenv);
+	loop();
 	return (0);
 }

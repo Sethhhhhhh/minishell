@@ -21,7 +21,7 @@ void	minishell(t_sep *list)
 		else
 		{
 			cmd(list->cmd_sep, &cmdarg, &redir);
-			printf("---------\n");
+//			printf("---------\n");
 			execution(&cmdarg, &redir);
 		}
 		list = list->next;
