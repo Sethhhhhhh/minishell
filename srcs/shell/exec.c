@@ -2,20 +2,19 @@
 
 static int	_run(char **args, char *bin)
 {
-	pid_t	pid;
-
-	pid = fork();
-	if (!pid)
+	g_pid = fork();
+	if (!g_pid)
 		execve(bin, args, g_envs);
-	else if (pid < 0)
+	else if (g_pid < 0)
 	{
 		free(bin);
 		ft_putstr_fd("execve: failed to create a new process.", 1);
 		ft_putchar_fd('\n', 1);
 		return (-1);
 	}
-	wait(&pid);
+	wait(&g_pid);
 	free(bin);
+	g_pid = 0;
 	return (1);
 }
 
@@ -100,6 +99,7 @@ int			exec(char **args)
 {
 	int		is_cmd;
 
+	g_pid = 0;
 	is_cmd = _check_builtin(args) || _check_bins(args);
 	if (is_cmd > 0)
 		return (1);

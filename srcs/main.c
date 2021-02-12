@@ -17,14 +17,11 @@ void	loop()
 	prompt();
 	while (get_next_line(0, &line) > 0)
 	{
-		i = 0;
+		i = -1;
 		list = NULL;
 		cmds = ft_split(line, ';');
-		while (cmds[i])
-		{
+		while (cmds[++i])
 			list = add_cell(list, cmds[i], i);
-			i++;
-		}
 		free(line);
 		parse_pip(list);
 		//print_list(list);

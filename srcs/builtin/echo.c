@@ -9,6 +9,8 @@ int	run_echo(char **args)
 	i = 1;
 	if (!args[1])
 		ft_putchar_fd('\n', 1);
+	if ((ft_strequ(args[1], " ") && !args[2]))
+		return (0);
 	if (!strcmp(args[1], "-n") && ++i)
 		n = 1;
 	while (args[i])

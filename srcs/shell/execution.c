@@ -49,6 +49,5 @@ void	execution(t_copy *cmdarg, t_redir *redir)
 		redir_dup(1, redir->sstdout);
 	if (redir->out2)
 		redir_dup(2, redir->sstderr);
-	g_fork = 0;
 	exec(cmdarg->args);
 }

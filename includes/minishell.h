@@ -15,7 +15,7 @@
 /* global */
 
 char	**g_envs;
-int		g_fork;
+pid_t	g_pid;
 
 /* structures */
 typedef	struct	s_sep
