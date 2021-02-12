@@ -28,7 +28,7 @@ int			run_unset(char **args)
 	{
 		ft_putstr_fd("unset: too few arguments.", 1);
 		ft_putchar_fd('\n', 1);
-		return;
+		return (0);
 	}
 	i = 1;
 	while (args[i])
