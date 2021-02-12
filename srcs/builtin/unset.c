@@ -19,7 +19,7 @@ static char	**remove_env(ssize_t index)
 	return (realloc_envs((size - 1)));
 }
 
-void	_unset(char **args)
+int			run_unset(char **args)
 {
 	size_t	i;
 	ssize_t	index;
@@ -40,4 +40,5 @@ void	_unset(char **args)
 		}
 		i++;
 	}
+	return (1);
 }

@@ -1,6 +1,6 @@
 #include "../../includes/minishell.h"
 
-void	_export(char **args)
+int	run_export(char **args)
 {
 	size_t	i;
 	ssize_t	index;
@@ -15,14 +15,10 @@ void	_export(char **args)
 	i = 1;
 	while (args[i])
 	{
-		equal_index = ft_get_char_by_index(args[i], '=');	
+		equal_index = ft_get_char_by_index(args[i], '=');
 		if ((index = find_env(ft_substr(args[i], 0, equal_index))) != -1)
-		{
-			set_env(
-				ft_substr(g_envs[index], 0, ft_get_char_by_index(g_envs[index], '=')),
-				ft_substr(args[i], (equal_index + 1), ft_strlen(args[i]))
-			);
-		}
+			set_env(ft_substr(g_envs[index], 0, ft_get_char_by_index(g_envs[index], '=')),
+				ft_substr(args[i], (equal_index + 1), ft_strlen(args[i])));
 		else
 		{
 			count = get_envs_count() + 1;
@@ -31,4 +27,5 @@ void	_export(char **args)
 		}
 		i++;
 	}
+	return (1);
 }

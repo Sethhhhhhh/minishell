@@ -1,6 +1,6 @@
 #include "../../includes/minishell.h"
 
-void	_echo(char **args)
+int	run_echo(char **args)
 {
 	size_t	i;
 	int		n;
@@ -20,4 +20,5 @@ void	_echo(char **args)
 	}
 	if (!n)
 		ft_putchar_fd('\n', 1);
+	return (1);
 }

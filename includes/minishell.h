@@ -80,6 +80,7 @@ int		double_quote_redir(char *whole_cmd, t_copy *copy, t_redir *redir, char *str
 void	minishell(t_sep *list);
 void	execution(t_copy *cmdarg, t_redir *redir);
 void	prompt();
+int		exec(char **args);
 
 /* Syscall */
 void    call(t_copy *cmdarg);
@@ -96,12 +97,10 @@ int		environnement(char *whole_cmd, t_copy *copy, int arg, int i);
 int		environnement_redir(char *whole_cmd, t_copy *copy, int arg, t_redir *redir);
 
 /* builtin */
-void	_echo(char **args);
-void	_cd(char **args);
-void    _pwd();
-void	_env();
-void	_unset(char **args);
-void	_export(char **args);
+int		run_echo(char **args);
+int		run_cd(char **args);
+int		run_unset(char **args);
+int		run_export(char **args);
 
 /* handler */
 void	sigint_handler(int sign_num);

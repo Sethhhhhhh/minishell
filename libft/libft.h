@@ -37,6 +37,7 @@ void			ft_lstadd_front(t_list **alst, t_list *new);
 void			ft_lstclear(t_list **lst, void (*del)(void*));
 void			ft_lstadd_back(t_list **alst, t_list *new);
 void			ft_lstiter(t_list *lst, void (*f)(void *));
+void    		ft_free_array(char **array);
 int				ft_lstsize(t_list *lst);
 size_t			ft_strlen(const char *str);
 char			*ft_strdup(const char *s1);
@@ -82,6 +83,6 @@ int				ft_strncmp(const char *s1, const char *s2, size_t n);
 int				ft_strcmp(const char *s1, const char *s2);
 int				get_next_line(int fd, char **line);
 size_t			ft_get_char_by_index(char *str, char c);
-
+int				ft_strequ(const char *s1, const char *s2);
 
 #endif
