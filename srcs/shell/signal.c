@@ -2,7 +2,6 @@
 
 void	sigint_handler(int sign_num)
 {
-	printf("%d\n", sign_num);
 	if ((sign_num == SIGINT || sign_num == SIGQUIT) && g_fork != 0)
 	{
 		if (!kill(g_fork, sign_num))
@@ -20,5 +19,8 @@ void	sigint_handler(int sign_num)
 	}
 	else
 		if (sign_num == SIGINT)
+		{
+			ft_putchar_fd('\n', 1);
 			prompt();
+		}
 }
