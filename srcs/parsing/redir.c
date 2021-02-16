@@ -23,6 +23,10 @@ int		redir_out_error(char *whole_cmd, t_copy *copy, t_redir *redir) // redirecti
 				if ((simple_quote_redir(whole_cmd, copy, i, redir, redir->out2)) == -1)
 					return (1);
 		}
+/*AJOUT*/
+		if (whole_cmd[copy->i] == '\\')
+			copy->i++;
+/*AJOUT*/
 		if ((whole_cmd[copy->i] == '<' || whole_cmd[copy->i] == '>') && (whole_cmd[copy->i - 1] != '\\')) //dans le cas ou y a plusieurs redirections : echo mdr >hey>hey2
 		{
 			copy->i--;
@@ -33,9 +37,6 @@ int		redir_out_error(char *whole_cmd, t_copy *copy, t_redir *redir) // redirecti
 	}
 	redir->out2[redir->i + 1] = 0;
 	redir->sstderr = open(redir->out2, O_CREAT, O_WRONLY);
-	printf("file stderr = %s\n", redir->out2);
-	printf("fd stderr = %d\n", redir->sstderr);
-	printf("fin du fichier ? = %d\n", redir->end);
 	return (1);
 }
 
@@ -47,7 +48,7 @@ int		redir_out(char *whole_cmd, t_copy *copy, t_redir *redir) // redirection de 
 	copy->i++;
 	if (whole_cmd[copy->i] == '>')
 		redir->end = 1;
-	if (whole_cmd[copy->i - 2] == '2' && whole_cmd[copy->i - 3] == ' ') // pour distinguer que c'est le stderr ou pas (par defaut stdout)
+	if (whole_cmd[copy->i - 2] == '2' && (whole_cmd[copy->i - 3] == ' ' || copy->i == 2)) // pour distinguer que c'est le stderr ou pas (par defaut stdout)
 		if ((j = (redir_out_error(whole_cmd, copy, redir))))
 			return (j);
 	if (redir->end == 1)
@@ -69,6 +70,10 @@ int		redir_out(char *whole_cmd, t_copy *copy, t_redir *redir) // redirection de 
 				if ((simple_quote_redir(whole_cmd, copy, i, redir, redir->out1)) == -1)
 					return (1);
 		}
+/*AJOUT*/
+		if (whole_cmd[copy->i] == '\\')
+			copy->i++;
+/*AJOUT*/
 		if ((whole_cmd[copy->i] == '<' || whole_cmd[copy->i] == '>') && (whole_cmd[copy->i - 1] != '\\')) //dans le cas ou y a plusieurs redirections : echo mdr >hey>hey2
 		{
 			copy->i--;
@@ -110,6 +115,10 @@ int		redir_in(char *whole_cmd, t_copy *copy, t_redir *redir) // redirection de s
 				if ((simple_quote_redir(whole_cmd, copy, i, redir, redir->in)) == -1)
 					return (1);
 		}
+/*AJOUT*/
+		if (whole_cmd[copy->i] == '\\')
+			copy->i++;
+/*AJOUT*/
 		if ((whole_cmd[copy->i] == '<' || whole_cmd[copy->i] == '>') && (whole_cmd[copy->i - 1] != '\\')) //dans le cas ou y a plusieurs redirections : echo mdr <hey<hey2
 		{
 			copy->i--;
@@ -122,7 +131,6 @@ int		redir_in(char *whole_cmd, t_copy *copy, t_redir *redir) // redirection de s
 	redir->sstdin = open(redir->in, O_RDONLY);
 	printf("file stdin = %s\n", redir->in);
 	printf("fd stdin = %d\n", redir->sstdin);
-	printf("fin du fichier ? = %d\n", redir->end);
 	return (1);
 }
 
@@ -130,10 +138,12 @@ int		redirection(char *whole_cmd, t_copy *copy, t_redir *redir)
 {
 	int i;
 
-	redir->end = 0;  //dans le cas ou y a plusieurs redirections : echo mdr >hey >hey2
 	redir->i = -1; //dans le cas ou y a plusieurs redirections : echo mdr >hey >hey2
 	if (whole_cmd[copy->i] == '>')
+	{
+		redir->end = 0;//dans le cas ou y a plusieurs redirections : echo mdr >hey >hey2
 		i = redir_out(whole_cmd, copy, redir);
+	}
 	if (whole_cmd[copy->i] == '<')
 		i = redir_in(whole_cmd, copy, redir);
 	return (i);

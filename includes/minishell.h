@@ -82,7 +82,7 @@ void	execution(t_copy *cmdarg, t_redir *redir);
 void	prompt();
 int		exec(char **args);
 
-/* Syscall */
+/* syscall */
 void    call(t_copy *cmdarg);
 
 /* env */

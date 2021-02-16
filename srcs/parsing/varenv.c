@@ -8,12 +8,11 @@ char    *remalloc_cmdargs(t_copy *copy, char *value, char *whole_cmd, char *str)
     tmp = NULL;
     str[copy->j + 1] = 0;
     tmp = ft_strjoin(str, value);
-    if (!(str = malloc(sizeof(char) * (strlen(tmp) + 1))))
+    copy->j = -1;
+    if (!(str = malloc(sizeof(char) * (strlen(tmp) + strlen(whole_cmd) + 1))))
         return (NULL);
     while (tmp[++j])
-        str[j] = tmp[j];
-    str[j] = 0;
-    copy->j = strlen(str);
+        str[++copy->j] = tmp[j];
     return (str);
 }
 
@@ -23,34 +22,43 @@ int	    environnement(char *whole_cmd, t_copy *copy, int arg, int i) //variable 
     char *value;
     int count = -1;
 
+    value = NULL;
+    name = NULL;
     if (!(name = malloc(sizeof(char) * strlen(whole_cmd) + 1)))
 		return (-1);
-    if (whole_cmd[++copy->i] == '{')
-        copy->i++;
-    while (whole_cmd[copy->i] && (whole_cmd[copy->i] != '}' && whole_cmd[copy->i] != ' ' && whole_cmd[copy->i] != '$' && whole_cmd[copy->i] != '"' && whole_cmd[copy->i] != '\''))
+    copy->i++;
+    /* AJOUT */
+    if (whole_cmd[copy->i] == '\'' || whole_cmd[copy->i] == '"')
+    {
+        copy->i--;
+        return (0);
+    }
+    /* AJOUT */
+    while (whole_cmd[copy->i] && (whole_cmd[copy->i] != '\\' && whole_cmd[copy->i] != ' ' && whole_cmd[copy->i] != '$' 
+        && whole_cmd[copy->i] != '"' && whole_cmd[copy->i] != '\'' && whole_cmd[copy->i] != '/'))
     {
         if (whole_cmd[copy->i] == '\'' || whole_cmd[copy->i] == '"')
             return (0);
         name[++count] = whole_cmd[copy->i];
         copy->i++;
     }
-    if (whole_cmd[copy->i] == '\'' || whole_cmd[copy->i] == '"')
+    name[count + 1] = 0;
+    //printf("name = %s\n", name);
+    value = get_env(name);
+    //printf("value = %s\n", value);
+    if (!value)
     {
         copy->i--;
-        return (0);
+        return (1);
     }
-    name[count + 1] = 0;
-    if (whole_cmd[copy->i] == '}')
-        copy->i++;
-    value = get_env(name);
-    if (!value)
-        return (0);
     if (arg == 0) // si arg = 0 faut changer copy->cmd
         copy->cmd = remalloc_cmdargs(copy, value, whole_cmd, copy->cmd);
     else if (arg == 1)// si arg = 1 faut changer copy->args[i]
         copy->args[i] = remalloc_cmdargs(copy, value, whole_cmd, copy->args[i]);
+    //if (whole_cmd[copy->i] != '"' && whole_cmd[copy->i] != '\'')
     copy->i--;
-    return (0);
+    //printf("whole_cmd[copy->i] = %c\n", whole_cmd[copy->i]);
+    return (1);
 }
 
 char    *remalloc_redir(t_copy *copy, char *value, char *whole_cmd, char *str, t_redir *redir) // remalloc str et ajouter value à sa valeur initiale
@@ -78,16 +86,20 @@ int		environnement_redir(char *whole_cmd, t_copy *copy, int std, t_redir *redir)
 
     if (!(name = malloc(sizeof(char) * strlen(whole_cmd) + 1)))
 		return (-1);
-    if (whole_cmd[++copy->i] == '{')
-        copy->i++;
+    /* AJOUT */
+    copy->i++;
+    if (whole_cmd[copy->i] == '\'' || whole_cmd[copy->i] == '"')
+    {
+        //copy->i--;
+        return (0);
+    }
+    /* AJOUT */
     while (whole_cmd[copy->i] && (whole_cmd[copy->i] != '}' && whole_cmd[copy->i] != ' ' && whole_cmd[copy->i] != '$' && whole_cmd[copy->i] != '"' && whole_cmd[copy->i] != '\''))
     {
         name[++count] = whole_cmd[copy->i];
         copy->i++;
     }
     name[count + 1] = 0;
-    if (whole_cmd[copy->i] == '}')
-        copy->i++;
     value = get_env(name);
     if (!value)
         return (0);

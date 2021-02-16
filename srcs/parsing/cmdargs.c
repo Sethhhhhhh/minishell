@@ -19,7 +19,7 @@ char	*args(char *whole_cmd, t_copy *copy, size_t i, t_redir *redir)// retrouver 
 		j = 0;
 		if ((whole_cmd[copy->i] == '1' || whole_cmd[copy->i] == '2') && whole_cmd[copy->i + 1] == '>' && whole_cmd[copy->i - 1] == ' ')
 			copy->i++;
-		if (whole_cmd[copy->i] == '\'' || whole_cmd[copy->i] == '"')
+		while (whole_cmd[copy->i] == '\'' || whole_cmd[copy->i] == '"')
 		{
 			while (whole_cmd[copy->i] == '"')
 				if ((double_quote_arg(whole_cmd, copy, i)) == -1)
@@ -31,7 +31,12 @@ char	*args(char *whole_cmd, t_copy *copy, size_t i, t_redir *redir)// retrouver 
 		if (whole_cmd[copy->i] == '\\')
 			copy->i++;
 		if (whole_cmd[copy->i] && whole_cmd[copy->i] == '$' && whole_cmd[copy->i - 1] != '\\')
-			environnement(whole_cmd, copy, 1, i);
+		{
+			if (whole_cmd[copy->i + 1] == '\\') // pour le cas du $\PATH
+				copy->args[i][++copy->j] = whole_cmd[copy->i];
+			else
+				j = environnement(whole_cmd, copy, 1, i);
+		}
 		if ((whole_cmd[copy->i] == '>' || whole_cmd[copy->i] == '<') && whole_cmd[copy->i - 1] != '\\')
 		{
 			j = redirection(whole_cmd, copy, redir);
@@ -40,8 +45,10 @@ char	*args(char *whole_cmd, t_copy *copy, size_t i, t_redir *redir)// retrouver 
 		}
 		if (whole_cmd[copy->i] == ' ' && copy->args[i][0])
 			break;
-		if (whole_cmd[copy->i] != ' ' && j != 1 && (whole_cmd[copy->i] != '$' && whole_cmd[copy->i - 1] != '\\'))
+/* AJOUT */
+		if (whole_cmd[copy->i] != ' ' && j != 1 && ((whole_cmd[copy->i] == '$' && whole_cmd[copy->i - 1] == '\\') || (whole_cmd[copy->i] != '$')))
 			copy->args[i][++copy->j] = whole_cmd[copy->i];
+/* AJOUT */
 	}
 	copy->args[i][copy->j + 1] = 0;
 	return (copy->args[i]);
@@ -57,7 +64,6 @@ int		options(char *whole_cmd, t_copy *copy, t_redir *redir)
 	if (!(copy->args = (char **)malloc(sizeof(char *) * 1)))
 		return (-1); 
 	copy->args[0] = ft_strdup(copy->cmd);
-//	printf("%s\n", copy->args[0]);
 	i = 1;
 	while (1)
 	{
@@ -67,7 +73,6 @@ int		options(char *whole_cmd, t_copy *copy, t_redir *redir)
 		j = i;
 		while (j)
 		{
-//			printf("%s\n", tmp[j - 1]);
 			copy->args[j - 1] = ft_strdup(tmp[j - 1]);
 			j--;
 		}
@@ -75,12 +80,9 @@ int		options(char *whole_cmd, t_copy *copy, t_redir *redir)
 		arg = args(whole_cmd, copy, i, redir);
 		if (!arg || !arg[0])
 			break;
-
-		//printf("arg[%zu] = %s\n", i, copy->args[i]);
 		i++;
 	}
 	copy->args[i] = NULL;
-	//printf("arg[%zu] = %s\n", i, copy->args[i]);
 	return (1);
 }
 
@@ -97,8 +99,39 @@ void	init_redir_copy(t_copy *copy, t_redir *redir)
 	redir->in = NULL;
 }
 
+/* AJOUT */
+void	print_parsing(char **args, t_redir *redir)
+{
+	int i = 0;
+	int j = 0;
+	while (args[i])
+	{
+		printf("arg[%d] = %s\n", i, args[i]);
+		i++;
+	}
+	if (redir->in)
+	{
+		printf("file stdin = %s\n", redir->in);
+		printf("fd stdin = %d\n", redir->sstdin);
+	}
+	if (redir->out1)
+	{
+		printf("file stdout = %s\n", redir->out1);
+		printf("fd stdout = %d\n", redir->sstdout);
+		printf("fin du fichier ? = %d\n", redir->end);
+	}
+	if (redir->out2)
+	{
+		printf("file stderr = %s\n", redir->out2);
+		printf("fd stderr = %d\n", redir->sstderr);
+		printf("fin du fichier ? = %d\n", redir->end);
+	}
+}
+/* AJOUT */
+
 char	*cmd(char *whole_cmd, t_copy *copy, t_redir *redir) // retrouver la commande dans whole_cmd (peut etre une variable d'environnement)
 {
+	int j;
 	init_redir_copy(copy, redir);
 	if (!(whole_cmd))
 		return (NULL);
@@ -109,7 +142,13 @@ char	*cmd(char *whole_cmd, t_copy *copy, t_redir *redir) // retrouver la command
 		copy->i++;
 	while (whole_cmd[copy->i] && whole_cmd[copy->i] != ' ')
 	{
-		if (whole_cmd[copy->i] == '\'' || whole_cmd[copy->i] == '"')
+		j = -2;
+		//printf("passe à whole_cmd[copy->i] = %c\n", whole_cmd[copy->i]);
+		//printf("copy->j = %d\n", copy->j);
+		//printf("copy->cmd[0] = %c\n", copy->cmd[0]);
+		if ((whole_cmd[copy->i] == '1' || whole_cmd[copy->i] == '2') && whole_cmd[copy->i + 1] == '>' && (!copy->cmd[0] || whole_cmd[copy->i - 1] == ' '))
+			copy->i++;
+		while (whole_cmd[copy->i] == '\'' || whole_cmd[copy->i] == '"')
 		{
 			while (whole_cmd[copy->i] == '"')
 				if ((double_quote(whole_cmd, copy)) == -1)
@@ -118,21 +157,35 @@ char	*cmd(char *whole_cmd, t_copy *copy, t_redir *redir) // retrouver la command
 				if ((simple_quote(whole_cmd, copy)) == -1)
 					return (NULL);
 		}
-		if (whole_cmd[copy->i] && whole_cmd[copy->i] == '$' && whole_cmd[copy->i - 1] != '\\')
-			environnement(whole_cmd, copy, 0, 0);
 		if (whole_cmd[copy->i] == '\\')
 			copy->i++;
+		if (whole_cmd[copy->i] && whole_cmd[copy->i] == '$' && whole_cmd[copy->i - 1] != '\\')
+		{
+			if (whole_cmd[copy->i + 1] == '\\')
+				copy->cmd[++copy->j] = whole_cmd[copy->i];
+			else
+				j = environnement(whole_cmd, copy, 0, 0);
+		}
 		if ((whole_cmd[copy->i] == '>' || whole_cmd[copy->i] == '<') && whole_cmd[copy->i - 1] != '\\')
-			if (redirection(whole_cmd, copy, redir) == -1)
+		{
+			j = redirection(whole_cmd, copy, redir);
+			if (j == -1)
 				return (NULL);
+		}
+		//printf("copy->i = %d\n", copy->i);
+		//printf("passe 2 à whole_cmd[copy->i] = %c\n", whole_cmd[copy->i]);
 		if (whole_cmd[copy->i] == ' ' && copy->cmd[0])
 			break;
-		if (whole_cmd[copy->i] != '$' && whole_cmd[copy->i - 1] != '\\')
+/* AJOUT */
+		if ((whole_cmd[copy->i] == '$' && whole_cmd[copy->i - 1] == '\\') || (whole_cmd[copy->i] != '$' && j == -2))
 			copy->cmd[++copy->j] = whole_cmd[copy->i];
 		copy->i++;
+/* AJOUT */
 	}
 	copy->cmd[copy->j + 1] = 0;
 	options(whole_cmd, copy, redir);
-
+/* AJOUT */
+	//print_parsing(copy->args, redir);
+/* AJOUT */
 	return (copy->cmd);
 }

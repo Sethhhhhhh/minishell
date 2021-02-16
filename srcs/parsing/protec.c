@@ -7,6 +7,10 @@ int		simple_quote(char *whole_cmd, t_copy *copy)
 		printf("erreur \' au bout de la chaine\n");
 		return (-1);
 	}
+/*AJOUT*/	
+	if (whole_cmd[copy->i + 1] == '\'' && (whole_cmd[copy->i + 2] == ' ' || whole_cmd[copy->i + 2] == '\0'))
+		copy->cmd[++copy->j] = ' ';
+/*AJOUT*/
 	while (whole_cmd[copy->i] && whole_cmd[++copy->i] != '\'') //++copy->i; //on decale de 1 car on est sur le ' ouvrant
 		copy->cmd[++copy->j] = whole_cmd[copy->i];
 	if ((copy->i == strlen(whole_cmd)) && whole_cmd[copy->i] != '\'') // si y a pas de ' fermant
@@ -25,8 +29,10 @@ int		simple_quote_arg(char *whole_cmd, t_copy *copy, size_t i)
 		printf("erreur \' au bout de la chaine\n");
 		return (-1);
 	}
-	if (whole_cmd[copy->i + 1] == '\'')
+/*AJOUT*/	
+	if (whole_cmd[copy->i + 1] == '\'' && (whole_cmd[copy->i + 2] == ' ' || whole_cmd[copy->i + 2] == '\0'))
 		copy->args[i][++copy->j] = ' ';
+/*AJOUT*/
 	while (whole_cmd[copy->i] && whole_cmd[++copy->i] != '\'') //++copy->i; //on decale de 1 car on est sur le ' ouvrant
 		copy->args[i][++copy->j] = whole_cmd[copy->i];
 	if ((copy->i == strlen(whole_cmd)) && whole_cmd[copy->i] != '\'') // si y a pas de ' fermant
@@ -45,6 +51,15 @@ int		simple_quote_redir(char *whole_cmd, t_copy *copy, int i, t_redir *redir, ch
 		printf("erreur \' au bout de la chaine\n");
 		return (-1);
 	}
+/*AJOUT*/
+	if ((whole_cmd[copy->i + 1] == '\'' && whole_cmd[copy->i + 2] == ' ') && !str) // cas de : echo bonjour 1>'' pas normal //et : echo bonjour 1> "hey"'' pas normal
+	{
+		str[redir->i] = ' ';
+		str[redir->i + 1] = 0;
+		copy->i = copy->i + 2;
+		return (-1);
+	}
+/*AJOUT*/
 	while (whole_cmd[copy->i] && whole_cmd[++copy->i] != '\'') //++copy->i; //on decale de 1 car on est sur le ' ouvrant
 		str[++redir->i] = whole_cmd[copy->i];
 	if ((copy->i == strlen(whole_cmd)) && whole_cmd[copy->i] != '\'') // si y a pas de ' fermant
@@ -52,28 +67,40 @@ int		simple_quote_redir(char *whole_cmd, t_copy *copy, int i, t_redir *redir, ch
 		printf("erreur pas de \' fermant\n");
 		return (-1);
 	}
+/*AJOUT*/
+	str[redir->i + 1] = 0;
 	copy->i++; // on decale de 1 car on est sur le ' fermant
-	return (1);
+	if (whole_cmd[copy->i] != ' ')
+		return (1);
+	return (-1);
+/*AJOUT*/
 }
 
 int		double_quote(char *whole_cmd, t_copy *copy)
 {
+	int j;
 	if (copy->i == (strlen(whole_cmd) -1)) // si le " ouvrant est le dernier caractere de la chaine
 	{
-		printf("erreur \" au bout de la chaine \n");
+		printf("erreur \" au bout de la chaine lol\n");
 		return (-1);
 	}
+/*AJOUT*/
+	if (whole_cmd[copy->i + 1] == '"' && (whole_cmd[copy->i + 2] == ' ' || whole_cmd[copy->i + 2] == '\0'))
+		copy->cmd[++copy->j] = ' ';
+/*AJOUT*/
 	while (whole_cmd[copy->i] && whole_cmd[++copy->i] != '"') //++copy->i; //on decale de 1 car on est sur le " ouvrant
 	{
+		j = 0;
 		if (whole_cmd[copy->i] == '$' && whole_cmd[copy->i - 1] != '\\') // $ conserve sa signification speciale
-			environnement(whole_cmd, copy, 0, 0);
+			j = environnement(whole_cmd, copy, 0, 0);
 		if (whole_cmd[copy->i] == '\\')
 		{
 			if (whole_cmd[copy->i + 1] == '$' || whole_cmd[copy->i + 1] == '\\' // si \ suivit de " $ ou \ garde sa signification
 					|| whole_cmd[copy->i + 1] == '"')
 				copy->i++;
 		}
-		copy->cmd[++copy->j] = whole_cmd[copy->i];
+		if (j != 1)
+			copy->cmd[++copy->j] = whole_cmd[copy->i];
 	}
 	if ((copy->i == strlen(whole_cmd)) && whole_cmd[copy->i] != '"') // si y a pas de " fermant
 	{
@@ -86,24 +113,31 @@ int		double_quote(char *whole_cmd, t_copy *copy)
 
 int		double_quote_arg(char *whole_cmd, t_copy *copy, size_t i)
 {
+	int j;
 	if (copy->i == (strlen(whole_cmd) -1)) // si le " ouvrant est le dernier caractere de la chaine
 	{
 		printf("erreur \" au bout de la chaine \n");
 		return (-1);
 	}
-	if (whole_cmd[copy->i + 1] == '"')
+	//printf("ca rentre\n");
+	//printf("copy->i = %d\n", copy->i);
+/*AJOUT*/
+	if (whole_cmd[copy->i + 1] == '"' && (whole_cmd[copy->i + 2] == ' ' || whole_cmd[copy->i + 2] == '\0'))
 		copy->args[i][++copy->j] = ' ';
+/*AJOUT*/
 	while (whole_cmd[copy->i] && whole_cmd[++copy->i] != '"') //++copy->i; //on decale de 1 car on est sur le " ouvrant
 	{
+		j = 0;
 		if (whole_cmd[copy->i] == '$' && whole_cmd[copy->i - 1] != '\\') // $ conserve sa signification speciale
-			environnement(whole_cmd, copy, 1, i);
+			j = environnement(whole_cmd, copy, 1, i);
 		if (whole_cmd[copy->i] == '\\')
 		{
 			if (whole_cmd[copy->i + 1] == '$' || whole_cmd[copy->i + 1] == '\\' // si \ suivit de " $ ou \ garde sa signification
 					|| whole_cmd[copy->i + 1] == '"')
 				copy->i++;
 		}
-		copy->args[i][++copy->j] = whole_cmd[copy->i];
+		if (j != 1)
+			copy->args[i][++copy->j] = whole_cmd[copy->i];
 	}
 	if ((copy->i == strlen(whole_cmd)) && whole_cmd[copy->i] != '"') // si y a pas de " fermant
 	{
@@ -111,6 +145,7 @@ int		double_quote_arg(char *whole_cmd, t_copy *copy, size_t i)
 		return (-1);
 	}
 	copy->i++; // on decale de 1 car on est sur le " fermant
+	//printf("whole_cmd[copy->i] = %c\n", whole_cmd[copy->i]);
 	return (1);
 }
 
@@ -121,6 +156,15 @@ int		double_quote_redir(char *whole_cmd, t_copy *copy, t_redir *redir, char *str
 		printf("erreur \" au bout de la chaine\n");
 		return (-1);
 	}
+/*AJOUT*/
+	if ((whole_cmd[copy->i + 1] == '"' && whole_cmd[copy->i + 2] == ' ') && !str) // cas de : echo bonjour 1>"" pas normal ou de : echo bonjour 1> "hey""" pas normal
+	{
+		str[redir->i] = ' ';
+		str[redir->i + 1] = 0;
+		copy->i = copy->i + 2;
+		return (-1);
+	}
+/*AJOUT*/
 	while (whole_cmd[copy->i] && whole_cmd[++copy->i] != '"') //++copy->i; //on decale de 1 car on est sur le " ouvrant
 	{
 		if (whole_cmd[copy->i] == '$' && whole_cmd[copy->i - 1] != '\\') // $ conserve sa signification speciale
@@ -138,6 +182,11 @@ int		double_quote_redir(char *whole_cmd, t_copy *copy, t_redir *redir, char *str
 		printf("erreur pas de \" fermant\n");
 		return (-1);
 	}
+/*AJOUT*/
+	str[redir->i + 1] = 0;
 	copy->i++; // on decale de 1 car on est sur le " fermant
-	return (1);
+	if (whole_cmd[copy->i] != ' ')
+		return (1);
+	return (-1);
+/*AJOUT*/
 }
