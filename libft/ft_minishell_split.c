@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <stdio.h>
+
 typedef struct		s_split
 {
 	int				k;
@@ -29,7 +29,7 @@ static void	ft_leah(char **str, int index)
 
 int     protection(char const *s, int i, char c, t_split *split)
 {
-    while (s[i] && s[++i] != c) //++copy->i; //on decale de 1 car on est sur le " ouvrant
+    while (s[i] && s[++i] != c)
 	{
 		if (s[i] == '\\')
         {
@@ -99,7 +99,6 @@ static int	ft_malloc_words(char const *s, char c, char **str, int words, t_split
         while (s[j] && s[j] == c)
 			j++;
         j--;
-        //printf("pour le word numero = %d y a %d caracteres\n", i, split->k);
 		if ((str[i] = (char *)malloc(sizeof(char) * (split->k + 1))) == NULL)
 		{
 			ft_leah(str, i);
@@ -166,14 +165,3 @@ char		**ft_minishell_split(char const *s, char c)
 	str[count_words] = 0;
 	return (str);
 }
-/*
-int     main()
-{
-    int i = -1;
-    char **recup;
-    char const *s;
-    s = "echo 'bonjour;' ; echo coucou";
-    recup = ft_split(s, ';');
-    while (recup[++i])
-        printf("%s\n", recup[i]);
-}*/
