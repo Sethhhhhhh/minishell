@@ -154,7 +154,7 @@ echo mdrr <>coucou
 
 
 #########Pipes et Séparations#########
-
+echo "bonjou\"r" ; echo coucou
 echo "ceci n'est pas | un pipe"
 "echo \"< ceci | n'est pas un pipe et cici ; n'est pas une séparation >\""
 "echo \'< ceci | n'est pas un pipe et cici ; n'est pas une séparation >\'"
