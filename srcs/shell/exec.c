@@ -85,6 +85,7 @@ static int	_check_builtin(char **args)
 		{
 			ft_putstr_fd(str, 1);
 			ft_putchar_fd('\n', 1);
+			return (1);
 		}
 	}
 	else if (ft_strequ(args[0], "env"))
