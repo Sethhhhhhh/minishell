@@ -19,7 +19,7 @@ void	loop()
 	{
 		i = -1;
 		list = NULL;
-		cmds = ft_split(line, ';');
+		cmds = ft_minishell_split(line, ';');
 		while (cmds[++i])
 			list = add_cell(list, cmds[i], i);
 		free(line);

@@ -42,11 +42,22 @@ void	print_pip_list(t_pip *piplist)
 	}
 }
 
-int		charinstr(char c, char *str)
+int		pipeinstr(char c, char *str)
 {
+	char quote;
 	int i = -1;
 	while (str[++i])
 	{
+		while (str[i] == '\'' || str[i] == '"')
+		{
+			quote = str[i];
+            while (str[i] && str[++i] != quote)
+			{
+				if (str[i] == '\\')
+					i++;
+			}
+			i++;
+		}
 		if (str[i] == c)
 			return (i);
 	}
@@ -62,9 +73,9 @@ void    parse_pip(t_sep *list)
 
 	while (cur)
 	{
-		if ((charinstr('|', cur->cmd_sep)) > -1)
+		if ((pipeinstr('|', cur->cmd_sep)) > -1)
 		{
-			cmds = ft_split(cur->cmd_sep, '|');
+			cmds = ft_minishell_split(cur->cmd_sep, '|');
 			while (cmds[++j])
 				cur->pipcell = add_pip_cell(cur->pipcell, cmds[j], j);
 		}

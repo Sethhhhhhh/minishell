@@ -60,7 +60,8 @@ SRCS		=	ft_atoi.c \
 				get_next_line.c \
 				ft_get_char_by_index.c \
 				ft_free_array.c \
-				ft_strequ.c
+				ft_strequ.c \
+				ft_minishell_split.c
 				
 SRCS_BONUS	=	ft_lstnew_bonus.c \
 				ft_lstdelone_bonus.c \
