@@ -113,6 +113,7 @@ static void	ft_write_words(char const *s, char c, char **str, int words)
 	int		i;
 	int		j;
 	int		k;
+	char quote;
 
 	i = -1;
 	j = 0;
@@ -125,20 +126,11 @@ static void	ft_write_words(char const *s, char c, char **str, int words)
         {
             while (s[j] == '\'' || s[j] == '"')
 		    {
-			    if (s[j] == '"')
-                {
+				quote = s[j];
+				str[i][k++] = s[j++];
+                while (s[j] && s[j] != quote)
                     str[i][k++] = s[j++];
-                    while (s[j] && s[j] != '"')
-                        str[i][k++] = s[j++];
-                    str[i][k++] = s[j++];
-                }
-			    if (s[j] == '\'')
-                {
-                    str[i][k++] = s[j++];
-                    while (s[j] && s[j] != '\'')
-                        str[i][k++] = s[j++];
-                    str[i][k++] = s[j++];
-                }
+                str[i][k++] = s[j++];
 		    }
             if (s[j] == c || s[j] == '\0')
                 break;
