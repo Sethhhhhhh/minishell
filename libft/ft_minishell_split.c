@@ -129,7 +129,11 @@ static void	ft_write_words(char const *s, char c, char **str, int words)
 				quote = s[j];
 				str[i][k++] = s[j++];
                 while (s[j] && s[j] != quote)
+				{
+					if (s[j] == '\\')
+						str[i][k++] = s[j++];
                     str[i][k++] = s[j++];
+				}
                 str[i][k++] = s[j++];
 		    }
             if (s[j] == c || s[j] == '\0')
