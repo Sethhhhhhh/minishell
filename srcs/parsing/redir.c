@@ -1,5 +1,25 @@
 #include "../../includes/minishell.h"
 
+void	create_file(t_redir *redir, int type)
+{
+	if (type == 1)
+	{
+		if (redir->end == 1)
+			redir->sstdout = open(redir->out1, O_CREAT | O_RDWR | O_APPEND, 0644);
+		else
+			redir->sstdout = open(redir->out1, O_CREAT | O_RDWR | O_TRUNC, 0644);
+	}
+	if (type == 0)
+		redir->sstdin = open(redir->in, O_RDONLY);
+	if (type == 2)
+	{
+		if (redir->end == 1)
+			redir->sstderr = open(redir->out1, O_CREAT | O_RDWR | O_APPEND, 0644);
+		else
+			redir->sstderr = open(redir->out2, O_CREAT | O_RDWR | O_TRUNC, 0644);
+	}
+}
+
 int		redir_out_error(char *whole_cmd, t_copy *copy, t_redir *redir) // redirection de stderr : recuperer out2, et le fd sstderr
 {
 	int i = -1;
@@ -18,10 +38,16 @@ int		redir_out_error(char *whole_cmd, t_copy *copy, t_redir *redir) // redirecti
 		{
 			while (whole_cmd[copy->i] == '"')
 				if ((double_quote_redir(whole_cmd, copy, redir, redir->out2, 2)) == -1)
+				{
+					create_file(redir, 2);
 					return (1);
+				}
 			while (whole_cmd[copy->i] == '\'')
 				if ((simple_quote_redir(whole_cmd, copy, i, redir, redir->out2)) == -1)
+				{
+					create_file(redir, 2);
 					return (1);
+				}
 		}
 /*AJOUT*/
 		if (whole_cmd[copy->i] == '\\')
@@ -36,7 +62,7 @@ int		redir_out_error(char *whole_cmd, t_copy *copy, t_redir *redir) // redirecti
 		copy->i++;
 	}
 	redir->out2[redir->i + 1] = 0;
-	redir->sstderr = open(redir->out2, O_CREAT, O_WRONLY);
+	create_file(redir, 2);
 	return (1);
 }
 
@@ -65,10 +91,16 @@ int		redir_out(char *whole_cmd, t_copy *copy, t_redir *redir) // redirection de 
 		{
 			while (whole_cmd[copy->i] == '"')
 				if ((double_quote_redir(whole_cmd, copy, redir, redir->out1, 1)) == -1)
+				{
+					create_file(redir, 1);
 					return (1);
+				}
 			while (whole_cmd[copy->i] == '\'')
 				if ((simple_quote_redir(whole_cmd, copy, i, redir, redir->out1)) == -1)
+				{
+					create_file(redir, 1);
 					return (1);
+				}
 		}
 /*AJOUT*/
 		if (whole_cmd[copy->i] == '\\')
@@ -83,10 +115,10 @@ int		redir_out(char *whole_cmd, t_copy *copy, t_redir *redir) // redirection de 
 		copy->i++;
 	}
 	redir->out1[redir->i + 1] = 0;
-	redir->sstdout = open(redir->out1, O_CREAT, O_WRONLY);
-	printf("file stdout = %s\n", redir->out1);
-	printf("fd stdout = %d\n", redir->sstdout);
-	printf("fin du fichier ? = %d\n", redir->end);
+	create_file(redir, 1);
+	//printf("file stdout = %s\n", redir->out1);
+	//printf("fd stdout = %d\n", redir->sstdout);
+	//printf("fin du fichier ? = %d\n", redir->end);
 	return (1);
 }
 
@@ -110,10 +142,16 @@ int		redir_in(char *whole_cmd, t_copy *copy, t_redir *redir) // redirection de s
 		{
 			while (whole_cmd[copy->i] == '"')
 				if ((double_quote_redir(whole_cmd, copy, redir, redir->in, 0)) == -1)
+				{
+					create_file(redir, 0);
 					return (1);
+				}
 			while (whole_cmd[copy->i] == '\'')
 				if ((simple_quote_redir(whole_cmd, copy, i, redir, redir->in)) == -1)
+				{
+					create_file(redir, 0);			
 					return (1);
+				}
 		}
 /*AJOUT*/
 		if (whole_cmd[copy->i] == '\\')
@@ -128,9 +166,9 @@ int		redir_in(char *whole_cmd, t_copy *copy, t_redir *redir) // redirection de s
 		copy->i++;
 	}
 	redir->in[redir->i + 1] = 0;
-	redir->sstdin = open(redir->in, O_RDONLY);
-	printf("file stdin = %s\n", redir->in);
-	printf("fd stdin = %d\n", redir->sstdin);
+	create_file(redir, 0);
+	//printf("file stdin = %s\n", redir->in);
+	//printf("fd stdin = %d\n", redir->sstdin);
 	return (1);
 }
 

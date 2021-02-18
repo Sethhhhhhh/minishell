@@ -11,6 +11,8 @@
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stdio.h>
+#include <string.h>
 
 typedef struct		s_split
 {
@@ -29,7 +31,8 @@ static void	ft_leah(char **str, int index)
 
 int     protection(char const *s, int i, char c, t_split *split)
 {
-    while (s[i] && s[++i] != c)
+	i++;
+    while (s[i] && s[i] != c)
 	{
 		if (s[i] == '\\')
         {
@@ -37,6 +40,8 @@ int     protection(char const *s, int i, char c, t_split *split)
             split->k++;
         }
         split->k++;
+		i++;
+
 	}
     i++;
     split->k = split->k + 2;
@@ -47,22 +52,28 @@ static int	ft_count_words(char const *s, char c, t_split *split)
 {
 	int		i;
 	int		count_words;
+	int 	len;
 
 	i = -1;
+	len = (int)strlen(s);
 	count_words = 0;
 	while (s[++i])
     {
-        while (s[i] == '\'' || s[i] == '"')
+        while (s[i] && (s[i] == '\'' || s[i] == '"'))
 		{
-			while (s[i] == '"')
+			while (s[i] && s[i] == '"')
 				i = protection(s, i, '"', split);
-			while (s[i] == '\'')
+			while (s[i] && s[i] == '\'')
 				i = protection(s, i, '\'', split);
 		}
+		if (i == len)
+			break;
         if (s[i] == '\\')
 			i++;
-        if (s[i] == c && s[i + 1] != c)
+        if (s[i] && s[i] == c && s[i + 1] != c)
 			count_words++;
+		if (i == len)
+			break;
     }
     count_words++;
 	return (count_words);
@@ -136,6 +147,8 @@ static void	ft_write_words(char const *s, char c, char **str, int words)
 				}
                 str[i][k++] = s[j++];
 		    }
+			if (s[j] == '\\')
+				str[i][k++] = s[j++];
             if (s[j] == c || s[j] == '\0')
                 break;
 			str[i][k++] = s[j++];
@@ -150,6 +163,7 @@ char		**ft_minishell_split(char const *s, char c)
 	int		count_words;
 	t_split split;
 
+	count_words = 0;
 	if (!s)
 		return (NULL);
 	count_words = ft_count_words(s, c, &split);

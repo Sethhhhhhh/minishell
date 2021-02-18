@@ -21,6 +21,7 @@ void	minishell(t_sep *list)
 		else
 		{
 			cmd(list->cmd_sep, &cmdarg, &redir);
+			//print_parsing(cmdarg.args, &redir);
 //			printf("---------\n");
 			execution(&cmdarg, &redir);
 		}
@@ -29,25 +30,44 @@ void	minishell(t_sep *list)
 	}
 }
 
-void	redir_dup(int fdsrc, int fddest)
+void	redir_dup(t_copy *cmdarg, t_redir *redir)
 {
-	int		save;
+	int		savein;
+	int		saveout1;
+	int		saveout2;
 
-	save = dup(fdsrc);
-	close (fdsrc);
-	dup2(fddest, fdsrc); //fd src redirige vers le fd dest
+	if (redir->in)
+	{
+		savein = dup(0);
+		close(0);
+		dup2(redir->sstdin, 0);
+	}
+	if (redir->out1)
+	{
+		saveout1 = dup(1);
+		close (1);
+		dup2(redir->sstdout, 1);
+	}
+	if (redir->out2)
+	{
+		saveout2 = dup(2);
+		close (2);
+		dup2(redir->sstderr, 2);
+	}
+	exec(cmdarg->args);
+	if (redir->in)
+		dup2(savein, 0);
+	if (redir->out1)
+		dup2(saveout1, 1);
+	if (redir->out2)
+		dup2(saveout2, 2);
 	//write(1, "coucou", 7); // pour tester avec stdout : ca s'ecrira dans fddest
-	dup2(save, fdsrc); // redirection enlevee
-	//write(1, "ok", 3); // pour tester avec stdout : s'ecrira bien sur le stdout
 }
 
 void	execution(t_copy *cmdarg, t_redir *redir)
-{	
-	if (redir->in)
-		redir_dup(0, redir->sstdin);
-	if (redir->out1)
-		redir_dup(1, redir->sstdout);
-	if (redir->out2)
-		redir_dup(2, redir->sstderr);
-	exec(cmdarg->args);
+{
+	if (redir->in || redir->out1 || redir->out2)
+		redir_dup(cmdarg, redir);
+	else
+		exec(cmdarg->args);	
 }

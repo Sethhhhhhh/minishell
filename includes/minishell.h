@@ -105,4 +105,7 @@ int		run_export(char **args);
 /* handler */
 void	sigint_handler(int sign_num);
 
+
+void	print_parsing(char **args, t_redir *redir);
+
 #endif

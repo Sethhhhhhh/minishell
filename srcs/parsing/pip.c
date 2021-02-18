@@ -58,6 +58,8 @@ int		pipeinstr(char c, char *str)
 			}
 			i++;
 		}
+		if (str[i] == '\\')
+			i++;
 		if (str[i] == c)
 			return (i);
 	}
