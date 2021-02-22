@@ -41,7 +41,6 @@ int     protection(char const *s, int i, char c, t_split *split)
         }
         split->k++;
 		i++;
-
 	}
     i++;
     split->k = split->k + 2;
@@ -51,6 +50,7 @@ int     protection(char const *s, int i, char c, t_split *split)
 static int	ft_count_words(char const *s, char c, t_split *split)
 {
 	int		i;
+	int		j;
 	int		count_words;
 	int 	len;
 
@@ -71,7 +71,13 @@ static int	ft_count_words(char const *s, char c, t_split *split)
         if (s[i] == '\\')
 			i++;
         if (s[i] && s[i] == c && s[i + 1] != c)
-			count_words++;
+		{
+			j = i + 1;
+			while (s[j] && j == ' ')
+				j++;
+			if (j != (int)strlen(s))
+				count_words++;
+		}
 		if (i == len)
 			break;
     }
@@ -173,5 +179,6 @@ char		**ft_minishell_split(char const *s, char c)
 		return (NULL);
 	ft_write_words(s, c, str, count_words);
 	str[count_words] = 0;
+	//printf("count_words = %d\n", count_words);
 	return (str);
 }

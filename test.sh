@@ -21,27 +21,21 @@ eCho bonjour
 ecHo bonjour
 eChO bonjour
 ECHO bonjour
-## corriger echo tout seul
-echo #a corriger Yohann
-echo; #segfault
-echo ; # segfault
-; echo # segfault
- ;echo # segfault
-## corriger echo avec plusieurs -n
-echo -n -n lol -n #a corriger Yohann
-echo -n -n -n test tout #a corriger Yohann
+echo a '' b '' c '' d
+echo a "" b "" c "" d
+echo -n -n lol -n
+echo -n -n -n test tout
+echo
+echo -n -n 
+echo -n a '' b '' c '' d
+echo -n a "" b "" c "" d
+echo '' '' ''
+echo a; echo b; echo c; echo d; echo e; echo f; echo g; echo h; echo i;echo j;
+echo;
+echo ;
+
 echo -nnnnnnnnnnnnnnnnnnnnn bonjour #a corriger Yohann
 echo -nnnnnnnnnnnnnnnnnnnnn -n -n -n bonjour -n -n #a corriger Yohann
-echo -n -n #Le deuxième -n doit pas s'imprimer, j'ai demandé à Yohann
-
-
-
-echo a '' b '' c '' d #a corriger Emma
-echo a "" b "" c "" d #a corriger Emma
-echo -n a '' b '' c '' d #a corriger Emma
-echo -n a "" b "" c "" d #a corriger Emma
-echo '' '' '' #a corriger Emma
-echo a; echo b; echo c; echo d; echo e; echo f; echo g; echo h; echo i;echo j; # y a un commande not found, donc un espace en trop
 
 
 #########Cd#########
@@ -277,6 +271,8 @@ pwd >;
 ;pwd
 pwd ;;
 echo bonjour ;;;;;;;; echo coucou
+;echo #syntax error near unexpected token
+ ;echo #idem
 
 #erreurs
 $PWD$PATH$COLORTERM #No such file or directory
