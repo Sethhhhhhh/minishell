@@ -21,6 +21,9 @@ void	minishell(t_sep *list)
 		else
 		{
 			cmd(list->cmd_sep, &cmdarg, &redir);
+			//printf("%s\n", cmdarg.args[0]);
+			//printf("%s\n", cmdarg.args[1]);
+			//printf("%s\n", cmdarg.args[2]);
 			//print_parsing(cmdarg.args, &redir);
 //			printf("---------\n");
 			execution(&cmdarg, &redir);

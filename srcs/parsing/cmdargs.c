@@ -43,7 +43,9 @@ char	*args(char *whole_cmd, t_copy *copy, size_t i, t_redir *redir)// retrouver 
 			if (j == -1)
 				return (NULL);
 		}
-		if (whole_cmd[copy->i] == ' ' && copy->args[i][0])
+		if (whole_cmd[copy->i] == ' ' && (copy->args[i][0] || (!copy->args[i][0] 
+			&& (whole_cmd[copy->i - 1] == '"' || whole_cmd[copy->i - 1] == '\'') 
+			&& (whole_cmd[copy->i - 2] == '"' || whole_cmd[copy->i - 2] == '\''))))
 			break;
 /* AJOUT */
 		if (whole_cmd[copy->i] && whole_cmd[copy->i] != ' ' && j != 1 && ((whole_cmd[copy->i] == '$' && whole_cmd[copy->i - 1] == '\\') || (whole_cmd[copy->i] != '$')))
@@ -54,6 +56,7 @@ char	*args(char *whole_cmd, t_copy *copy, size_t i, t_redir *redir)// retrouver 
 /* AJOUT */
 	}
 	copy->args[i][copy->j + 1] = 0;
+	//printf("copy->args[i] = %s\n", copy->args[i]);
 	return (copy->args[i]);
 }
 
@@ -82,7 +85,7 @@ int		options(char *whole_cmd, t_copy *copy, t_redir *redir)
 		}
 		
 		arg = args(whole_cmd, copy, i, redir);
-		if (!arg || !arg[0])
+		if ((!arg) || (!arg[0] && !whole_cmd[copy->i]))
 			break;
 		i++;
 	}
