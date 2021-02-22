@@ -14,7 +14,7 @@ int	run_echo(char **args)
 	}
 	if ((ft_strequ(args[1], " ") && !args[2]))
 		return (1);
-	while (args[i] && ft_strequ(args[i], "-n"))
+	while (args[i] && !ft_strncmp(args[i], "-n", 2))
 	{
 		n++;
 		i++;
