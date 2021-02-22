@@ -10,6 +10,7 @@
 #include <sys/wait.h>
 #include <sys/stat.h>
 #include <sys/types.h>
+#include <errno.h>
 #include "../libft/libft.h"
 
 /* global */
@@ -105,6 +106,8 @@ int		run_export(char **args);
 /* handler */
 void	sigint_handler(int sign_num);
 
+/* errors */
+void	ft_error_exit(int errno, char *msg);
 
 void	print_parsing(char **args, t_redir *redir);
 

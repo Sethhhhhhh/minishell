@@ -32,6 +32,21 @@ void	loop()
 	ft_exit();
 }
 
+void	loop_testeur(char *line)
+{
+	t_sep	*list;
+	char	**cmds;
+	size_t	i;
+
+	i = -1;
+	list = NULL;
+	cmds = ft_minishell_split(line, ';');
+	while (cmds[++i])
+		list = add_cell(list, cmds[i], i);
+	parse_pip(list);
+	minishell(list);
+}
+
 void	prompt()
 {
 	char	pwd[4096 + 1];
@@ -65,6 +80,12 @@ void	prompt()
 int	main(int ac, char **av, char **env)
 {
 	g_envs = env;
-	loop();
+	if (ac >= 2)
+	{
+		if (av[1][0] == '-' && av[1][1] == 'c')
+			loop_testeur(av[2]);
+	}
+	else
+		loop();
 	return (0);
 }

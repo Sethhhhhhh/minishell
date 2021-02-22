@@ -46,13 +46,17 @@ char	*args(char *whole_cmd, t_copy *copy, size_t i, t_redir *redir)// retrouver 
 		if (whole_cmd[copy->i] == ' ' && copy->args[i][0])
 			break;
 /* AJOUT */
-		if (whole_cmd[copy->i] != ' ' && j != 1 && ((whole_cmd[copy->i] == '$' && whole_cmd[copy->i - 1] == '\\') || (whole_cmd[copy->i] != '$')))
+		if (whole_cmd[copy->i] && whole_cmd[copy->i] != ' ' && j != 1 && ((whole_cmd[copy->i] == '$' && whole_cmd[copy->i - 1] == '\\') || (whole_cmd[copy->i] != '$')))
+		{
+			//printf("ca rentre pour whole_cmd[%d] = %c\n", copy->i, whole_cmd[copy->i]);
 			copy->args[i][++copy->j] = whole_cmd[copy->i];
+		}
 /* AJOUT */
 	}
 	copy->args[i][copy->j + 1] = 0;
 	return (copy->args[i]);
 }
+
 
 int		options(char *whole_cmd, t_copy *copy, t_redir *redir)
 {

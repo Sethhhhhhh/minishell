@@ -13,7 +13,7 @@ void	minishell(t_sep *list)
 			while (list->pipcell)
 			{
 				cmd(list->pipcell->cmd_pip, &cmdarg, &redir);
-				printf("---------\n");
+				//printf("---------\n");
 				execution(&cmdarg, &redir);
 				list->pipcell = list->pipcell->next;
 			}

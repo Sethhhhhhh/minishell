@@ -9,7 +9,7 @@ int		simple_quote(char *whole_cmd, t_copy *copy)
 	}
 /*AJOUT*/	
 	if (whole_cmd[copy->i + 1] == '\'' && (whole_cmd[copy->i + 2] == ' ' || whole_cmd[copy->i + 2] == '\0'))
-		copy->cmd[++copy->j] = ' ';
+		copy->cmd[++copy->j] = '\0';
 /*AJOUT*/
 	while (whole_cmd[copy->i] && whole_cmd[++copy->i] != '\'') //++copy->i; //on decale de 1 car on est sur le ' ouvrant
 		copy->cmd[++copy->j] = whole_cmd[copy->i];
@@ -31,7 +31,7 @@ int		simple_quote_arg(char *whole_cmd, t_copy *copy, size_t i)
 	}
 /*AJOUT*/	
 	if (whole_cmd[copy->i + 1] == '\'' && (whole_cmd[copy->i + 2] == ' ' || whole_cmd[copy->i + 2] == '\0'))
-		copy->args[i][++copy->j] = ' ';
+		copy->args[i][++copy->j] = '\0';
 /*AJOUT*/
 	while (whole_cmd[copy->i] && whole_cmd[++copy->i] != '\'') //++copy->i; //on decale de 1 car on est sur le ' ouvrant
 		copy->args[i][++copy->j] = whole_cmd[copy->i];
@@ -86,7 +86,7 @@ int		double_quote(char *whole_cmd, t_copy *copy)
 	}
 /*AJOUT*/
 	if (whole_cmd[copy->i + 1] == '"' && (whole_cmd[copy->i + 2] == ' ' || whole_cmd[copy->i + 2] == '\0'))
-		copy->cmd[++copy->j] = ' ';
+		copy->cmd[++copy->j] = '\0';
 /*AJOUT*/
 	while (whole_cmd[copy->i] && whole_cmd[++copy->i] != '"') //++copy->i; //on decale de 1 car on est sur le " ouvrant
 	{
@@ -123,7 +123,7 @@ int		double_quote_arg(char *whole_cmd, t_copy *copy, size_t i)
 	//printf("copy->i = %d\n", copy->i);
 /*AJOUT*/
 	if (whole_cmd[copy->i + 1] == '"' && (whole_cmd[copy->i + 2] == ' ' || whole_cmd[copy->i + 2] == '\0'))
-		copy->args[i][++copy->j] = ' ';
+		copy->args[i][++copy->j] = '\0';
 /*AJOUT*/
 	while (whole_cmd[copy->i] && whole_cmd[++copy->i] != '"') //++copy->i; //on decale de 1 car on est sur le " ouvrant
 	{

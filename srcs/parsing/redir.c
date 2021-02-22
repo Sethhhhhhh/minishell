@@ -8,9 +8,16 @@ void	create_file(t_redir *redir, int type)
 			redir->sstdout = open(redir->out1, O_CREAT | O_RDWR | O_APPEND, 0644);
 		else
 			redir->sstdout = open(redir->out1, O_CREAT | O_RDWR | O_TRUNC, 0644);
+		//if (!redir->sstdout)
+		//	ft_error(errno, "erreur");
 	}
 	if (type == 0)
+	{
 		redir->sstdin = open(redir->in, O_RDONLY);
+		printf("%d\n", errno);
+		//if (redir->sstdin == -1)
+		//	ft_error_exit(errno, "No such file or Directory");
+	}
 	if (type == 2)
 	{
 		if (redir->end == 1)

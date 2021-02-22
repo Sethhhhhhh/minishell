@@ -1,15 +1,88 @@
 #! /bin/sh
 
-#########Cmd and Args#########
+#########Echo#########
 echo bonjour
         echo echo hey
 echo bonjourheybonjour salut
-ls -l -R -a
+echo lalalala                lalalalal      alalalalal alalalala
+echo -n lalalala                lalalalal      alalalalal alalalala
+                        echo       -n            bonjour
 echo -n bonjour coucou
-pwd
+echo -n
+echo -n-n
+echo "-n     mdr"
+echo -\n hey
+echo \-n hey
+echo - n
+echo '-     n'
+echo  Mollitia asperiores assumenda excepturi et ipsa. Nihil corporis facere aut a rem...
+Echo bonjour
+eCho bonjour
+ecHo bonjour
+eChO bonjour
+ECHO bonjour
+## corriger echo tout seul
+echo #a corriger Yohann
+echo; #segfault
+echo ; # segfault
+; echo # segfault
+ ;echo # segfault
+## corriger echo avec plusieurs -n
+echo -n -n lol -n #a corriger Yohann
+echo -n -n -n test tout #a corriger Yohann
+echo -nnnnnnnnnnnnnnnnnnnnn bonjour #a corriger Yohann
+echo -nnnnnnnnnnnnnnnnnnnnn -n -n -n bonjour -n -n #a corriger Yohann
+echo -n -n #Le deuxième -n doit pas s'imprimer, j'ai demandé à Yohann
+
+
+
+echo a '' b '' c '' d #a corriger Emma
+echo a "" b "" c "" d #a corriger Emma
+echo -n a '' b '' c '' d #a corriger Emma
+echo -n a "" b "" c "" d #a corriger Emma
+echo '' '' '' #a corriger Emma
+echo a; echo b; echo c; echo d; echo e; echo f; echo g; echo h; echo i;echo j; # y a un commande not found, donc un espace en trop
+
+
+#########Cd#########
 cd ..
 cd..
+cd ~
+cd
+cd /
+cd ./srcs
+cd -
+cd /Users
+
+#########Pwd#########
+pwd
+pwd mdr
+pwd coucou ne rien imprimer
+
+#########Export#########
+export
+export test2=
+export lol=""
+export lol2=''
+export test1
+export test= o
+export "ceci"="cela"
+export emma="bourdit" yohann="viavant"
+
+#########Unset#########
+unset emma yohann
+
+#########Env#########
+env
+Env
+enV
+
+#########Appels Systèmes#########
+ls -l -R -a
 ls -l
+mkdir coucou
+
+
 #########Protections#########
 'echo' "bonjour" "wesh"
 e"ch"o bonjour
@@ -39,18 +112,18 @@ echo ''""''
 echo """"bonjour"" "" | cat -e
 "echo bonjou"""r
 "echo""" ''bonjour # y a un espace après echo dans arg[0]
+echo "$wfjwefielwhfhlwefkhwefwe" a # il manque un espace
 ls "-lR""-a"
 echo bonjour 1>"hey" pas normal
 echo bonjour 1> "wesh alors" hey
-echo bonjour 1>'' pas normal
+echo bonjour 1>'' pas normal # No such file or directory
 echo "" mdr "" | cat -e
 echo bonjour 1>'"' pas normal
 echo bonjour 1> "hey""" pas normal
 echo bonjour 1> "hey"'' pas normal
 echo bon"jo\"u"r
 echo bon"jo\\"u"r"
-echo bon"jo\"\"\"\$u"r
-echo bon"jo\"\"\"\$u\\\$"r
+
 echo bon"jo\"''\"\"\'$u\\'\$"r
 echo b"\ \ \ onjour"
 echo "b\on\j\our"
