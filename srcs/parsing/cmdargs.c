@@ -67,7 +67,7 @@ int		options(char *whole_cmd, t_copy *copy, t_redir *redir)
 	char	*arg;
 	size_t	i;
 	size_t	j;
-	
+
 	if (!(copy->args = (char **)malloc(sizeof(char *) * 1)))
 		return (-1); 
 	copy->args[0] = ft_strdup(copy->cmd);
@@ -83,8 +83,10 @@ int		options(char *whole_cmd, t_copy *copy, t_redir *redir)
 			copy->args[j - 1] = ft_strdup(tmp[j - 1]);
 			j--;
 		}
-		
 		arg = args(whole_cmd, copy, i, redir);
+		if (!arg[0] && (whole_cmd[copy->i - 1] == '"' || whole_cmd[copy->i - 1] == '\'') && 
+			(whole_cmd[copy->i - 2] == '"' || whole_cmd[copy->i - 2] == '\'') && !whole_cmd[copy->i])
+				arg = args(whole_cmd, copy, ++i, redir);
 		if ((!arg) || (!arg[0] && !whole_cmd[copy->i]))
 			break;
 		i++;
