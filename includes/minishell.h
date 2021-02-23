@@ -62,6 +62,7 @@ t_sep	*add_cell(t_sep *list, char *cmd_sep, int pos);
 /* pip */
 void    parse_pip(t_sep *list);
 void	print_pip_list(t_pip *piplist);
+int		run_pipe(t_pip *pipcell, t_copy *cmdargs, int fdd, t_redir *redir);
 
 /* redirection */
 int		redirection(char *whole_cmd, t_copy *copy, t_redir *redir);
@@ -79,9 +80,9 @@ int		double_quote_redir(char *whole_cmd, t_copy *copy, t_redir *redir, char *str
 
 /* execution */
 void	minishell(t_sep *list);
-void	execution(t_copy *cmdarg, t_redir *redir);
+void	execution(t_copy *cmdarg, t_redir *redir, int pipe);
 void	prompt();
-int		exec(char **args);
+int		exec(char **args, int pipe);
 
 /* syscall */
 void    call(t_copy *cmdarg);

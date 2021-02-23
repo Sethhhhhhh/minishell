@@ -1,29 +1,33 @@
 #include "../../includes/minishell.h"
 
-static int	_run(char **args, char *bin)
+static int	_run(char **args, char *bin, int pipe)
 {
-	g_pid = fork();
-	if (!g_pid)
+	if (!pipe)
+		g_pid = fork();
+	if (pipe || !g_pid)
 		execve(bin, args, g_envs);
-	else if (g_pid < 0)
+	else if (!pipe && g_pid < 0)
 	{
 		free(bin);
 		ft_putstr_fd("execve: failed to create a new process.", 1);
 		ft_putchar_fd('\n', 1);
 		return (-1);
 	}
-	wait(&g_pid);
+	if (!pipe)
+	{
+		wait(&g_pid);
+		g_pid = 0;
+	}
 	free(bin);
-	g_pid = 0;
 	return (1);
 }
 
-static int	_has_perm(char **args, char *bin, struct stat statbuf)
+static int	_has_perm(char **args, char *bin, struct stat statbuf, int pipe)
 {
 	if (statbuf.st_mode & S_IFREG) // check if is not a folder.	
 	{
 		if (statbuf.st_mode & S_IXUSR) // check if the user can execute this file.
-			return (_run(args, bin));
+			return (_run(args, bin, pipe));
 		else
 		{
 			ft_putstr_fd("execve: permission denied: ", 1);
@@ -37,7 +41,7 @@ static int	_has_perm(char **args, char *bin, struct stat statbuf)
 	return (0);
 }
 
-static int	_check_bins(char **args)
+static int	_check_bins(char **args, int pipe)
 {
 	struct stat	statbuf;
 	char		**path;
@@ -57,7 +61,7 @@ static int	_check_bins(char **args)
 		if (!lstat(bin, &statbuf))
 		{
 			ft_free_array(path);
-			return (_has_perm(args, bin, statbuf));
+			return (_has_perm(args, bin, statbuf, pipe));
 		}
 		else
 			free(bin);
@@ -96,12 +100,12 @@ static int	_check_builtin(char **args)
 	return (0);
 }
 
-int			exec(char **args)
+int			exec(char **args, int pipe)
 {
 	int		is_cmd;
 
 	g_pid = 0;
-	is_cmd = _check_builtin(args) || _check_bins(args);
+	is_cmd = _check_builtin(args) || _check_bins(args, pipe);
 	if (is_cmd > 0)
 		return (1);
 	else if (is_cmd < 0)

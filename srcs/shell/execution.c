@@ -2,10 +2,13 @@
 
 void	minishell(t_sep *list)
 {
-	t_copy cmdarg;
-	t_redir redir;
+	int		fdd;
+	t_copy	cmdarg;
+	t_redir	redir;
+	int 	i;
 
-	int i = 0;
+	fdd = dup(0);
+	i = 0;
 	while (list)
 	{
 		if (list->pipcell != NULL)
@@ -13,27 +16,22 @@ void	minishell(t_sep *list)
 			while (list->pipcell)
 			{
 				cmd(list->pipcell->cmd_pip, &cmdarg, &redir);
-				//printf("---------\n");
-				execution(&cmdarg, &redir);
+				fdd = run_pipe(list->pipcell, &cmdarg, fdd, &redir);
 				list->pipcell = list->pipcell->next;
 			}
+    		close(fdd);
 		}
 		else
 		{
 			cmd(list->cmd_sep, &cmdarg, &redir);
-			//printf("%s\n", cmdarg.args[0]);
-			//printf("%s\n", cmdarg.args[1]);
-			//printf("%s\n", cmdarg.args[2]);
-			//print_parsing(cmdarg.args, &redir);
-//			printf("---------\n");
-			execution(&cmdarg, &redir);
+			execution(&cmdarg, &redir, 0);
 		}
 		list = list->next;
 		i++;
 	}
 }
 
-void	redir_dup(t_copy *cmdarg, t_redir *redir)
+void	redir_dup(t_copy *cmdarg, t_redir *redir, int pipe)
 {
 	int		savein;
 	int		saveout1;
@@ -57,20 +55,19 @@ void	redir_dup(t_copy *cmdarg, t_redir *redir)
 		close (2);
 		dup2(redir->sstderr, 2);
 	}
-	exec(cmdarg->args);
+	exec(cmdarg->args, 0);
 	if (redir->in)
 		dup2(savein, 0);
 	if (redir->out1)
 		dup2(saveout1, 1);
 	if (redir->out2)
 		dup2(saveout2, 2);
-	//write(1, "coucou", 7); // pour tester avec stdout : ca s'ecrira dans fddest
 }
 
-void	execution(t_copy *cmdarg, t_redir *redir)
+void	execution(t_copy *cmdarg, t_redir *redir, int pipe)
 {
 	if (redir->in || redir->out1 || redir->out2)
-		redir_dup(cmdarg, redir);
+		redir_dup(cmdarg, redir, pipe);
 	else
-		exec(cmdarg->args);	
+		exec(cmdarg->args, pipe);	
 }
