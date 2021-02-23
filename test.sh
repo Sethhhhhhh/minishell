@@ -147,6 +147,15 @@ export 'AH!'=nop
 export A 'asdf ' B ' asdf asdf asd f' ' asdf ' '' 'asdf ' C
 
 
+
+
+
+
+
+
+
+#########Unset#########
+unset emma yohann
 #########Env#########
 env
 Env
@@ -154,29 +163,17 @@ enV
 env                                                                                 [FAIL]
 [SETUP export A=a] env                                                              [FAIL]
 [SETUP export A=a B=b C=c] env                                                      [FAIL]
-[SETUP export A=a B=b C=c] env | cat -e                                             [FAIL]
-Env                                                                                 [FAIL]
-enV                                                                                 [FAIL]
+[SETUP export A=a B=b C=c] env | cat -e                                             [FAIL]                                                                              [FAIL]
 [EXPORTS PATH='/bin:/usr/bin'] Env                                                  [FAIL]
 [EXPORTS PATH='/bin:/usr/bin'] enV  
-
-
-
-
 #########Pwd#########
 pwd
 pwd mdr
 pwd coucou ne rien imprimer
-
-#########Unset#########
-unset emma yohann
-
 #########Appels Systèmes#########
 ls -l -R -a
 ls -l
 mkdir coucou
-
-
 #########Protections#########
 'echo' "bonjour" "wesh"
 e"ch"o bonjour
@@ -200,15 +197,15 @@ e\c\h\o b\on\njour
 "ec''ho" bonjour
 "ec'''ho" bonjour
 echo "\\"
-echo "" coucou | cat -e ## on dirait que y a un espace en trop
+echo "" coucou | cat -e
 echo bon""jour
 echo """""mdrr"
 echo ''""
 echo ''""''
 echo """"bonjour"" "" | cat -e
 "echo bonjou"""r
-"echo""" ''bonjour # y a un espace après echo dans arg[0]
-echo "$wfjwefielwhfhlwefkhwefwe" a # il manque un espace
+"echo""" ''bonjour
+echo "$wfjwefielwhfhlwefkhwefwe" a
 ls "-lR""-a"
 echo bonjour 1>"hey" pas normal
 echo bonjour 1> "wesh alors" hey
@@ -247,7 +244,7 @@ echo '      cou    "cou"'
 echo bo'njou\$r'
 e'ch\\o' 'bonj'\o\u'r'
 echo '' '' 'bonjour' | cat -e
-echo '''''' | cat -e #j'envoie un espace mais géré par yohann
+echo '''''' | cat -e
 ##########Redirections#########
 #stdin
 cat < test.txt
@@ -265,10 +262,10 @@ echo bonjour>>test3>>test4
 1>test12>test2 echo bonjour
 2>>test1 #command not found alors que ca doit pas
 >test1 2>test2 echo bonjour
-1>test233 "" echo bonjour ## yohann va s'en occuper
+1>test233 "" echo bonjour ## sencé renvoyer command not found mais c pas le cas
 >> e
 #multi redirections
-echo >mdr>hey>>sarace\sal"hehe"    #segfault quand echo tout seul sans arguments
+echo >mdr>hey>>sarace\sal"hehe"
 echo bonjour 2>\wes\\hh
 echo bonjour <\weshh
 echo <hey1<h'ey2'
@@ -305,7 +302,7 @@ echo bonjour 1>$"COLORTERM"
 echo $PATH >$COLORTERM
 echo bonjour 1>$hey"lol"
 echo hey > coucou$COLORTERM
-echo "$LOL" 2>"$COLORTERM" #segfault quand echo tout seul sans arguments
+echo "$LOL" 2>"$COLORTERM"
 
 #########Pipes et Séparations#########
 echo "bonjou\"r" ; echo coucou
