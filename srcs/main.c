@@ -17,8 +17,16 @@ void	loop()
 	prompt();
 	while (get_next_line(0, &line) > 0)
 	{
-		i = -1;
+		i = 0;
 		list = NULL;
+		while (line[i] && ft_isspace(line[i]))
+			i++;
+		if (!line[i])
+		{
+			prompt();
+			continue;	
+		}
+		i = -1;
 		cmds = ft_minishell_split(line, ';');
 		while (cmds[++i])
 			list = add_cell(list, cmds[i], i);
