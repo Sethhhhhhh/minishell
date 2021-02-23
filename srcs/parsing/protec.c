@@ -84,10 +84,6 @@ int		double_quote(char *whole_cmd, t_copy *copy)
 		printf("erreur \" au bout de la chaine lol\n");
 		return (-1);
 	}
-/*AJOUT*/
-	if (whole_cmd[copy->i + 1] == '"' && (whole_cmd[copy->i + 2] == ' ' || whole_cmd[copy->i + 2] == '\0'))
-		copy->cmd[++copy->j] = '\0';
-/*AJOUT*/
 	while (whole_cmd[copy->i] && whole_cmd[++copy->i] != '"') //++copy->i; //on decale de 1 car on est sur le " ouvrant
 	{
 		j = 0;
@@ -102,6 +98,8 @@ int		double_quote(char *whole_cmd, t_copy *copy)
 		if (j != 1)
 			copy->cmd[++copy->j] = whole_cmd[copy->i];
 	}
+	if (whole_cmd[copy->i] == '"' && (whole_cmd[copy->i + 1] == ' ' || whole_cmd[copy->i + 1] == '\0') && !copy->cmd[0])
+		copy->cmd[0] = '\0';
 	if ((copy->i == strlen(whole_cmd)) && whole_cmd[copy->i] != '"') // si y a pas de " fermant
 	{
 		printf("erreur pas de \" fermant\n");
@@ -122,8 +120,8 @@ int		double_quote_arg(char *whole_cmd, t_copy *copy, size_t i)
 	//printf("ca rentre\n");
 	//printf("copy->i = %d\n", copy->i);
 /*AJOUT*/
-	if (whole_cmd[copy->i + 1] == '"' && (whole_cmd[copy->i + 2] == ' ' || whole_cmd[copy->i + 2] == '\0'))
-		copy->args[i][++copy->j] = '\0';
+	//if (whole_cmd[copy->i + 1] == '"' && (whole_cmd[copy->i + 2] == ' ' || whole_cmd[copy->i + 2] == '\0'))
+	//	copy->args[i][++copy->j] = '\0';
 /*AJOUT*/
 	while (whole_cmd[copy->i] && whole_cmd[++copy->i] != '"') //++copy->i; //on decale de 1 car on est sur le " ouvrant
 	{
@@ -139,6 +137,8 @@ int		double_quote_arg(char *whole_cmd, t_copy *copy, size_t i)
 		if (j != 1)
 			copy->args[i][++copy->j] = whole_cmd[copy->i];
 	}
+	if (whole_cmd[copy->i] == '"' && (whole_cmd[copy->i + 1] == ' ' || whole_cmd[copy->i + 1] == '\0') && !copy->args[i][0])
+		copy->args[i][0] = '\0';
 	if ((copy->i == strlen(whole_cmd)) && whole_cmd[copy->i] != '"') // si y a pas de " fermant
 	{
 		printf("erreur pas de \" fermant\n");
@@ -146,7 +146,9 @@ int		double_quote_arg(char *whole_cmd, t_copy *copy, size_t i)
 	}
 	copy->i++; // on decale de 1 car on est sur le " fermant
 	//printf("whole_cmd[copy->i] = %c\n", whole_cmd[copy->i]);
-	return (1);
+	if (copy->args[i][0] == '\0')
+		return (1);
+	return (0);
 }
 
 int		double_quote_redir(char *whole_cmd, t_copy *copy, t_redir *redir, char *str, int std)

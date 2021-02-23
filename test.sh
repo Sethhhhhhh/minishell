@@ -1,5 +1,6 @@
 #! /bin/sh
 
+
 #########Echo#########
 echo bonjour
         echo echo hey
@@ -16,11 +17,6 @@ echo \-n hey
 echo - n
 echo '-     n'
 echo  Mollitia asperiores assumenda excepturi et ipsa. Nihil corporis facere aut a rem...
-Echo bonjour
-eCho bonjour
-ecHo bonjour
-eChO bonjour
-ECHO bonjour
 echo a '' b '' c '' d
 echo a "" b "" c "" d
 echo -n -n lol -n
@@ -30,46 +26,150 @@ echo -n -n
 echo -n a '' b '' c '' d
 echo -n a "" b "" c "" d
 echo '' '' ''
+echo ''
 echo a; echo b; echo c; echo d; echo e; echo f; echo g; echo h; echo i;echo j;
 echo;
 echo ;
-
-echo -nnnnnnnnnnnnnnnnnnnnn bonjour #a corriger Yohann
-echo -nnnnnnnnnnnnnnnnnnnnn -n -n -n bonjour -n -n #a corriger Yohann
-
+echo -nnnnnnnnnnnnnnnnnnnnn bonjour
+echo -nnnnnnnnnnnnnnnnnnnnn -n -n -n bonjour -n -n
+Echo bonjour
+eCho bonjour
+ecHo bonjour
+echO bonjour
+EchO bonjour
+eCHo bonjour
+EcHo bonjour
+eChO bonjour
+[SETUP mkdir d] echo $PWD; echo $OLDPWD
+[EXPORTS HOME='/Users/emmabourdit'] echo $PWD; echo $OLDPWD
+echo "$wfjwefielwhfhlwefkhwefwe" a
+echo '$wfjwefielwhfhlwefkhwefwe' a
+'$wfjwefielwhfhlwefkhwefwe' a OK
+"$wfjwefielwhfhlwefkhwefwe" a
 
 #########Cd#########
 cd ..
 cd..
-cd ~
-cd
-cd /
 cd ./srcs
+cd .
+cd ../
+cd ../../../
+cd /
+cd
 cd -
 cd /Users
+Cd .
+cD .
+cd /.
+cd /./
+cd /././././
+cd //
+cd ///
+cd ////
+cd //////////////////////////////////////////////////////
+cd $HOME
+cd ' // '; pwd
+
+#retour a la ligne tout seul donne un command not found
+# permission denied alors que c'est pas censé renvoyer de msg d'erreur
+cd '' 
+cd '' ''
+cd '' '' ''
+cd ' '
+#permission denied en trop
+cd ' // '
+cd ' /'
+cd '                  /'
+cd d ''
+cd d d
+[SETUP mkdir -m 000 d] echo $PWD; echo $OLDPWD; cd d; echo $OLDPWD 
+# il me dit no such file or directory alors que doit pas
+cd ~ 
+# renvoie chez nous /home et //home dans bash
+cd //home ; pwd 
+
+
+#########Export#########
+export test=coucou ; echo $test
+export emma="bourdit" yohann="viavant"
+export "mdr"=hey
+export "ceci"="cela"
+export lol=""
+export lol=" "
+export lol2=''
+export lol2=' '
+export lol2="\'"
+export lol2="'"
+export lol2="'"
+export lol2="\\"
+export lol2='$'
+export lol2='\t'
+export test=hello hello="poulette"
+export test2=
+export test1
+export test= o
+export test=$test"coucou"
+export zz zzz= zzzz=asd
+export A=a B=b C=c D=d E=e F=f G=g H=h I=i J=j K=k L=l M=m N=n O=o P=p Q=q R=r
+Export B=bonjour
+exporT B=bonjour
+[EXPORTS PATH='/bin:/usr/bin'] Export B=bonjour
+[EXPORTS PATH='/bin:/usr/bin'] exporT B=bonjour
+export A=\B\O\N\ \ \ \ \ \ \ JOURJESUIS
+
+#à faire
+export
+#j'ai pas géré et maxime non plus
+export test=$COLORTERM=coucou 
+#maximum 1 espace entre les élements
+export test="   a   "
+echo $test$test$test$test$test$test$test$test$test$test
+echo $test$test$test$test
+#quand y a le début d'une autre variable ca l'appelle
+echo $PA
+export A=\B\O\N\ \ \ \ \ \ \ JOURJESUIS ; echo $A
+#erreur : une deuxième assignation doit écraser la première
+export mdr=hey; env ; export mdr=lol ; env
+#error a renvoyer not a valid identifier :
+export ?=42
+export $
+export 1=a
+export BONJOURJESUIS =a
+export BONJOUR\\JESUIS=a
+export BONJOUR\'JESUIS=a
+export BONJOUR\&JESUIS=a 
+export BONJOUR\|JESUIS=a
+export BONJOUR\;JESUIS=a
+export 'AH\'=nop
+export 'AH@'=nop
+export 'AH"'=nop
+export 'AH!'=nop
+export A 'asdf ' B ' asdf asdf asd f' ' asdf ' '' 'asdf ' C
+
+
+#########Env#########
+env
+Env
+enV
+env                                                                                 [FAIL]
+[SETUP export A=a] env                                                              [FAIL]
+[SETUP export A=a B=b C=c] env                                                      [FAIL]
+[SETUP export A=a B=b C=c] env | cat -e                                             [FAIL]
+Env                                                                                 [FAIL]
+enV                                                                                 [FAIL]
+[EXPORTS PATH='/bin:/usr/bin'] Env                                                  [FAIL]
+[EXPORTS PATH='/bin:/usr/bin'] enV  
+
+
+
 
 #########Pwd#########
 pwd
 pwd mdr
 pwd coucou ne rien imprimer
 
-#########Export#########
-export
-export test2=
-export lol=""
-export lol2=''
-export test1
-export test= o
-export "ceci"="cela"
-export emma="bourdit" yohann="viavant"
-
 #########Unset#########
 unset emma yohann
-
-#########Env#########
-env
-Env
-enV
 
 #########Appels Systèmes#########
 ls -l -R -a
@@ -82,6 +182,8 @@ mkdir coucou
 e"ch"o bonjour
        'ech'o bonjour
 #echappement tout seul
+echo lol\ \ \ \coucou
+\ \ \ \ \ \ mdr
 echo \hey
 ech\o bonjour
 echo b\onjour
@@ -238,19 +340,6 @@ echo testing multi ; echo "test 1 ; | and 2" ; cat test.sh | grep echo
 >lol echo > test>lol>test>>lol>test mdr >lol test >test; cat test
 echo > < #segfault
 
-#########Export#########
-export
-export test2=
-export test2
-export test1 test2 test3
-export test=hello hello="poulette"
-export test= o
-export test=o
-export test=$test"coucou"
-export test=$COLORTERM=coucou
-export ?=42
-export $
-export zz zzz= zzzz=asd
 
 #Erreurs Quotes
 echo co'c'o'u' #enlever une simple quote
