@@ -5,6 +5,25 @@ void	ft_exit()
 	exit(0);
 }
 
+static int	_check_space_colon(char *line)
+{
+	size_t	i;
+	int		colon;
+
+	colon = 0;
+	i = 0;
+	while (line[i])
+	{
+		if ((line[i] == ':' && colon) || (!ft_isspace(line[i]) && line[i] != ':'))
+			return (0);
+		if (line[i] == ':')
+			colon = 1;
+		i++;
+	}
+	prompt();
+	return (1);
+}
+
 void	loop()
 {
 	t_sep	*list;
@@ -17,22 +36,15 @@ void	loop()
 	prompt();
 	while (get_next_line(0, &line) > 0)
 	{
-		i = 0;
+		if (_check_space_colon(line))
+			continue;
 		list = NULL;
-		while (line[i] && ft_isspace(line[i]))
-			i++;
-		if (!line[i])
-		{
-			prompt();
-			continue;	
-		}
 		i = -1;
 		cmds = ft_minishell_split(line, ';');
 		while (cmds[++i])
 			list = add_cell(list, cmds[i], i);
 		free(line);
 		parse_pip(list);
-		//print_list(list);
 		minishell(list);
 		prompt();
 	}
