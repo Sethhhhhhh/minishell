@@ -102,7 +102,8 @@ static int	_check_builtin(char **args)
 
 int			exec(char **args, int pipe)
 {
-	int		is_cmd;
+	struct stat	f;
+	int			is_cmd;
 
 	g_pid = 0;
 	is_cmd = _check_builtin(args) || _check_bins(args, pipe);
@@ -110,6 +111,16 @@ int			exec(char **args, int pipe)
 		return (1);
 	else if (is_cmd < 0)
 		return (-1);
+	if (lstat(args[0], &f) != -1)
+	{
+		if (f.st_mode & S_IFDIR)
+		{
+			set_directory(args[0]);
+			return (0);
+		}
+		else if (f.st_mode & S_IXUSR)
+			return (_run(args, ft_strdup(args[0]), pipe));
+	}
 	ft_putstr_fd("bash: ", 1);
 	ft_putstr_fd(args[0], 1);
 	ft_putstr_fd(": command not found", 1);

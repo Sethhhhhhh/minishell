@@ -103,6 +103,7 @@ int		run_echo(char **args);
 int		run_cd(char **args);
 int		run_unset(char **args);
 int		run_export(char **args);
+int		set_directory(char *path);
 
 /* handler */
 void	sigint_handler(int sign_num);

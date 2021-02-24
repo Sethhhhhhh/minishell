@@ -1,6 +1,6 @@
 #include "../../includes/minishell.h"
 
-static int	_set(char *path)
+int	set_directory(char *path)
 {
 	struct stat st;
 	char	*pwd;
@@ -33,17 +33,17 @@ int			run_cd(char **args)
 
 	home = get_env("HOME");
 	if (!args[1])
-		return (_set(home));
+		return (set_directory(home));
 	if (!ft_strcmp(args[1], "-"))
 	{
-		_set(get_env("OLDPWD"));
+		set_directory(get_env("OLDPWD"));
 		ft_putstr_fd(get_env("PWD"), 1);
 		ft_putchar_fd('\n', 1);
 		return (1);
 	}
 	else if (!ft_strcmp(args[1], "--"))
-		return (_set(home));
+		return (set_directory(home));
 	else
-		return (_set(args[1]));
+		return (set_directory(args[1]));
 	return (0);
 }
