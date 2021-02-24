@@ -106,7 +106,9 @@ int		double_quote(char *whole_cmd, t_copy *copy)
 		return (-1);
 	}
 	copy->i++; // on decale de 1 car on est sur le " fermant
-	return (1);
+	if (copy->cmd[0] == '\0' && (whole_cmd[copy->i] == ' ' || whole_cmd[copy->i] == '\0'))
+		return (1);
+	return (-2);
 }
 
 int		double_quote_arg(char *whole_cmd, t_copy *copy, size_t i)
@@ -146,7 +148,7 @@ int		double_quote_arg(char *whole_cmd, t_copy *copy, size_t i)
 	}
 	copy->i++; // on decale de 1 car on est sur le " fermant
 	//printf("whole_cmd[copy->i] = %c\n", whole_cmd[copy->i]);
-	if (copy->args[i][0] == '\0')
+	if (copy->args[i][0] == '\0' && (whole_cmd[copy->i] == ' ' || whole_cmd[copy->i] == '\0'))
 		return (1);
 	return (0);
 }

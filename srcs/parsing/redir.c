@@ -14,7 +14,7 @@ void	create_file(t_redir *redir, int type)
 	if (type == 0)
 	{
 		redir->sstdin = open(redir->in, O_RDONLY);
-		printf("%d\n", errno);
+		//printf("%d\n", errno);
 		//if (redir->sstdin == -1)
 		//	ft_error_exit(errno, "No such file or Directory");
 	}
@@ -41,19 +41,19 @@ int		redir_out_error(char *whole_cmd, t_copy *copy, t_redir *redir) // redirecti
 	{
 		if (whole_cmd[copy->i] == '$' && whole_cmd[copy->i - 1] != '\\')
 			environnement_redir(whole_cmd, copy, 2, redir);
-		if (whole_cmd[copy->i] == '\'' || whole_cmd[copy->i] == '"')
+		while (whole_cmd[copy->i] == '\'' || whole_cmd[copy->i] == '"')
 		{
 			while (whole_cmd[copy->i] == '"')
 				if ((double_quote_redir(whole_cmd, copy, redir, redir->out2, 2)) == -1)
 				{
 					create_file(redir, 2);
-					return (1);
+					return (4);
 				}
 			while (whole_cmd[copy->i] == '\'')
 				if ((simple_quote_redir(whole_cmd, copy, i, redir, redir->out2)) == -1)
 				{
 					create_file(redir, 2);
-					return (1);
+					return (4);
 				}
 		}
 /*AJOUT*/
@@ -94,19 +94,19 @@ int		redir_out(char *whole_cmd, t_copy *copy, t_redir *redir) // redirection de 
 	{
 		if (whole_cmd[copy->i] == '$' && whole_cmd[copy->i - 1] != '\\')
 			environnement_redir(whole_cmd, copy, 1, redir);
-		if (whole_cmd[copy->i] == '\'' || whole_cmd[copy->i] == '"')
+		while (whole_cmd[copy->i] == '\'' || whole_cmd[copy->i] == '"')
 		{
 			while (whole_cmd[copy->i] == '"')
 				if ((double_quote_redir(whole_cmd, copy, redir, redir->out1, 1)) == -1)
 				{
 					create_file(redir, 1);
-					return (1);
+					return (4);
 				}
 			while (whole_cmd[copy->i] == '\'')
 				if ((simple_quote_redir(whole_cmd, copy, i, redir, redir->out1)) == -1)
 				{
 					create_file(redir, 1);
-					return (1);
+					return (4);
 				}
 		}
 /*AJOUT*/
@@ -145,19 +145,19 @@ int		redir_in(char *whole_cmd, t_copy *copy, t_redir *redir) // redirection de s
 	{
 		if (whole_cmd[copy->i] == '$' && whole_cmd[copy->i - 1] != '\\')
 			environnement_redir(whole_cmd, copy, 0, redir);
-		if (whole_cmd[copy->i] == '\'' || whole_cmd[copy->i] == '"')
+		while (whole_cmd[copy->i] == '\'' || whole_cmd[copy->i] == '"')
 		{
 			while (whole_cmd[copy->i] == '"')
 				if ((double_quote_redir(whole_cmd, copy, redir, redir->in, 0)) == -1)
 				{
 					create_file(redir, 0);
-					return (1);
+					return (4);
 				}
 			while (whole_cmd[copy->i] == '\'')
 				if ((simple_quote_redir(whole_cmd, copy, i, redir, redir->in)) == -1)
 				{
 					create_file(redir, 0);			
-					return (1);
+					return (4);
 				}
 		}
 /*AJOUT*/

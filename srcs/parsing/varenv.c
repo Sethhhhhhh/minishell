@@ -35,7 +35,7 @@ int	    environnement(char *whole_cmd, t_copy *copy, int arg, int i) //variable 
     }
     /* AJOUT */
     while (whole_cmd[copy->i] && (whole_cmd[copy->i] != '\\' && whole_cmd[copy->i] != ' ' && whole_cmd[copy->i] != '$' 
-        && whole_cmd[copy->i] != '"' && whole_cmd[copy->i] != '\'' && whole_cmd[copy->i] != '/'))
+        && whole_cmd[copy->i] != '"' && whole_cmd[copy->i] != '\'' && whole_cmd[copy->i] != '/' && whole_cmd[copy->i] != '='))
     {
         if (whole_cmd[copy->i] == '\'' || whole_cmd[copy->i] == '"')
             return (0);

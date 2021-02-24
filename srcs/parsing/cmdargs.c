@@ -45,8 +45,11 @@ char	*args(char *whole_cmd, t_copy *copy, size_t i, t_redir *redir)// retrouver 
 		if ((whole_cmd[copy->i] == ' ' && whole_cmd[copy->i - 1] != '\\') && (copy->args[i][0] || (!copy->args[i][0] 
 			&& (whole_cmd[copy->i - 1] == '"' || whole_cmd[copy->i - 1] == '\'') 
 			&& (whole_cmd[copy->i - 2] == '"' || whole_cmd[copy->i - 2] == '\'' || j == 1))))
+			{
+				//printf("ca rentre\n");
 				break;
-		if (whole_cmd[copy->i] && (whole_cmd[copy->i] != ' ' || (whole_cmd[copy->i] == ' ' && whole_cmd[copy->i - 1] == '\\')) && j != 1 && ((whole_cmd[copy->i] == '$' && whole_cmd[copy->i - 1] == '\\') || (whole_cmd[copy->i] != '$')))
+			}
+		if (whole_cmd[copy->i] && (whole_cmd[copy->i] != ' ' || (whole_cmd[copy->i] == ' ' && whole_cmd[copy->i - 1] == '\\')) && j != 1 && j!= 4 && ((whole_cmd[copy->i] == '$' && whole_cmd[copy->i - 1] == '\\') || (whole_cmd[copy->i] != '$')))
 			copy->args[i][++copy->j] = whole_cmd[copy->i];
 	}
 	copy->args[i][copy->j + 1] = 0;
@@ -107,6 +110,7 @@ void	print_parsing(char **args, t_redir *redir)
 {
 	int i = 0;
 	int j = 0;
+
 	while (args[i])
 	{
 		printf("arg[%d] = %s\n", i, args[i]);
@@ -181,14 +185,18 @@ char	*cmd(char *whole_cmd, t_copy *copy, t_redir *redir) // retrouver la command
 		if ((whole_cmd[copy->i] == ' ' && whole_cmd[copy->i - 1] != '\\') && (copy->cmd[0] || (!copy->cmd[0] 
 			&& (whole_cmd[copy->i - 1] == '"' || whole_cmd[copy->i - 1] == '\'') 
 			&& (whole_cmd[copy->i - 2] == '"' || whole_cmd[copy->i - 2] == '\'' || j == 1))))
-			break;
+				break;
 /* AJOUT */
-		if ((whole_cmd[copy->i] == '$' && whole_cmd[copy->i - 1] == '\\') || (whole_cmd[copy->i] != '$' && j == -2))
+		if (copy->i < strlen(whole_cmd) && ((whole_cmd[copy->i] == '$' && whole_cmd[copy->i - 1] == '\\') || (whole_cmd[copy->i] != '$' && j == -2)))
+		{
+			//printf("ca rentre pour whole_cmd[%d] = %c\n", copy->i, whole_cmd[copy->i]);
 			copy->cmd[++copy->j] = whole_cmd[copy->i];
+		}
 		copy->i++;
 /* AJOUT */
 	}
 	copy->cmd[copy->j + 1] = 0;
+	//printf("copy->cmd = %s\n", copy->cmd);
 	options(whole_cmd, copy, redir);
 /* AJOUT */
 	//print_parsing(copy->args, redir);

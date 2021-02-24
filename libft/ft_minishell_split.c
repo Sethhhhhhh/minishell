@@ -70,7 +70,7 @@ static int	ft_count_words(char const *s, char c, t_split *split)
 			break;
         if (s[i] == '\\')
 			i++;
-        if (s[i] && s[i] == c && s[i + 1] != c)
+        if (s[i] && s[i] == c && s[i + 1] != c && s[i - 1] != '\\')
 		{
 			j = i + 1;
 			while (s[j] && j == ' ')
@@ -155,7 +155,7 @@ static void	ft_write_words(char const *s, char c, char **str, int words)
 		    }
 			if (s[j] == '\\')
 				str[i][k++] = s[j++];
-            if (s[j] == c || s[j] == '\0')
+            if (s[j - 1] != '\\' && (s[j] == c || s[j] == '\0'))
                 break;
 			str[i][k++] = s[j++];
         }

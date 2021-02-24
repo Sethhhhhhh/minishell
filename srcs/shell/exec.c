@@ -110,8 +110,9 @@ int			exec(char **args, int pipe)
 		return (1);
 	else if (is_cmd < 0)
 		return (-1);
-	ft_putstr_fd("minishell: command not found: ", 1);
+	ft_putstr_fd("bash: ", 1);
 	ft_putstr_fd(args[0], 1);
+	ft_putstr_fd(": command not found", 1);
 	ft_putchar_fd('\n', 1);
 	return (0);
 }

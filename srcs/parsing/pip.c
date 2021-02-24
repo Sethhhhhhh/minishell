@@ -60,7 +60,7 @@ int		pipeinstr(char c, char *str)
 		}
 		if (str[i] == '\\')
 			i++;
-		if (str[i] == c)
+		if (str[i] == c && str[i - 1] != '\\')
 			return (i);
 	}
 	return (-1);

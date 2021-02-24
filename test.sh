@@ -1,5 +1,7 @@
 #! /bin/sh
 
+######################################## YOHANN ########################################
+
 
 #########Echo#########
 echo bonjour
@@ -44,8 +46,38 @@ eChO bonjour
 [EXPORTS HOME='/Users/emmabourdit'] echo $PWD; echo $OLDPWD
 echo "$wfjwefielwhfhlwefkhwefwe" a
 echo '$wfjwefielwhfhlwefkhwefwe' a
-'$wfjwefielwhfhlwefkhwefwe' a OK
+'$wfjwefielwhfhlwefkhwefwe' a
 "$wfjwefielwhfhlwefkhwefwe" a
+#/bin/echo fonctionne pas
+/bin/echo " \  "
+/bin/echo " \" "
+/bin/echo " \' "
+/bin/echo " \a "
+/bin/echo " \b "
+/bin/echo " \| "
+/bin/echo " \! "
+/bin/echo " \@ "
+/bin/echo " \$ "
+/bin/echo " \$LESS "
+/bin/echo " \$? "
+/bin/echo " \\ "
+/bin/echo " \\\ "
+/bin/echo " \\\\ "
+/bin/echo " \\\\\ "
+/bin/echo " \\\\\\ "
+/bin/echo " \\\\\\\ "
+/bin/echo " \\\\\\\\ "
+/bin/echo ' \  '
+/bin/echo ' \" '
+/bin/echo ' \a '
+/bin/echo ' \b '
+/bin/echo ' \! '
+/bin/echo ' \@ '
+/bin/echo ' \$ ' 
+/bin/echo ' $LESS '
+/bin/echo ' \$? '
+/bin/echo ' \\ '
+/bin/echo ' \\\ '
 
 #########Cd#########
 cd ..
@@ -69,8 +101,10 @@ cd ////
 cd //////////////////////////////////////////////////////
 cd $HOME
 cd ' // '; pwd
-
 #retour a la ligne tout seul donne un command not found
+#il faut pas renvoyer command not found quand y a un fichier qui a été créé et que arg[0] = \0
+./minishell -c "echo bonjour > file ; <file" | cat -e
+touch test ; < test
 # permission denied alors que c'est pas censé renvoyer de msg d'erreur
 cd '' 
 cd '' ''
@@ -82,12 +116,11 @@ cd ' /'
 cd '                  /'
 cd d ''
 cd d d
-[SETUP mkdir -m 000 d] echo $PWD; echo $OLDPWD; cd d; echo $OLDPWD 
+mkdir -m 000 d ; echo $PWD; echo $OLDPWD; cd d; echo $OLDPWD 
 # il me dit no such file or directory alors que doit pas
 cd ~ 
 # renvoie chez nous /home et //home dans bash
 cd //home ; pwd 
-
 
 #########Export#########
 export test=coucou ; echo $test
@@ -116,21 +149,24 @@ exporT B=bonjour
 [EXPORTS PATH='/bin:/usr/bin'] Export B=bonjour
 [EXPORTS PATH='/bin:/usr/bin'] exporT B=bonjour
 export A=\B\O\N\ \ \ \ \ \ \ JOURJESUIS
-
+export test=$COLORTERM=coucou
 #à faire
-export
-#j'ai pas géré et maxime non plus
-export test=$COLORTERM=coucou 
+export 
 #maximum 1 espace entre les élements
 export test="   a   "
 echo $test$test$test$test$test$test$test$test$test$test
 echo $test$test$test$test
 #quand y a le début d'une autre variable ca l'appelle
 echo $PA
+echo "$PAT\H" 2>"$COLORTERM"
+"$P'ATH'" 
+echo $$
+$
+$$PWD
 export A=\B\O\N\ \ \ \ \ \ \ JOURJESUIS ; echo $A
-#erreur : une deuxième assignation doit écraser la première
+#une deuxième assignation doit écraser la première
 export mdr=hey; env ; export mdr=lol ; env
-#error a renvoyer not a valid identifier :
+#error a renvoyer not a valid identifier si y a des caractères autres que ??:
 export ?=42
 export $
 export 1=a
@@ -145,40 +181,116 @@ export 'AH@'=nop
 export 'AH"'=nop
 export 'AH!'=nop
 export A 'asdf ' B ' asdf asdf asd f' ' asdf ' '' 'asdf ' C
-
-
-
-
-
-
-
-
+export "  a"=coucou
 
 #########Unset#########
 unset emma yohann
+export test1 test2= test3="coucou" ; unset test1 test2
+export A='a' ; unset 'A'; echo $A
+Unset TERM
+unseT TERM
+#a faire
+unset
+#erreur doit renvoyer "unset `... ': not a valid identifier"
+export A='a' ; unset 'A '; echo $A
+export A='a' B='b' C='c' ; unset 'asdf ' B ' asdf asdf asd f' ' asdf ' '' 'asdf ' C; echo $A$B$C
+export A='a' B='b' C='c' ; unset A 'asdf ' B ' asdf asdf asd f' ' asdf ' '' 'asdf '; echo $A$B$C
+export A='a' B='b' C='c' ; unset A 'asdf ' B ' asdf asdf asd f' ' asdf ' '' 'asdf ' C 
+unset 'AH@'=nop
+unset "AH'"=nop
+unset 'AH"'=nop
+unset 'AH$'=nop
+unset 'AH!'=nop
+unset 'AH|'=nop
+unset 'AH;'=nop
+unset 'AH&'=nop
+unset 'AH\'=nop  
+#renvoie pas l'erreur + renvoie pas le resultat de echo $A
+export A='a' ; unset 'A='; echo $A
+#renvoie une variable d'environnement wtf?
+export A='a' B='b' C='c' ; unset A 'asdf ' B ' asdf asdf asd f' ' asdf ' '' 'asdf ' C; echo $A$B$C
+#Term n'est pas unset ici
+export PATH='/bin:/usr/bin' ; unset TERM ; echo $TERM
+unset TERM ; echo $TERM
+
 #########Env#########
 env
 Env
 enV
-env                                                                                 [FAIL]
-[SETUP export A=a] env                                                              [FAIL]
-[SETUP export A=a B=b C=c] env                                                      [FAIL]
-[SETUP export A=a B=b C=c] env | cat -e                                             [FAIL]                                                                              [FAIL]
-[EXPORTS PATH='/bin:/usr/bin'] Env                                                  [FAIL]
-[EXPORTS PATH='/bin:/usr/bin'] enV  
+export PATH='/bin:/usr/bin' ; Env
+export PATH='/bin:/usr/bin' ; enV  
+# la variable A n'apparaît pas
+export A=a ; env
+# y a que la variable B qui s'est exportée
+export A=a B=b C=c ; env
+export A=a B=b C=c ; env | cat -e 
+
 #########Pwd#########
 pwd
 pwd mdr
 pwd coucou ne rien imprimer
-#########Appels Systèmes#########
-ls -l -R -a
-ls -l
-mkdir coucou
+[SETUP cd ..] pwd
+[SETUP cd ../..] pwd
+[SETUP cd ../../..] pwd
+[SETUP cd /] pwd
+[SETUP cd $HOME] pwd
+pwd | cat -e
+unset PWD; pwd; echo $PWD
+Pwd
+pwD
+#erreur : pas le meme retour chez nous renvoie /etc dans bash renvoie le bon pwd
+export PWD='/etc' ; pwd
+export PWD=foo; pwd; echo $PWD
+
+#########Pipes#########
+echo testing multi ; echo "test 1 ; | and 2" ; cat test.sh | grep echo
+cat test.sh | grep arcu | cat -e
+echo test | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e| cat -e
+cat /dev/random | head -c 100 | wc -c
+echo testing multi ; echo "test 1 ; | and 2" ; cat test.sh | grep echo
+>lol echo > test>lol>test>>lol>test mdr >lol test >test; cat test
+touch a b c d; mkdir m1 m2 m3; echo bonjour > a ; ls -l | cat -e < a
+ls asdfasdf | echo a
+echo a | ls asdfasdf
+#Boucle infinie :
+cat -e /dev/random | head -c 10
+cat -e /dev/random | cat -e | head -c 10 
+cat -e /dev/random | cat -e | cat -e | head -c 10
+
+
+#########Erreurs A renvoyer#########
+#il manque un retour erreur ici :
+asdf | echo bonjour
+#Mauvais retour d'erreur : Bad file descriptor au lieu de No such file or directory
+cat < doesnotexist
+#Mauvais retour d'erreur : command not found au lieu de No such file or directory
+$PWD$PATH$COLORTERM
+"$PATH"
+#Mauvais retour d'erreur : command not found au lieu de is a directory
+./srcs
+# y a command not found qui se met dans test
+> test
+>> test
+#command not found alors que ca doit pas
+2>>test1
+$COLORTERMcoucou
+#l'inverse, c'est sencé renvoyer command not found mais c'est pas le cas
+1>test233 "" echo bonjour
+
+
+######################################## EMMA ########################################
+
 #########Protections#########
 'echo' "bonjour" "wesh"
 e"ch"o bonjour
        'ech'o bonjour
 #echappement tout seul
+echo\ bonjour
+\ echo bonjour
+ \ echo bonjour
+                 \ echo bonjour
+ \                 echo bonjour
+                 \                    echo bonjour
 echo lol\ \ \ \coucou
 \ \ \ \ \ \ mdr
 echo \hey
@@ -191,6 +303,7 @@ echo \\coucou
 echo \"bonjour""
 echo \'\'\''' bonjour "" | cat -e
 e\c\h\o b\on\njour
+echo \ \ jesuis \|\| \ charles
 #doubles quotes
 "" "" echo minishell
 ""echo minishell
@@ -209,14 +322,12 @@ echo "$wfjwefielwhfhlwefkhwefwe" a
 ls "-lR""-a"
 echo bonjour 1>"hey" pas normal
 echo bonjour 1> "wesh alors" hey
-echo bonjour 1>'' pas normal # No such file or directory
 echo "" mdr "" | cat -e
 echo bonjour 1>'"' pas normal
 echo bonjour 1> "hey""" pas normal
 echo bonjour 1> "hey"'' pas normal
 echo bon"jo\"u"r
 echo bon"jo\\"u"r"
-
 echo bon"jo\"''\"\"\'$u\\'\$"r
 echo b"\ \ \ onjour"
 echo "b\on\j\our"
@@ -260,9 +371,7 @@ echo bonjour >> test3
 echo bonjour>>test3>>test4
 1>test1 2>test2 echo bonjour
 1>test12>test2 echo bonjour
-2>>test1 #command not found alors que ca doit pas
 >test1 2>test2 echo bonjour
-1>test233 "" echo bonjour ## sencé renvoyer command not found mais c pas le cas
 >> e
 #multi redirections
 echo >mdr>hey>>sarace\sal"hehe"
@@ -274,17 +383,20 @@ echo >hey1>h'ey2'
 echo bonjour >hey >>hey2 >>hey3
 echo mdr <hello >>wesh>alors2>error
 echo mdr >>wesh>alors2>error
-
+echo "\"" >>a"b""c"
+echo b > foo ; echo a | cat -e < foo
+echo > test'sticked' bonjour
+> test'sticked' echo bonjour
+echo >> test'sticked' bonjour
+>> test'sticked' echo bonjour
+echo bonjour > test; echo salut > je ; cat<test<je
 
 #########Environnement#########
 echo "$'PATH'"
 echo $"coucou"
 echo $PATH
-$PWD$PATH$COLORTERM    # mauvais retour erreur command not found au lieu de No such file or directory
-$COLORTERMcoucou      # mauvais retour
 ls $HOME/Desktop
 echo "$PATH""" coucou
-"$PATH" #retour d'erreur doit etre no such file or directory
 echo $PATH"coucou"
 echo "hello"$PWD"coucou"
 coucou$PWD test$COLORTERMlol lol$HOME
@@ -312,54 +424,78 @@ echo \"  " lol n\' ; coucou \"  "
 echo \'   "< ceci | n\'est pas un pipe et ceci" ; echo "ceci est bien une séparation >\'"
 echo \' "coucou" ; echo coucou
 echo \" "coucou\"\"\" ; hey" ; "ech"o \" hey
-
-#--------------------------------Jusqu'ici tout est OK
-#--------------------------------probleme chez yohann
-echo "$PAT\H" 2>"$COLORTERM"
-"$P'ATH'" 
-echo $$
-$
-$$PWD
-#---------------------------à gérer ?
-echo mdrr <>coucou
+echo bonjour | asdf
+echo bonjour; ls doesnotexists
+echo \ \ jesuis\; \ charles
 
 
-#########Cmds#########
-echo
-
-
-#########Tout ensemble#########
-echo testing multi ; echo "test 1 ; | and 2" ; cat test.sh | grep echo
-cat test.sh | grep arcu | cat -e
-echo test | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e| cat -e
-cat /dev/random | head -c 100 | wc -c
-echo testing multi ; echo "test 1 ; | and 2" ; cat test.sh | grep echo
->lol echo > test>lol>test>>lol>test mdr >lol test >test; cat test
-echo > < #segfault
-
-
+#########Erreurs A renvoyer#########
+#erreurs dans les fichiers des redirections :
+echo bonjour 1>'' pas normal # No such file or directory
+#syntax error near unexpected token `|'
+echo|
+| ; a
+| < a
+< | a
+> | a
+>> | a 
+echo |
+echo |
+|echo
+|cat
+| cat
+    | cat 
+ echo bonjour | | cat -e
+echo a ||| echo b
+#syntax error near unexpected token `;'
+echo a ; ;
+< ; a
+> ; a
+>> ; a
+; | a
+; < a
+; > a
+; >> a
+;
+; ;
+; ; ; 
+echo a ; ; echo b
+; echo 
+;echo 
+#syntax error near unexpected token `;;'
+;;;
+echo a ;;;;; echo b 
+echo a ;; echo b
+#syntax error near unexpected token `newline'
+echo <
+> 
+>>
+<
+#syntax error near unexpected token `>'
+echo foo >>> bar
+#syntax error near unexpected token `>>'
+echo foo >>>> bar 
+echo foo >>>>> bar
+#syntax error near unexpected token `<'
+echo bonjour > bar ; cat << < bar 
+#syntax error near unexpected token `<<'
+#echo bonjour > bar ; cat << << bar
+echo bonjour > bar ; cat <<<<< bar 
 #Erreurs Quotes
+echo ''#enlever une simple quote
+echo '\'''#enlever une simple quote
+echo ""#enlever une double quote
+echo ''''''''''''''''''''''''''''''''''''''''''''#enlever une simple quote
+echo "\\"""#enlever une double quote
+echo "AH\""#enlever une double quote
+echo """" #enlever une double quote : boucle infinie
 echo co'c'o'u' #enlever une simple quote
 echo c'o\'u'cou' #enlever une simple quote
 echo "bon"jour"" #enlever une double quote
 echo bonjour <\weshh #no such file or directory si weshh existe pas
-;
-|
-b
-a|||bxx
-> > a
-< < a
-< >> a
->>> a
-<<<< a
-a<<<<
-pwd >;
-;pwd
-pwd ;;
-echo bonjour ;;;;;;;; echo coucou
-;echo #syntax error near unexpected token
- ;echo #idem
 
-#erreurs
-$PWD$PATH$COLORTERM #No such file or directory
-./srcs #./srcs: is a directory
+
+
+#---------------------------à gérer ?
+echo mdrr <>coucou
+echo > < #segfault
