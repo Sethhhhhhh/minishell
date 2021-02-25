@@ -179,6 +179,5 @@ char		**ft_minishell_split(char const *s, char c)
 		return (NULL);
 	ft_write_words(s, c, str, count_words);
 	str[count_words] = 0;
-	//printf("count_words = %d\n", count_words);
 	return (str);
 }

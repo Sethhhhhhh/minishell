@@ -2,28 +2,35 @@
 
 void	create_file(t_redir *redir, int type)
 {
+	errno = 0;
 	if (type == 1)
 	{
+		if (!redir->out1[0])
+			ft_error_exit(redir->out1, "No such file or directory");
 		if (redir->end == 1)
 			redir->sstdout = open(redir->out1, O_CREAT | O_RDWR | O_APPEND, 0644);
 		else
 			redir->sstdout = open(redir->out1, O_CREAT | O_RDWR | O_TRUNC, 0644);
-		//if (!redir->sstdout)
-		//	ft_error(errno, "erreur");
+		if (redir->sstdout == -1)
+			ft_error_exit(redir->out1, "No such file or directory");
 	}
 	if (type == 0)
 	{
 		redir->sstdin = open(redir->in, O_RDONLY);
-		//printf("%d\n", errno);
-		//if (redir->sstdin == -1)
-		//	ft_error_exit(errno, "No such file or Directory");
+		if (!redir->in[0] || redir->sstdin == -1)
+			ft_error_exit(redir->in, "No such file or directory");
+		
 	}
 	if (type == 2)
 	{
+		if (!redir->out2[0])
+			ft_error_exit(redir->out2, "No such file or directory");
 		if (redir->end == 1)
 			redir->sstderr = open(redir->out1, O_CREAT | O_RDWR | O_APPEND, 0644);
 		else
 			redir->sstderr = open(redir->out2, O_CREAT | O_RDWR | O_TRUNC, 0644);
+		if (redir->sstderr == -1)
+			ft_error_exit(redir->out2, "No such file or directory");
 	}
 }
 

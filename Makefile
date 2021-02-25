@@ -15,6 +15,7 @@ SRCS		=	srcs/main.c \
 				srcs/parsing/protec.c \
 				srcs/parsing/redir.c \
 				srcs/parsing/varenv.c \
+				srcs/parsing/error.c \
 				srcs/shell/pipe.c \
 				srcs/shell/exec.c \
 				srcs/shell/execution.c \

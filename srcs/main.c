@@ -40,6 +40,8 @@ void	loop()
 			continue;
 		list = NULL;
 		i = -1;
+		syntax_error(line, '|');
+		syntax_error(line, ';');
 		cmds = ft_minishell_split(line, ';');
 		while (cmds[++i])
 			list = add_cell(list, cmds[i], i);

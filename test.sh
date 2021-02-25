@@ -261,11 +261,9 @@ cat -e /dev/random | cat -e | cat -e | head -c 10
 #########Erreurs A renvoyer#########
 #il manque un retour erreur ici :
 asdf | echo bonjour
-#Mauvais retour d'erreur : Bad file descriptor au lieu de No such file or directory
-cat < doesnotexist
 #Mauvais retour d'erreur : command not found au lieu de No such file or directory
-$PWD$PATH$COLORTERM
 "$PATH"
+$PWD$PATH$COLORTERM
 #Mauvais retour d'erreur : command not found au lieu de is a directory
 ./srcs
 # y a command not found qui se met dans test
@@ -415,6 +413,7 @@ echo $PATH >$COLORTERM
 echo bonjour 1>$hey"lol"
 echo hey > coucou$COLORTERM
 echo "$LOL" 2>"$COLORTERM"
+echo $cnwvwevlvlk a
 
 #########Pipes et Séparations#########
 echo "bonjou\"r" ; echo coucou
@@ -429,24 +428,25 @@ echo bonjour; ls doesnotexists
 echo \ \ jesuis\; \ charles
 
 
-#########Erreurs A renvoyer#########
-#erreurs dans les fichiers des redirections :
-echo bonjour 1>'' pas normal # No such file or directory
+#########Erreurs A renvoyer######### -----> Ca exit mais ca doit faire l'equivalent de ctrlC
 #syntax error near unexpected token `|'
-echo|
 | ; a
 | < a
-< | a
-> | a
->> | a 
-echo |
-echo |
 |echo
 |cat
 | cat
-    | cat 
- echo bonjour | | cat -e
+    | cat
+< | a
+> | a
+>> | a
+echo|
+echo |
 echo a ||| echo b
+echo bonjour | | cat -e
+echo ' | ' "" "|" |
+#syntax error near unexpected token `||'
+|| echo cc
+echo cc ||
 #syntax error near unexpected token `;'
 echo a ; ;
 < ; a
@@ -466,6 +466,11 @@ echo a ; ; echo b
 ;;;
 echo a ;;;;; echo b 
 echo a ;; echo b
+# files dans les redirections
+echo bonjour 1>'' pas normal
+echo bonjour 2>''
+cat < ''
+cat < coucou
 #syntax error near unexpected token `newline'
 echo <
 > 
@@ -480,7 +485,7 @@ echo foo >>>>> bar
 echo bonjour > bar ; cat << < bar 
 #syntax error near unexpected token `<<'
 #echo bonjour > bar ; cat << << bar
-echo bonjour > bar ; cat <<<<< bar 
+echo bonjour > bar ; cat <<<<< bar
 #Erreurs Quotes
 echo ''#enlever une simple quote
 echo '\'''#enlever une simple quote
@@ -498,4 +503,3 @@ echo bonjour <\weshh #no such file or directory si weshh existe pas
 
 #---------------------------à gérer ?
 echo mdrr <>coucou
-echo > < #segfault

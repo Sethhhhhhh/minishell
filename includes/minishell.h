@@ -109,7 +109,10 @@ int		set_directory(char *path);
 void	sigint_handler(int sign_num);
 
 /* errors */
-void	ft_error_exit(int errno, char *msg);
+void	ft_error_exit(char *str, char *msg);
+void	ft_error_quote(char *msg);
+void	syntax_error(char *str, char c);
+
 
 void	print_parsing(char **args, t_redir *redir);
 
