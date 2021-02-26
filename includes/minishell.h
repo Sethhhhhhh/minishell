@@ -82,7 +82,7 @@ int		double_quote_redir(char *whole_cmd, t_copy *copy, t_redir *redir, char *str
 void	minishell(t_sep *list);
 void	execution(t_copy *cmdarg, t_redir *redir, int pipe);
 void	prompt();
-int		exec(char **args, int pipe);
+int		exec(char **args, t_redir *redir, int pipe);
 
 /* syscall */
 void    call(t_copy *cmdarg);

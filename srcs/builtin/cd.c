@@ -34,6 +34,8 @@ int			run_cd(char **args)
 	home = get_env("HOME");
 	if (!args[1])
 		return (set_directory(home));
+	if (!args[1][0])
+		return (1);
 	if (!ft_strcmp(args[1], "-"))
 	{
 		set_directory(get_env("OLDPWD"));

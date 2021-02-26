@@ -56,7 +56,7 @@ void	redir_dup(t_copy *cmdarg, t_redir *redir, int pipe)
 		close (2);
 		dup2(redir->sstderr, 2);
 	}
-	exec(cmdarg->args, 0);
+	exec(cmdarg->args, redir, 0);
 	if (redir->in)
 		dup2(savein, 0);
 	if (redir->out1)
@@ -70,5 +70,5 @@ void	execution(t_copy *cmdarg, t_redir *redir, int pipe)
 	if (redir->in || redir->out1 || redir->out2)
 		redir_dup(cmdarg, redir, pipe);
 	else
-		exec(cmdarg->args, pipe);	
+		exec(cmdarg->args, redir, pipe);	
 }

@@ -100,7 +100,7 @@ static int	_check_builtin(char **args)
 	return (0);
 }
 
-int			exec(char **args, int pipe)
+int			exec(char **args, t_redir *redir, int pipe)
 {
 	struct stat	f;
 	int			is_cmd;
@@ -121,6 +121,8 @@ int			exec(char **args, int pipe)
 		else if (f.st_mode & S_IXUSR)
 			return (_run(args, ft_strdup(args[0]), pipe));
 	}
+	if (redir->in || redir->out1 || redir->out2)
+		return (1);
 	ft_putstr_fd("bash: ", 1);
 	ft_putstr_fd(args[0], 1);
 	ft_putstr_fd(": command not found", 1);
