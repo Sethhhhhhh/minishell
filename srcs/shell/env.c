@@ -2,16 +2,22 @@
 
 ssize_t	find_env(char *env)
 {
+	char	*sub;
 	size_t	i;	
 	size_t	len;
+	size_t	index;
 
 	if (!env)
 		return (-1);
-	len = ft_strlen(env);
 	i = 0;	
+	sub = NULL;
 	while (g_envs[i])
 	{
-		if (!ft_strncmp(g_envs[i], env, len))
+		if ((index = ft_get_char_by_index(g_envs[i], '=')) == -1)
+			continue;
+		if (!(sub = ft_substr(g_envs[i], 0, index)))
+			continue;
+		if (ft_strequ(sub, env))
 			return (i);
 		i++;
 	}

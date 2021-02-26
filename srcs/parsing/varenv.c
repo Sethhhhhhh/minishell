@@ -50,7 +50,7 @@ int	    environnement(char *whole_cmd, t_copy *copy, int arg, int i) //variable 
     {
         if (whole_cmd[copy->i] == '"' || whole_cmd[copy->i] == '\'')
             copy->i--;
-        printf("copy->i = %d, whole_cmd[copy->i]= %c\n", copy->i, whole_cmd[copy->i]);
+        //printf("copy->i = %d, whole_cmd[copy->i]= %c\n", copy->i, whole_cmd[copy->i]);
         return (1);
     }
     if (arg == 0) // si arg = 0 faut changer copy->cmd

@@ -13,10 +13,9 @@ int	set_directory(char *path)
 		return (1);
 	}
 	ft_putstr_fd("cd: ", 2);
-	if (!stat(path, &st))
+	if (stat(path, &st) == -1)
 	{
 		ft_putstr_fd("no such file or directory: ", 2);
-		return (0);
 	}
 	else if (!(st.st_mode & S_IXUSR))
 		ft_putstr_fd("permission denied: ", 2);
@@ -24,7 +23,7 @@ int	set_directory(char *path)
 		ft_putstr_fd("not a directory: ", 2);
 	ft_putstr_fd(path, 2);
 	ft_putchar_fd('\n', 2);
-	return (0);
+	return (1);
 }
 
 int			run_cd(char **args)
@@ -32,7 +31,7 @@ int			run_cd(char **args)
 	char	*home;
 
 	home = get_env("HOME");
-	if (!args[1])
+	if (!args[1] || ft_strequ(args[1], "~"))
 		return (set_directory(home));
 	if (!args[1][0])
 		return (1);

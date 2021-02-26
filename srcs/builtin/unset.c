@@ -25,11 +25,7 @@ int			run_unset(char **args)
 	ssize_t	index;
 
 	if (!args[1])
-	{
-		ft_putstr_fd("unset: too few arguments.", 1);
-		ft_putchar_fd('\n', 1);
-		return (0);
-	}
+		return (1);
 	i = 1;
 	while (args[i])
 	{
@@ -37,6 +33,12 @@ int			run_unset(char **args)
 		{
 			if (g_envs[index])
 				g_envs = remove_env(index);
+		}
+		else
+		{
+			ft_putstr_fd("bash: unset: `", 2);
+			ft_putstr_fd(args[i], 2);
+			ft_putstr_fd("': not a valid identifier\n", 2);
 		}
 		i++;
 	}

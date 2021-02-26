@@ -7,6 +7,7 @@ int	run_echo(char **args)
 
 	n = 0;
 	i = 1;
+	
 	if (!args[1])
 	{
 		ft_putchar_fd('\n', 1);

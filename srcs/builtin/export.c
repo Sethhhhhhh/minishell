@@ -58,6 +58,29 @@ static char	*_strip_extra_spaces(char *str)
 	return (new);
 }
 
+static int	_check_name(char *args)
+{
+	size_t	i;
+	char	alpha_found;
+
+	i = 0;
+	alpha_found = 0;
+	while (args[i] && args[i] != '=')
+	{
+		if (ft_isalpha(args[i]))
+			alpha_found = 1;
+		else
+		{
+			if (ft_isdigit(args[i]) && !alpha_found)
+				return (0);
+			else if (!ft_isdigit(args[i]) && args[i] != '_')
+				return (0);
+		}
+		i++;
+	}
+	return (1);
+}
+
 int	run_export(char **args)
 {
 	char	*strip;
@@ -74,6 +97,12 @@ int	run_export(char **args)
 	i = 1;
 	while (args[i])
 	{
+		if (!_check_name(args[i]))
+		{
+			ft_putstr_fd("bash: export: '", 2);
+			ft_putstr_fd(args[i], 2);
+			ft_putstr_fd("': not a valid identifier\n", 2);
+		}
 		equal_index = ft_get_char_by_index(args[i], '=');
 		if ((index = find_env(ft_substr(args[i], 0, equal_index))) != -1)
 			set_env(ft_substr(g_envs[index], 0, ft_get_char_by_index(g_envs[index], '=')),
@@ -84,8 +113,8 @@ int	run_export(char **args)
 			g_envs = realloc_envs(count);
 			g_envs[count - 1] =	ft_strjoin(
 				ft_substr(args[i], 0, ft_get_char_by_index(args[i], '=') + 1),
-				_strip_extra_spaces(ft_substr(args[i], ft_get_char_by_index(args[i], '=') + 1, ft_strlen(args[i]))
-			));
+				_strip_extra_spaces(ft_substr(args[i], ft_get_char_by_index(args[i], '=') + 1, ft_strlen(args[i])))
+			);
 		}
 		i++;
 	}

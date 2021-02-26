@@ -48,7 +48,6 @@ echo "$wfjwefielwhfhlwefkhwefwe" a
 echo '$wfjwefielwhfhlwefkhwefwe' a
 '$wfjwefielwhfhlwefkhwefwe' a
 "$wfjwefielwhfhlwefkhwefwe" a
-#/bin/echo fonctionne pas
 /bin/echo " \  "
 /bin/echo " \" "
 /bin/echo " \' "
@@ -101,25 +100,20 @@ cd ////
 cd //////////////////////////////////////////////////////
 cd $HOME
 cd ' // '; pwd
-#retour a la ligne tout seul donne un command not found
-#il faut pas renvoyer command not found quand y a un fichier qui a été créé et que arg[0] = \0
 ./minishell -c "echo bonjour > file ; <file" | cat -e
 touch test ; < test
-# permission denied alors que c'est pas censé renvoyer de msg d'erreur
 cd '' 
 cd '' ''
 cd '' '' ''
 cd ' '
-#permission denied en trop
 cd ' // '
 cd ' /'
 cd '                  /'
 cd d ''
 cd d d
 mkdir -m 000 d ; echo $PWD; echo $OLDPWD; cd d; echo $OLDPWD 
-# il me dit no such file or directory alors que doit pas
-cd ~ 
-# renvoie chez nous /home et //home dans bash
+cd ~
+# BUG DU BASH 
 cd //home ; pwd 
 
 #########Export#########
@@ -152,11 +146,9 @@ export A=\B\O\N\ \ \ \ \ \ \ JOURJESUIS
 export test=$COLORTERM=coucou
 #à faire
 export 
-#maximum 1 espace entre les élements
 export test="   a   "
 echo $test$test$test$test$test$test$test$test$test$test
 echo $test$test$test$test
-#quand y a le début d'une autre variable ca l'appelle
 echo $PA
 echo "$PAT\H" 2>"$COLORTERM"
 "$P'ATH'" 
@@ -164,9 +156,7 @@ echo $$
 $
 $$PWD
 export A=\B\O\N\ \ \ \ \ \ \ JOURJESUIS ; echo $A
-#une deuxième assignation doit écraser la première
 export mdr=hey; env ; export mdr=lol ; env
-#error a renvoyer not a valid identifier si y a des caractères autres que ??:
 export ?=42
 export $
 export 1=a
@@ -189,9 +179,7 @@ export test1 test2= test3="coucou" ; unset test1 test2
 export A='a' ; unset 'A'; echo $A
 Unset TERM
 unseT TERM
-#a faire
 unset
-#erreur doit renvoyer "unset `... ': not a valid identifier"
 export A='a' ; unset 'A '; echo $A
 export A='a' B='b' C='c' ; unset 'asdf ' B ' asdf asdf asd f' ' asdf ' '' 'asdf ' C; echo $A$B$C
 export A='a' B='b' C='c' ; unset A 'asdf ' B ' asdf asdf asd f' ' asdf ' '' 'asdf '; echo $A$B$C
@@ -204,12 +192,9 @@ unset 'AH!'=nop
 unset 'AH|'=nop
 unset 'AH;'=nop
 unset 'AH&'=nop
-unset 'AH\'=nop  
-#renvoie pas l'erreur + renvoie pas le resultat de echo $A
+unset 'AH\'=nop
 export A='a' ; unset 'A='; echo $A
-#renvoie une variable d'environnement wtf?
 export A='a' B='b' C='c' ; unset A 'asdf ' B ' asdf asdf asd f' ' asdf ' '' 'asdf ' C; echo $A$B$C
-#Term n'est pas unset ici
 export PATH='/bin:/usr/bin' ; unset TERM ; echo $TERM
 unset TERM ; echo $TERM
 
@@ -219,9 +204,7 @@ Env
 enV
 export PATH='/bin:/usr/bin' ; Env
 export PATH='/bin:/usr/bin' ; enV  
-# la variable A n'apparaît pas
 export A=a ; env
-# y a que la variable B qui s'est exportée
 export A=a B=b C=c ; env
 export A=a B=b C=c ; env | cat -e 
 
@@ -238,7 +221,6 @@ pwd | cat -e
 unset PWD; pwd; echo $PWD
 Pwd
 pwD
-#erreur : pas le meme retour chez nous renvoie /etc dans bash renvoie le bon pwd
 export PWD='/etc' ; pwd
 export PWD=foo; pwd; echo $PWD
 
@@ -254,19 +236,15 @@ ls asdfasdf | echo a
 echo a | ls asdfasdf
 #Boucle infinie :
 cat -e /dev/random | head -c 10
-cat -e /dev/random | cat -e | head -c 10 
+cat -e /dev/random | cat -e | head -c 10
 cat -e /dev/random | cat -e | cat -e | head -c 10
-
 
 #########Erreurs A renvoyer#########
 #il manque un retour erreur ici :
 asdf | echo bonjour
-#Mauvais retour d'erreur : command not found au lieu de No such file or directory
 "$PATH"
 $PWD$PATH$COLORTERM
-#Mauvais retour d'erreur : command not found au lieu de is a directory
 ./srcs
-# y a command not found qui se met dans test
 > test
 >> test
 #command not found alors que ca doit pas
@@ -274,7 +252,6 @@ $PWD$PATH$COLORTERM
 $COLORTERMcoucou
 #l'inverse, c'est sencé renvoyer command not found mais c'est pas le cas
 1>test233 "" echo bonjour
-
 
 ######################################## EMMA ########################################
 

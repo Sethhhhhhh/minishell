@@ -74,6 +74,7 @@ static int	_check_bins(char **args, int pipe)
 static int	_check_builtin(char **args)
 {
 	char	*str;
+	char	pwd[4096 + 1];
 
 	if (ft_strequ(args[0], "echo"))
 		return(run_echo(args));
@@ -85,7 +86,7 @@ static int	_check_builtin(char **args)
 		return (run_export(args));
 	else if (ft_strequ(args[0], "pwd"))
 	{
-		if ((str = get_env("PWD")))
+		if ((str = getcwd(pwd, 4096)))
 		{
 			ft_putstr_fd(str, 1);
 			ft_putchar_fd('\n', 1);
