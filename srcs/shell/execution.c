@@ -24,7 +24,7 @@ void	minishell(t_sep *list)
 		else
 		{
 			cmd(list->cmd_sep, &cmdarg, &redir);
-			//print_parsing(cmdarg.args, &redir);
+			print_parsing(cmdarg.args, &redir);
 			execution(&cmdarg, &redir, 0);
 		}
 		list = list->next;

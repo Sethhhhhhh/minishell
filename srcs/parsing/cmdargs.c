@@ -38,9 +38,12 @@ char	*args(char *whole_cmd, t_copy *copy, size_t i, t_redir *redir)// retrouver 
 		}
 		if ((whole_cmd[copy->i] == '>' || whole_cmd[copy->i] == '<') && whole_cmd[copy->i - 1] != '\\')
 		{
+			//printf("que ca rentre 2 pour copy->i = %d et whole_cmd[copy->i] = %c\n", copy->i, whole_cmd[copy->i]);
 			j = redirection(whole_cmd, copy, redir);
 			if (j == -1)
 				return (NULL);
+			if (j == -3)
+				return (copy->args[i]);
 		}
 		if ((whole_cmd[copy->i] == ' ' && whole_cmd[copy->i - 1] != '\\') && (copy->args[i][0] || (!copy->args[i][0] 
 			&& (whole_cmd[copy->i - 1] == '"' || whole_cmd[copy->i - 1] == '\'') 

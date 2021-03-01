@@ -368,6 +368,7 @@ echo >> test'sticked' bonjour
 echo bonjour > test; echo salut > je ; cat<test<je
 echo bonjour 1> "$PATHH"
 echo bonjour 1> "$PAT\H"
+echo bonjour 2> "$PAT\H"
 
 #########Environnement#########
 echo "$'PATH'"
