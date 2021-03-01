@@ -88,8 +88,8 @@ void	syntax_error(char *str, char c)
 	i = -1;
 	if (str[0] == c)
 	{
-		printf("i = %d, str[i] = %c\n", i, str[i]);
-		printf("i = %d, str[i] = %c\n", i + 1, str[i + 1]);
+		//printf("i = %d, str[i] = %c\n", i, str[i]);
+		//printf("i = %d, str[i] = %c\n", i + 1, str[i + 1]);
 		ft_error_token("syntax error near unexpected token `", c, 0, str);
 	}
 	while (str[++i] && (str[i] == ' ' || str[i] == '>' || str[i] == '<' || str[i] == c))
@@ -117,7 +117,7 @@ void	syntax_error(char *str, char c)
 		}
 	}
 	i--;
-	if (str[i] == c)
+	if (str[i] == '|')
 		ft_error_token("syntax error near unexpected token `", c, i, str);
 	syntax_error_redir(str, '>');
 	syntax_error_redir(str, '<');

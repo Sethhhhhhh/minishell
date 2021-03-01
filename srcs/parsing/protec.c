@@ -88,7 +88,9 @@ int		double_quote_arg(char *whole_cmd, t_copy *copy, size_t i)
 	{
 		j = 0;
 		if (whole_cmd[copy->i] == '$' && whole_cmd[copy->i - 1] != '\\') // $ conserve sa signification speciale
+		{
 			j = environnement(whole_cmd, copy, 1, i);
+		}
 		if (whole_cmd[copy->i] == '\\')
 		{
 			if (whole_cmd[copy->i + 1] == '$' || whole_cmd[copy->i + 1] == '\\' // si \ suivit de " $ ou \ garde sa signification
@@ -111,6 +113,7 @@ int		double_quote_arg(char *whole_cmd, t_copy *copy, size_t i)
 
 int		double_quote_redir(char *whole_cmd, t_copy *copy, t_redir *redir, char *str, int std)
 {
+	int j;
 	if (copy->i == (strlen(whole_cmd) -1)) // si le " ouvrant est le dernier caractere de la chaine
 		ft_error_quote("bash: \" au bout de la chaine");
 	if ((whole_cmd[copy->i + 1] == '"' && whole_cmd[copy->i + 2] == ' ') && !str) // cas de : echo bonjour 1>"" pas normal ou de : echo bonjour 1> "hey""" pas normal
@@ -122,15 +125,27 @@ int		double_quote_redir(char *whole_cmd, t_copy *copy, t_redir *redir, char *str
 	}
 	while (whole_cmd[copy->i] && whole_cmd[++copy->i] != '"') //++copy->i; //on decale de 1 car on est sur le " ouvrant
 	{
+		j = 0;
 		if (whole_cmd[copy->i] == '$' && whole_cmd[copy->i - 1] != '\\') // $ conserve sa signification speciale
-			environnement_redir(whole_cmd, copy, std, redir);
+		{
+			//printf("ca rentre ici a whole_cmd[%d] = %c\n", copy->i, whole_cmd[copy->i]);
+			j = environnement_redir(whole_cmd, copy, std, redir);
+			if (whole_cmd[copy->i] == '"' && whole_cmd[copy->i - 1] != '\\') // cas de : echo bonjour 1> "$PATHH"
+			{
+				printf("ca rentre 2\n");
+				break;				
+			}
+			//printf("ca rentre ici a whole_cmd[%d] = %c\n", copy->i, whole_cmd[copy->i]);
+		}
 		if (whole_cmd[copy->i] == '\\')
 		{
 			if (whole_cmd[copy->i + 1] == '$' || whole_cmd[copy->i + 1] == '\\' // si \ suivit de " $ ou \ garde sa signification
 					|| whole_cmd[copy->i + 1] == '"')
 				copy->i++;
 		}
-		str[++redir->i] = whole_cmd[copy->i];
+		if (j != 1)
+			str[++redir->i] = whole_cmd[copy->i];
+		//printf("str[%d] = %c, whole_cmd[%d] = %c\n", redir->i, str[redir->i], copy->i, whole_cmd[copy->i]);
 	}
 	if ((copy->i == strlen(whole_cmd)) && whole_cmd[copy->i] != '"') // si y a pas de " fermant
 		ft_error_quote("bash: Pas de \" fermant");

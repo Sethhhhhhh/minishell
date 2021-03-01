@@ -26,7 +26,7 @@ void	create_file(t_redir *redir, int type)
 		if (!redir->out2[0])
 			ft_error_exit(redir->out2, "No such file or directory");
 		if (redir->end == 1)
-			redir->sstderr = open(redir->out1, O_CREAT | O_RDWR | O_APPEND, 0644);
+			redir->sstderr = open(redir->out2, O_CREAT | O_RDWR | O_APPEND, 0644);
 		else
 			redir->sstderr = open(redir->out2, O_CREAT | O_RDWR | O_TRUNC, 0644);
 		if (redir->sstderr == -1)

@@ -315,6 +315,8 @@ echo "b\\onjour\\"
 "echo \\\\\n"
 echo\" bonjour\"
 echo "mdrrr >coucou >> ceci n'est pas une redirection"
+echo a; echo b; echo c; echo d; echo e; echo f; echo g; echo h; echo i;echo j;
+echo a;
 #simples quotes
 '$PATH'
 '$\PATH'
@@ -364,6 +366,8 @@ echo > test'sticked' bonjour
 echo >> test'sticked' bonjour
 >> test'sticked' echo bonjour
 echo bonjour > test; echo salut > je ; cat<test<je
+echo bonjour 1> "$PATHH"
+echo bonjour 1> "$PAT\H"
 
 #########Environnement#########
 echo "$'PATH'"
@@ -390,6 +394,11 @@ echo bonjour 1>$hey"lol"
 echo hey > coucou$COLORTERM
 echo "$LOL" 2>"$COLORTERM"
 echo $cnwvwevlvlk a
+echo $COLORTERM$$hey
+echo $COLORTERM$hey
+echo $$$$$$$$
+$$$
+$
 
 #########Pipes et Séparations#########
 echo "bonjou\"r" ; echo coucou
