@@ -250,7 +250,6 @@ $PWD$PATH$COLORTERM
 #command not found alors que ca doit pas
 2>>test1
 $COLORTERMcoucou
-#l'inverse, c'est sencé renvoyer command not found mais c'est pas le cas
 1>test233 "" echo bonjour
 
 ######################################## EMMA ########################################

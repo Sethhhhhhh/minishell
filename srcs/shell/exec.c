@@ -9,7 +9,7 @@ static int	_run(char **args, char *bin, int pipe)
 	else if (!pipe && g_pid < 0)
 	{
 		free(bin);
-		ft_putstr_fd("execve: failed to create a new process.", 1);
+		ft_putstr_fd("bash: execve: failed to create a new process.", 2);
 		ft_putchar_fd('\n', 1);
 		return (-1);
 	}
@@ -30,9 +30,9 @@ static int	_has_perm(char **args, char *bin, struct stat statbuf, int pipe)
 			return (_run(args, bin, pipe));
 		else
 		{
-			ft_putstr_fd("execve: permission denied: ", 1);
-			ft_putstr_fd(bin, 1);
-			ft_putchar_fd('\n', 1);
+			ft_putstr_fd("bash: execve: permission denied: ", 2);
+			ft_putstr_fd(bin, 2);
+			ft_putchar_fd('\n', 2);
 		}
 		free(bin);
 		return (0);
@@ -107,6 +107,8 @@ int			exec(char **args, t_redir *redir, int pipe)
 	int			is_cmd;
 
 	g_pid = 0;
+	if ((!args || !args[0] || args[0][0] == '\0') && !args[1])
+		return (1);
 	is_cmd = _check_builtin(args) || _check_bins(args, pipe);
 	if (is_cmd > 0)
 		return (1);
@@ -122,11 +124,9 @@ int			exec(char **args, t_redir *redir, int pipe)
 		else if (f.st_mode & S_IXUSR)
 			return (_run(args, ft_strdup(args[0]), pipe));
 	}
-	if (redir->in || redir->out1 || redir->out2)
-		return (1);
-	ft_putstr_fd("bash: ", 1);
-	ft_putstr_fd(args[0], 1);
-	ft_putstr_fd(": command not found", 1);
-	ft_putchar_fd('\n', 1);
+	ft_putstr_fd("bash: ", 2);
+	ft_putstr_fd(args[0], 2);
+	ft_putstr_fd(": command not found", 2);
+	ft_putchar_fd('\n', 2);
 	return (0);
 }
