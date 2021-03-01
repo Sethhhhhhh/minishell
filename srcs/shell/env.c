@@ -3,7 +3,7 @@
 ssize_t	find_env(char *env)
 {
 	char	*sub;
-	size_t	i;	
+	size_t	i;
 	size_t	len;
 	size_t	index;
 
@@ -14,11 +14,10 @@ ssize_t	find_env(char *env)
 	while (g_envs[i])
 	{
 		if ((index = ft_get_char_by_index(g_envs[i], '=')) == -1)
-			continue;
-		if (!(sub = ft_substr(g_envs[i], 0, index)))
-			continue;
-		if (ft_strequ(sub, env))
-			return (i);
+			index = ft_strlen(g_envs[i]);
+		if ((sub = ft_substr(g_envs[i], 0, index)))
+			if (ft_strequ(sub, env))
+				return (i);
 		i++;
 	}
 	return (-1);

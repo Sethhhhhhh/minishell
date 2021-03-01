@@ -2,10 +2,10 @@
 
 size_t	ft_get_char_by_index(char *str, char c)
 {
-    char *valid_c; 
+    char	*ch; 
 
-	valid_c = ft_strchr(str, c);
-	if (!valid_c)
+	ch = ft_strchr(str, c);
+	if (!ch)
         return (-1);
-    return ((size_t)(valid_c - str));
+    return ((size_t)(ch - str));
 }

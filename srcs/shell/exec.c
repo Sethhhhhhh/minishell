@@ -95,7 +95,7 @@ static int	_check_builtin(char **args)
 	}
 	else if (ft_strequ(args[0], "env"))
 	{
-		print_envs();
+		run_env();
 		return (1);
 	}
 	return (0);

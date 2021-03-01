@@ -1,7 +1,7 @@
-#include "../../includes/minishell.h"
+#include "../../../includes/minishell.h"
 
 static size_t	_len_without_extra_spaces(char *str)
-{	
+{
 	size_t	i;
 	size_t	len;
 	char	found_space;
@@ -10,7 +10,7 @@ static size_t	_len_without_extra_spaces(char *str)
 	while (str[len - 1] && ft_isspace(str[len - 1]))
 		len--;
 	str[len] = '\0';
-	i = 0; 
+	i = 0;
 	while (str[i] && ft_isspace(str[i]))
 		i++;
 	len -= i;
@@ -33,7 +33,7 @@ static char	*_strip_extra_spaces(char *str)
 	size_t	j;
 	size_t	k;
 	size_t	len;
-	
+
 	len = _len_without_extra_spaces(str);
 	if (!(new = (char *)malloc(sizeof(char) * (len + 1))))
 		return (NULL);
@@ -81,6 +81,35 @@ static int	_check_name(char *args)
 	return (1);
 }
 
+static int	set(char *arg, size_t equ, size_t index)
+{
+	char	*st;
+	char	*end;
+	size_t	equ_env;
+
+	printf("%zu\n", equ);
+	printf("%zu\n", ft_strlen(arg));
+	if (equ == ft_strlen(arg))
+		return (0);	
+	if ((equ_env = ft_get_char_by_index(g_envs[index], '=') == -1))
+	{
+		equ_env = ft_strlen(g_envs[index]);
+		g_envs[index] = ft_strjoin(g_envs[index], "=");
+	}
+	if (!(st = ft_substr(g_envs[index], 0, equ_env)))
+		return (0);
+	if (!(end = ft_substr(arg, equ + 1, ft_strlen(arg))))
+		return (0);
+	if (!(end = _strip_extra_spaces(end)))
+		return (0);
+	if (!(set_env(st, end)))
+	{
+		printf("OK\n");
+		return (0);
+	}
+	return (1);
+}
+
 int	run_export(char **args)
 {
 	char	*strip;
@@ -91,8 +120,8 @@ int	run_export(char **args)
 
 	if (!args[1])
 	{
-		ft_putstr_fd("export: too few arguments.", 1);
-		ft_putchar_fd('\n', 1);
+		sort_env();
+		return (1);
 	}
 	i = 1;
 	while (args[i])
@@ -103,10 +132,11 @@ int	run_export(char **args)
 			ft_putstr_fd(args[i], 2);
 			ft_putstr_fd("': not a valid identifier\n", 2);
 		}
-		equal_index = ft_get_char_by_index(args[i], '=');
+		if ((equal_index = ft_get_char_by_index(args[i], '=')) == -1)
+			equal_index = ft_strlen(args[i]);
 		if ((index = find_env(ft_substr(args[i], 0, equal_index))) != -1)
-			set_env(ft_substr(g_envs[index], 0, ft_get_char_by_index(g_envs[index], '=')),
-				_strip_extra_spaces(ft_substr(args[i], ft_get_char_by_index(args[i], '=') + 1, ft_strlen(args[i]))));
+			set(args[i], equal_index, index);
+
 		else
 		{
 			count = get_envs_count() + 1;

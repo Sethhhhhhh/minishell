@@ -103,6 +103,8 @@ int		run_echo(char **args);
 int		run_cd(char **args);
 int		run_unset(char **args);
 int		run_export(char **args);
+void	sort_env(void);
+int		run_env(void);
 int		set_directory(char *path);
 
 /* handler */
