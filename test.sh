@@ -473,6 +473,12 @@ echo bonjour > bar ; cat << < bar
 #echo bonjour > bar ; cat << << bar
 echo bonjour > bar ; cat <<<<< bar
 #Erreurs Quotes
+#simple quote sur cmd OK
+#simple quote sur arg NO
+#simple quote sur redirection
+#double quote sur cmd OK
+#double quote sur arg
+#double quote sur redirection
 echo ''#enlever une simple quote
 echo '\'''#enlever une simple quote
 echo ""#enlever une double quote

@@ -15,7 +15,8 @@ void	minishell(t_sep *list)
 		{
 			while (list->pipcell)
 			{
-				cmd(list->pipcell->cmd_pip, &cmdarg, &redir);
+				if (cmd(list->pipcell->cmd_pip, &cmdarg, &redir) == NULL)
+					break;
 				fdd = run_pipe(list->pipcell, &cmdarg, fdd, &redir);
 				list->pipcell = list->pipcell->next;
 			}
@@ -23,8 +24,9 @@ void	minishell(t_sep *list)
 		}
 		else
 		{
-			cmd(list->cmd_sep, &cmdarg, &redir);
-			print_parsing(cmdarg.args, &redir);
+			if (cmd(list->cmd_sep, &cmdarg, &redir) == NULL)
+				break;
+			//print_parsing(cmdarg.args, &redir);
 			execution(&cmdarg, &redir, 0);
 		}
 		list = list->next;

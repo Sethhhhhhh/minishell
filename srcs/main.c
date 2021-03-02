@@ -40,14 +40,17 @@ void	loop()
 			continue;
 		list = NULL;
 		i = -1;
-		syntax_error(line, '|');
-		syntax_error(line, ';');
-		cmds = ft_minishell_split(line, ';');
-		while (cmds[++i])
-			list = add_cell(list, cmds[i], i);
-		free(line);
-		parse_pip(list);
-		minishell(list);
+		if (syntax_error(line, '|') != -1 && syntax_error(line, ';') != -1)
+		{
+			cmds = ft_minishell_split(line, ';');
+			while (cmds[++i])
+				list = add_cell(list, cmds[i], i);
+			free(line);
+			parse_pip(list);
+			minishell(list);
+		}
+		else
+			free(line);
 		prompt();
 	}
 	ft_putstr_fd("exit\n", 1);

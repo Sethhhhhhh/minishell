@@ -17,6 +17,7 @@
 
 char	**g_envs;
 pid_t	g_pid;
+int		error;
 
 /* structures */
 typedef	struct	s_sep
@@ -112,8 +113,7 @@ void	sigint_handler(int sign_num);
 
 /* errors */
 void	ft_error_exit(char *str, char *msg);
-void	ft_error_quote(char *msg);
-void	syntax_error(char *str, char c);
+int		syntax_error(char *str, char c);
 
 
 void	print_parsing(char **args, t_redir *redir);

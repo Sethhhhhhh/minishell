@@ -1,6 +1,6 @@
 #include "../../includes/minishell.h"
 
-void	ft_error_token(char *msg, char c, int i, char *str)
+int		ft_error_token(char *msg, char c, int i, char *str)
 {
 	printf("bash: %s", msg);
 	if (c == 'n')
@@ -9,16 +9,10 @@ void	ft_error_token(char *msg, char c, int i, char *str)
 		printf("%c%c'\n", c, c);
 	else
 		printf("%c'\n", c);
-	exit(0);
+	return (-1);
 }
 
-void	ft_error_quote(char *msg)
-{
-	printf("%s\n", msg);
-	exit(0);
-}
-
-void	syntax_error_redir(char *str, char c)
+int		syntax_error_redir(char *str, char c)
 {
 	int i;
 	int j = -1;
@@ -43,15 +37,22 @@ void	syntax_error_redir(char *str, char c)
 			if (str[i] == c)
 				j++;
 			i++;
-			if (j > 2)
+			if (j == 3)
+			{
 				ft_error_token("syntax error near unexpected token `", c, i + 1, str);
+				return (-1);
+			}
 			if (j > 3)
+			{
 				ft_error_token("syntax error near unexpected token `", c, i, str);
+				return (-1);
+			}
 		}
 	}
+	return (0);
 }
 
-void	syntax_error_newline(char *str)
+int		syntax_error_newline(char *str)
 {
 	int i;
 	char quote;
@@ -61,7 +62,10 @@ void	syntax_error_newline(char *str)
 		i++;
 	i--;
 	if (str[i] == '>' || str[i] == '<')
-			ft_error_token("syntax error near unexpected token `", 'n', i, str);
+	{
+		ft_error_token("syntax error near unexpected token `", 'n', i, str);
+		return (-1);
+	}
 	i++;
 	while (str[i--] && (str[i] == ' ' || str[i] == '<' || str[i] == '>'))
 	{
@@ -76,11 +80,15 @@ void	syntax_error_newline(char *str)
 			i++;
 		}
 		if (str[i] == '>' || str[i] == '<')
+		{
 			ft_error_token("syntax error near unexpected token `", 'n', i, str);
+			return (-1);
+		}
 	}
+	return (0);
 }
 
-void	syntax_error(char *str, char c)
+int		syntax_error(char *str, char c)
 {
 	int i;
 	char quote;
@@ -88,13 +96,15 @@ void	syntax_error(char *str, char c)
 	i = -1;
 	if (str[0] == c)
 	{
-		//printf("i = %d, str[i] = %c\n", i, str[i]);
-		//printf("i = %d, str[i] = %c\n", i + 1, str[i + 1]);
 		ft_error_token("syntax error near unexpected token `", c, 0, str);
+		return (-1);
 	}
 	while (str[++i] && (str[i] == ' ' || str[i] == '>' || str[i] == '<' || str[i] == c))
-		if (str[i] == c) 
+		if (str[i] == c)
+		{
 			ft_error_token("syntax error near unexpected token `", c, i, str);
+			return (-1);
+		}
 	while (str[++i])
 	{
 		while (str[i] == '\'' || str[i] == '"')
@@ -111,17 +121,23 @@ void	syntax_error(char *str, char c)
 		{
 			while (str[++i] && (str[i] == ' ' || str[i] == '>' || str[i] == '<' || str[i] == c))
 				if (str[i] == c)
+				{
 					ft_error_token("syntax error near unexpected token `", c, i, str);
+					return (-1);
+				}
 			if (str[i] == '\0')
 				break;
 		}
 	}
 	i--;
 	if (str[i] == '|')
+	{
 		ft_error_token("syntax error near unexpected token `", c, i, str);
-	syntax_error_redir(str, '>');
-	syntax_error_redir(str, '<');
-	syntax_error_newline(str);
+		return (-1);
+	}
+	if (syntax_error_redir(str, '>') == -1 || syntax_error_redir(str, '<') == -1 || syntax_error_newline(str) == -1)
+		return (-1);
+	return (0);
 }
 
 void	ft_error_exit(char *str, char *msg)
@@ -131,5 +147,5 @@ void	ft_error_exit(char *str, char *msg)
 		printf(": %s\n", strerror(errno));
 	else
 		printf(": %s\n", msg);
-	exit(0);
+	error = -1;
 }

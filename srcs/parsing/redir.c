@@ -1,37 +1,52 @@
 #include "../../includes/minishell.h"
 
-void	create_file(t_redir *redir, int type)
+int	create_file(t_redir *redir, int type)
 {
 	errno = 0;
 	if (type == 1)
 	{
 		if (!redir->out1[0])
+		{
 			ft_error_exit(redir->out1, "No such file or directory");
+			return (-1);
+		}
 		if (redir->end == 1)
 			redir->sstdout = open(redir->out1, O_CREAT | O_RDWR | O_APPEND, 0644);
 		else
 			redir->sstdout = open(redir->out1, O_CREAT | O_RDWR | O_TRUNC, 0644);
 		if (redir->sstdout == -1)
+		{
 			ft_error_exit(redir->out1, "No such file or directory");
+			return (-1);
+		}
 	}
 	if (type == 0)
 	{
 		redir->sstdin = open(redir->in, O_RDONLY);
 		if (!redir->in[0] || redir->sstdin == -1)
-			ft_error_exit(redir->in, "No such file or directory");
-		
+		{
+			ft_error_exit(redir->in, "No such file or directory");	
+			return (-1);
+		}
 	}
 	if (type == 2)
 	{
 		if (!redir->out2[0])
+		{
 			ft_error_exit(redir->out2, "No such file or directory");
+			return (-1);
+		}
 		if (redir->end == 1)
 			redir->sstderr = open(redir->out2, O_CREAT | O_RDWR | O_APPEND, 0644);
 		else
 			redir->sstderr = open(redir->out2, O_CREAT | O_RDWR | O_TRUNC, 0644);
 		if (redir->sstderr == -1)
+		{
 			ft_error_exit(redir->out2, "No such file or directory");
+			return (-1);
+		}
 	}
+	return (0);
 }
 
 int		redir_out_error(char *whole_cmd, t_copy *copy, t_redir *redir) // redirection de stderr : recuperer out2, et le fd sstderr
@@ -53,13 +68,15 @@ int		redir_out_error(char *whole_cmd, t_copy *copy, t_redir *redir) // redirecti
 			while (whole_cmd[copy->i] == '"')
 				if ((double_quote_redir(whole_cmd, copy, redir, redir->out2, 2)) == -1)
 				{
-					create_file(redir, 2);
+					if (create_file(redir, 2) == -1)
+						return (-1);
 					return (4);
 				}
 			while (whole_cmd[copy->i] == '\'')
 				if ((simple_quote_redir(whole_cmd, copy, i, redir, redir->out2)) == -1)
 				{
-					create_file(redir, 2);
+					if (create_file(redir, 2) == -1)
+						return(-1);
 					return (4);
 				}
 		}
@@ -76,7 +93,8 @@ int		redir_out_error(char *whole_cmd, t_copy *copy, t_redir *redir) // redirecti
 		copy->i++;
 	}
 	redir->out2[redir->i + 1] = 0;
-	create_file(redir, 2);
+	if (create_file(redir, 2) == -1)
+		return (-1);
 	return (1);
 }
 
@@ -106,13 +124,15 @@ int		redir_out(char *whole_cmd, t_copy *copy, t_redir *redir) // redirection de 
 			while (whole_cmd[copy->i] == '"')
 				if ((double_quote_redir(whole_cmd, copy, redir, redir->out1, 1)) == -1)
 				{
-					create_file(redir, 1);
+					if (create_file(redir, 1) == -1)
+						return(-1);
 					return (4);
 				}
 			while (whole_cmd[copy->i] == '\'')
 				if ((simple_quote_redir(whole_cmd, copy, i, redir, redir->out1)) == -1)
 				{
-					create_file(redir, 1);
+					if (create_file(redir, 1) == -1)
+						return (-1);
 					return (4);
 				}
 		}
@@ -129,7 +149,8 @@ int		redir_out(char *whole_cmd, t_copy *copy, t_redir *redir) // redirection de 
 		copy->i++;
 	}
 	redir->out1[redir->i + 1] = 0;
-	create_file(redir, 1);
+	if (create_file(redir, 1) == -1)
+		return (-1);
 	printf("file stdout = %s\n", redir->out1);
 	printf("fd stdout = %d\n", redir->sstdout);
 	//printf("fin du fichier ? = %d\n", redir->end);
@@ -157,13 +178,15 @@ int		redir_in(char *whole_cmd, t_copy *copy, t_redir *redir) // redirection de s
 			while (whole_cmd[copy->i] == '"')
 				if ((double_quote_redir(whole_cmd, copy, redir, redir->in, 0)) == -1)
 				{
-					create_file(redir, 0);
+					if (create_file(redir, 0) == -1)
+						return(-1);
 					return (4);
 				}
 			while (whole_cmd[copy->i] == '\'')
 				if ((simple_quote_redir(whole_cmd, copy, i, redir, redir->in)) == -1)
 				{
-					create_file(redir, 0);
+					if (create_file(redir, 0) == -1)
+						return(-1);
 					return (4);
 				}
 		}
@@ -180,7 +203,8 @@ int		redir_in(char *whole_cmd, t_copy *copy, t_redir *redir) // redirection de s
 		copy->i++;
 	}
 	redir->in[redir->i + 1] = 0;
-	create_file(redir, 0);
+	if (create_file(redir, 0) == -1)
+		return (-1);
 	//printf("file stdin = %s\n", redir->in);
 	//printf("fd stdin = %d\n", redir->sstdin);
 	return (1);

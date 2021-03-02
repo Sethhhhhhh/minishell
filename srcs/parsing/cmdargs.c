@@ -6,6 +6,7 @@ char	*args(char *whole_cmd, t_copy *copy, size_t i, t_redir *redir)// retrouver 
 
 	copy->args[i] = NULL;
 	copy->j = -1;
+	error = 0;
 	if (!(whole_cmd))
 		return (NULL);
 	if (!(copy->args[i] = malloc(sizeof(char) * (strlen(whole_cmd) + 1))))
@@ -22,7 +23,8 @@ char	*args(char *whole_cmd, t_copy *copy, size_t i, t_redir *redir)// retrouver 
 		while (whole_cmd[copy->i] == '\'' || whole_cmd[copy->i] == '"')
 		{
 			while (whole_cmd[copy->i] == '"')
-				j = double_quote_arg(whole_cmd, copy, i);
+				if ((j = double_quote_arg(whole_cmd, copy, i)) == -1)
+					return (NULL);
 			while (whole_cmd[copy->i] == '\'')
 				if ((simple_quote_arg(whole_cmd, copy, i)) == -1)
 					return (NULL);
@@ -84,6 +86,8 @@ int		options(char *whole_cmd, t_copy *copy, t_redir *redir)
 			j--;
 		}
 		arg = args(whole_cmd, copy, i, redir);
+		if (error == -1)
+			return (-1);
 		if (!arg[0] && (whole_cmd[copy->i - 1] == '"' || whole_cmd[copy->i - 1] == '\'') && 
 			((whole_cmd[copy->i - 2] == '"' || whole_cmd[copy->i - 2] == '\'') && whole_cmd[copy->i - 3] != '\\') && !whole_cmd[copy->i])
 			{
@@ -112,7 +116,6 @@ void	init_redir_copy(t_copy *copy, t_redir *redir)
 	redir->in = NULL;
 }
 
-/* AJOUT */
 void	print_parsing(char **args, t_redir *redir)
 {
 	int i = 0;
@@ -141,7 +144,6 @@ void	print_parsing(char **args, t_redir *redir)
 		printf("fin du fichier ? = %d\n", redir->end);
 	}
 }
-/* AJOUT */
 
 char	*cmd(char *whole_cmd, t_copy *copy, t_redir *redir) // retrouver la commande dans whole_cmd (peut etre une variable d'environnement)
 {
@@ -157,15 +159,13 @@ char	*cmd(char *whole_cmd, t_copy *copy, t_redir *redir) // retrouver la command
 	while (whole_cmd[copy->i] && whole_cmd[copy->i] != ' ')
 	{
 		j = -2;
-		//printf("passe à whole_cmd[copy->i] = %c\n", whole_cmd[copy->i]);
-		//printf("copy->j = %d\n", copy->j);
-		//printf("copy->cmd[0] = %c\n", copy->cmd[0]);
 		if ((whole_cmd[copy->i] == '1' || whole_cmd[copy->i] == '2') && whole_cmd[copy->i + 1] == '>' && (!copy->cmd[0] || whole_cmd[copy->i - 1] == ' '))
 			copy->i++;
 		while (whole_cmd[copy->i] == '\'' || whole_cmd[copy->i] == '"')
 		{
 			while (whole_cmd[copy->i] == '"')
-				j = double_quote(whole_cmd, copy);
+				if ((j = double_quote(whole_cmd, copy)) == -1)
+					return (NULL);
 			while (whole_cmd[copy->i] == '\'')
 				if ((simple_quote(whole_cmd, copy)) == -1)
 					return (NULL);
@@ -185,28 +185,17 @@ char	*cmd(char *whole_cmd, t_copy *copy, t_redir *redir) // retrouver la command
 			if (j == -1)
 				return (NULL);
 		}
-		//printf("copy->i = %d\n", copy->i);
-		//printf("passe 2 à whole_cmd[copy->i] = %c\n", whole_cmd[copy->i]);
-		//if (whole_cmd[copy->i] == ' ' && copy->cmd[0])
-		//	break;
 		if ((whole_cmd[copy->i] == ' ' && whole_cmd[copy->i - 1] != '\\') && (copy->cmd[0] || (!copy->cmd[0] 
 			&& (whole_cmd[copy->i - 1] == '"' || whole_cmd[copy->i - 1] == '\'') 
 			&& (whole_cmd[copy->i - 2] == '"' || whole_cmd[copy->i - 2] == '\'' || j == 1))))
 				break;
-/* AJOUT */
 		if (copy->i < strlen(whole_cmd) && ((whole_cmd[copy->i] == '$' && whole_cmd[copy->i - 1] == '\\') || (whole_cmd[copy->i] != '$' && j == -2)))
-		{
-			//printf("ca rentre pour whole_cmd[%d] = %c\n", copy->i, whole_cmd[copy->i]);
 			copy->cmd[++copy->j] = whole_cmd[copy->i];
-		}
 		copy->i++;
-/* AJOUT */
 	}
 	copy->cmd[copy->j + 1] = 0;
 	//printf("copy->cmd = %s\n", copy->cmd);
-	options(whole_cmd, copy, redir);
-/* AJOUT */
-	//print_parsing(copy->args, redir);
-/* AJOUT */
+	if (options(whole_cmd, copy, redir) == -1)
+		return (NULL);
 	return (copy->cmd);
-}
+}  
