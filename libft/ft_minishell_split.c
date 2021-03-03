@@ -95,7 +95,7 @@ static int	ft_malloc_words(char const *s, char c, char **str, int words, t_split
 	while (++i < words)
 	{
 		split->k = 0;
-		while (s[++j] && s[j] != c)
+		while (s[++j] && (s[j] != c || (s[j] == c && s[j - 1] == '\\')))
 		{
             while (s[j] == '\'' || s[j] == '"')
 		    {
@@ -109,7 +109,7 @@ static int	ft_malloc_words(char const *s, char c, char **str, int words, t_split
                 j++;
                 split->k++;
             }
-            if (s[j] == '\0' || s[j] == c)
+            if (s[j] == '\0' || (s[j] == c && s[j - 1] != '\\'))
                 break;
             split->k++;
 		}
@@ -121,6 +121,7 @@ static int	ft_malloc_words(char const *s, char c, char **str, int words, t_split
 			ft_leah(str, i);
 			return (0);
 		}
+		//printf("split->k = %d\n", split->k + 1);
 	}
 	return (1);
 }
@@ -139,7 +140,7 @@ static void	ft_write_words(char const *s, char c, char **str, int words)
 		k = 0;
 		while (s[j] && s[j] == c)
 			j++;
-		while (s[j] && s[j] != c) // tant que y a pas de ';'
+		while ((s[j] && (s[j] != c || (s[j] == c && s[j - 1] == '\\'))))// tant que y a pas de ';'
         {
             while (s[j] == '\'' || s[j] == '"')
 		    {
@@ -161,6 +162,7 @@ static void	ft_write_words(char const *s, char c, char **str, int words)
         }
 		str[i][k] = '\0';
 	}
+	//printf(strlen());
 }
 
 char		**ft_minishell_split(char const *s, char c)

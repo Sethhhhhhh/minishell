@@ -36,7 +36,10 @@ char	*args(char *whole_cmd, t_copy *copy, size_t i, t_redir *redir)// retrouver 
 			if (whole_cmd[copy->i + 1] == '\\') // pour le cas du $\PATH
 				copy->args[i][++copy->j] = whole_cmd[copy->i];
 			else
+			{
 				j = environnement(whole_cmd, copy, 1, i);
+				//printf("ca rentre 1 pour %c, à copy->i = %d et j = %d\n", whole_cmd[copy->i], copy->i, j);
+			}
 		}
 		if ((whole_cmd[copy->i] == '>' || whole_cmd[copy->i] == '<') && whole_cmd[copy->i - 1] != '\\')
 		{
@@ -54,8 +57,12 @@ char	*args(char *whole_cmd, t_copy *copy, size_t i, t_redir *redir)// retrouver 
 				//printf("ca rentre\n");
 				break;
 			}
+		//printf("ca rentre pour %c, à copy->i = %d et j = %d\n", whole_cmd[copy->i], copy->i, j);
 		if (whole_cmd[copy->i] && (whole_cmd[copy->i] != ' ' || (whole_cmd[copy->i] == ' ' && whole_cmd[copy->i - 1] == '\\')) && j != 1 && j!= 4 && ((whole_cmd[copy->i] == '$' && whole_cmd[copy->i - 1] == '\\') || (whole_cmd[copy->i] != '$')))
+		{
+			//printf("ca rentre pour %c, à copy->i = %d et j = %d\n", whole_cmd[copy->i], copy->i, j);
 			copy->args[i][++copy->j] = whole_cmd[copy->i];
+		}	
 	}
 	copy->args[i][copy->j + 1] = 0;
 	//printf("copy->args[%zu] a la fin = %s\n", i, copy->args[i]);
@@ -198,4 +205,4 @@ char	*cmd(char *whole_cmd, t_copy *copy, t_redir *redir) // retrouver la command
 	if (options(whole_cmd, copy, redir) == -1)
 		return (NULL);
 	return (copy->cmd);
-}  
+}

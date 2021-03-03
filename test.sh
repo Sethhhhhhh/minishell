@@ -252,9 +252,13 @@ $PWD$PATH$COLORTERM
 $COLORTERMcoucou
 1>test233 "" echo bonjour
 
+##a corriger
+export PATH='' ; whoami
+export SHLVL=' -0123456789' ; echo $SHLVL #chez yohann, pourtant ca marche avec le export mdr=' -0123456789' ; echo $mdr
+
 ######################################## EMMA ########################################
 
-#########Protections#########
+##########Protections#########
 'echo' "bonjour" "wesh"
 e"ch"o bonjour
        'ech'o bonjour
@@ -400,6 +404,13 @@ echo $COLORTERM$hey
 echo $$$$$$$$
 $$$
 $
+echo "$PAT\H"
+echo $PAT\H
+echo $cnwvwevlvlk a
+echo $A$B
+echo $coucou\"
+echo "|$TEST\""
+echo "|$TEST|"
 
 #########Pipes et Séparations#########
 echo "bonjou\"r" ; echo coucou
@@ -412,9 +423,9 @@ echo \" "coucou\"\"\" ; hey" ; "ech"o \" hey
 echo bonjour | asdf
 echo bonjour; ls doesnotexists
 echo \ \ jesuis\; \ charles
+export BONJOUR\;JESUIS=a
 
-
-#########Erreurs A renvoyer######### -----> Ca exit mais ca doit faire l'equivalent de ctrlC
+#########Erreurs A renvoyer#########
 #syntax error near unexpected token `|'
 | ; a
 | < a
@@ -453,6 +464,7 @@ echo a ; ; echo b
 echo a ;;;;; echo b 
 echo a ;; echo b
 # files dans les redirections
+echo <njwajkxw<n<j<   an
 echo bonjour 1>'' pas normal
 echo bonjour 2>''
 cat < ''
@@ -474,11 +486,12 @@ echo bonjour > bar ; cat << < bar
 echo bonjour > bar ; cat <<<<< bar
 #Erreurs Quotes
 #simple quote sur cmd OK
-#simple quote sur arg NO
-#simple quote sur redirection
+#simple quote sur arg OK
+#simple quote sur redirection OK
 #double quote sur cmd OK
-#double quote sur arg
-#double quote sur redirection
+#double quote sur arg OK
+#double quote sur redirection OK
+
 echo ''#enlever une simple quote
 echo '\'''#enlever une simple quote
 echo ""#enlever une double quote
@@ -489,9 +502,21 @@ echo """" #enlever une double quote : boucle infinie
 echo co'c'o'u' #enlever une simple quote
 echo c'o\'u'cou' #enlever une simple quote
 echo "bon"jour"" #enlever une double quote
+echo bonjour 1>cou"cou" #enlever une double quote
+echo bonjour 2> cou'cou' #enlever une double quote
 echo bonjour <\weshh #no such file or directory si weshh existe pas
-
+export A='fi le'] echo bonjour > $A
 
 
 #---------------------------à gérer ?
 echo mdrr <>coucou
+
+
+
+
+#ligne 3690
+
+#on gere pas
+export LS='ls -l' ; $LS
+export A='   bonjour     je     suis    splited   ' ; echo "[$A]"
+export A='   bonjour   je   suis  splited ' ; echo "[$A]"

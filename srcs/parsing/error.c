@@ -2,13 +2,16 @@
 
 int		ft_error_token(char *msg, char c, int i, char *str)
 {
-	printf("bash: %s", msg);
+	char s1[5] = {c, c, '\'', '\n', '\0'};
+	char s2[4] = {c, '\'', '\n', '\0'};
+	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd(msg, 2);
 	if (c == 'n')
-		printf("newline'\n");
+		ft_putstr_fd("newline'\n", 2);
 	else if (str[i - 1] == c || str[i + 1] == c)
-		printf("%c%c'\n", c, c);
+		ft_putstr_fd(s1, 2);
 	else
-		printf("%c'\n", c);
+		ft_putstr_fd(s2, 2);
 	return (-1);
 }
 
@@ -142,10 +145,19 @@ int		syntax_error(char *str, char c)
 
 void	ft_error_exit(char *str, char *msg)
 {
-	printf("bash: %s", str);
+	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd(str, 2);
 	if (errno != 0)
-		printf(": %s\n", strerror(errno));
+	{
+		ft_putstr_fd(": ", 2);
+		ft_putstr_fd(strerror(errno), 2);
+		ft_putstr_fd("\n", 2);
+	}
 	else
-		printf(": %s\n", msg);
+	{
+		ft_putstr_fd(": ", 2);
+		ft_putstr_fd(msg, 2);
+		ft_putstr_fd("\n", 2);
+	}
 	error = -1;
 }

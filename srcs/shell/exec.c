@@ -9,7 +9,7 @@ static int	_run(char **args, char *bin, int pipe)
 	else if (!pipe && g_pid < 0)
 	{
 		free(bin);
-		ft_putstr_fd("bash: execve: failed to create a new process.", 2);
+		ft_putstr_fd("minishell: execve: failed to create a new process.", 2);
 		ft_putchar_fd('\n', 1);
 		return (-1);
 	}
@@ -30,7 +30,7 @@ static int	_has_perm(char **args, char *bin, struct stat statbuf, int pipe)
 			return (_run(args, bin, pipe));
 		else
 		{
-			ft_putstr_fd("bash: execve: permission denied: ", 2);
+			ft_putstr_fd("minishell: execve: permission denied: ", 2);
 			ft_putstr_fd(bin, 2);
 			ft_putchar_fd('\n', 2);
 		}
@@ -124,7 +124,7 @@ int			exec(char **args, t_redir *redir, int pipe)
 		else if (f.st_mode & S_IXUSR)
 			return (_run(args, ft_strdup(args[0]), pipe));
 	}
-	ft_putstr_fd("bash: ", 2);
+	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(args[0], 2);
 	ft_putstr_fd(": command not found", 2);
 	ft_putchar_fd('\n', 2);

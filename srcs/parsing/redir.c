@@ -151,8 +151,8 @@ int		redir_out(char *whole_cmd, t_copy *copy, t_redir *redir) // redirection de 
 	redir->out1[redir->i + 1] = 0;
 	if (create_file(redir, 1) == -1)
 		return (-1);
-	printf("file stdout = %s\n", redir->out1);
-	printf("fd stdout = %d\n", redir->sstdout);
+	//printf("file stdout = %s\n", redir->out1);
+	//printf("fd stdout = %d\n", redir->sstdout);
 	//printf("fin du fichier ? = %d\n", redir->end);
 	return (1);
 }
