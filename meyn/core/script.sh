@@ -44,8 +44,8 @@ printf "$BOLDGREEN         \::/    /                \::/    /                   
 printf "$BOLDGREEN          \/____/                  \/____/                                       \/____/          $RESET\n\n\n"
 
 
-local i=0
-local j=0
+i=1
+j=0
 while read -r line;
 do
 	if [[ "$line" =~ ^#.*  ]];
@@ -62,7 +62,7 @@ do
 	else
 		printf "$BOLDRED [FAIL] $RESET\n"
 	fi
-	if [[ `expr $i + 1` == $1 ]];
+	if [[ $1 != 0 && $i == $1 ]];
 	then
 		break
 	fi
