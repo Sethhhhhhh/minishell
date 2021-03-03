@@ -17,56 +17,56 @@ BOLDMAGENTA="\033[1m\033[35m"
 BOLDCYAN="\033[1m\033[36m"
 BOLDWHITE="\033[1m\033[37m"
 
-main()
-{
-	make -C ../ >/dev/null
-	cp ../minishell .
-	chmod 755 minishell
+make -C ../ >/dev/null
+cp ../minishell .
+chmod 755 minishell
 
-	printf "$BOLDGREEN           _____                    _____                _____                    _____           $RESET\n"
-	printf "$BOLDGREEN          /\    \                  /\    \              |\    \                  /\    \          $RESET\n"
-	printf "$BOLDGREEN         /::\____\                /::\    \             |:\____\                /::\____\         $RESET\n"
-	printf "$BOLDGREEN        /::::|   |               /::::\    \            |::|   |               /::::|   |         $RESET\n"
-	printf "$BOLDGREEN       /:::::|   |              /::::::\    \           |::|   |              /:::::|   |         $RESET\n"
-	printf "$BOLDGREEN      /::::::|   |             /:::/\:::\    \          |::|   |             /::::::|   |         $RESET\n"
-	printf "$BOLDGREEN     /:::/|::|   |            /:::/__\:::\    \         |::|   |            /:::/|::|   |         $RESET\n"
-	printf "$BOLDGREEN    /:::/ |::|   |           /::::\   \:::\    \        |::|   |           /:::/ |::|   |         $RESET\n"
-	printf "$BOLDGREEN   /:::/  |::|___|______    /::::::\   \:::\    \       |::|___|______    /:::/  |::|   | _____   $RESET\n"
-	printf "$BOLDGREEN  /:::/   |::::::::\    \  /:::/\:::\   \:::\    \      /::::::::\    \  /:::/   |::|   |/\    \  $RESET\n"
-	printf "$BOLDGREEN /:::/    |:::::::::\____\/:::/__\:::\   \:::\____\    /::::::::::\____\/:: /    |::|   /::\____\ $RESET\n"
-	printf "$BOLDGREEN \::/    / ~~~~~/:::/    /\:::\   \:::\   \::/    /   /:::/~~~~/~~      \::/    /|::|  /:::/    / $RESET\n"
-	printf "$BOLDGREEN  \/____/      /:::/    /  \:::\   \:::\   \/____/   /:::/    /          \/____/ |::| /:::/    /  $RESET\n"
-	printf "$BOLDGREEN              /:::/    /    \:::\   \:::\    \      /:::/    /                   |::|/:::/    /   $RESET\n"
-	printf "$BOLDGREEN             /:::/    /      \:::\   \:::\____\    /:::/    /                    |::::::/    /    $RESET\n"
- 	printf "$BOLDGREEN            /:::/    /        \:::\   \::/    /    \::/    /                     |:::::/    /     $RESET\n"
-	printf "$BOLDGREEN           /:::/    /          \:::\   \/____/      \/____/                      |::::/    /      $RESET\n"
-	printf "$BOLDGREEN          /:::/    /            \:::\    \                                       /:::/    /       $RESET\n"
-	printf "$BOLDGREEN         /:::/    /              \:::\____\                                     /:::/    /        $RESET\n"
-	printf "$BOLDGREEN         \::/    /                \::/    /                                     \::/    /         $RESET\n"
-	printf "$BOLDGREEN          \/____/                  \/____/                                       \/____/          $RESET\n\n\n"
+printf "$BOLDGREEN           _____                    _____                _____                    _____           $RESET\n"
+printf "$BOLDGREEN          /\    \                  /\    \              |\    \                  /\    \          $RESET\n"
+printf "$BOLDGREEN         /::\____\                /::\    \             |:\____\                /::\____\         $RESET\n"
+printf "$BOLDGREEN        /::::|   |               /::::\    \            |::|   |               /::::|   |         $RESET\n"
+printf "$BOLDGREEN       /:::::|   |              /::::::\    \           |::|   |              /:::::|   |         $RESET\n"
+printf "$BOLDGREEN      /::::::|   |             /:::/\:::\    \          |::|   |             /::::::|   |         $RESET\n"
+printf "$BOLDGREEN     /:::/|::|   |            /:::/__\:::\    \         |::|   |            /:::/|::|   |         $RESET\n"
+printf "$BOLDGREEN    /:::/ |::|   |           /::::\   \:::\    \        |::|   |           /:::/ |::|   |         $RESET\n"
+printf "$BOLDGREEN   /:::/  |::|___|______    /::::::\   \:::\    \       |::|___|______    /:::/  |::|   | _____   $RESET\n"
+printf "$BOLDGREEN  /:::/   |::::::::\    \  /:::/\:::\   \:::\    \      /::::::::\    \  /:::/   |::|   |/\    \  $RESET\n"
+printf "$BOLDGREEN /:::/    |:::::::::\____\/:::/__\:::\   \:::\____\    /::::::::::\____\/:: /    |::|   /::\____\ $RESET\n"
+printf "$BOLDGREEN \::/    / ~~~~~/:::/    /\:::\   \:::\   \::/    /   /:::/~~~~/~~      \::/    /|::|  /:::/    / $RESET\n"
+printf "$BOLDGREEN  \/____/      /:::/    /  \:::\   \:::\   \/____/   /:::/    /          \/____/ |::| /:::/    /  $RESET\n"
+printf "$BOLDGREEN              /:::/    /    \:::\   \:::\    \      /:::/    /                   |::|/:::/    /   $RESET\n"
+printf "$BOLDGREEN             /:::/    /      \:::\   \:::\____\    /:::/    /                    |::::::/    /    $RESET\n"
+printf "$BOLDGREEN            /:::/    /        \:::\   \::/    /    \::/    /                     |:::::/    /     $RESET\n"
+printf "$BOLDGREEN           /:::/    /          \:::\   \/____/      \/____/                      |::::/    /      $RESET\n"
+printf "$BOLDGREEN          /:::/    /            \:::\    \                                       /:::/    /       $RESET\n"
+printf "$BOLDGREEN         /:::/    /              \:::\____\                                     /:::/    /        $RESET\n"
+printf "$BOLDGREEN         \::/    /                \::/    /                                     \::/    /         $RESET\n"
+printf "$BOLDGREEN          \/____/                  \/____/                                       \/____/          $RESET\n\n\n"
 
 
-	local i=0
-	local j=0
-	while read -r line;
-	do
-		if [[ "$line" =~ ^#.*  ]];
-		then
-    		continue
-		fi
-		printf "$BOLDBLUE[%d]$RESET %-120s" "$i" "$line"
-		./minishell -c "$line" >minishell_output
-		bash -c "$line" >bash_output
-		if cmp -s minishell_output bash_output;
-		then
-			printf "$BOLDGREEN [GOOD] $RESET\n"
-			j=`expr $j + 1`
-		else
-			printf "$BOLDRED [FAIL] $RESET\n"
-		fi
-		i=`expr $i + 1`
-	done < input
-	printf "$BOLDYELLOW \n\nVous avez reussi %d tests sur %d.\n\n$RESET" "$j" "$i"
-	find . ! -name start.sh ! -name input ! -name script.sh ! -name core -delete >/dev/null
-}
-main
+local i=0
+local j=0
+while read -r line;
+do
+	if [[ "$line" =~ ^#.*  ]];
+	then
+   		continue
+	fi
+	printf "$BOLDBLUE[%-.4d]$RESET %-120s" "$i" "$line"
+	./minishell -c "$line" >minishell_output
+	bash -c "$line" >bash_output
+	if cmp -s minishell_output bash_output;
+	then
+		printf "$BOLDGREEN [GOOD] $RESET\n"
+		j=`expr $j + 1`
+	else
+		printf "$BOLDRED [FAIL] $RESET\n"
+	fi
+	if [[ `expr $i + 1` == $1 ]];
+	then
+		break
+	fi
+	i=`expr $i + 1`
+done < input
+printf "$BOLDYELLOW \n\nVous avez reussi %d tests sur %d.\n\n$RESET" "$j" "$i"
+find . ! -name start.sh ! -name input ! -name script.sh ! -name core -delete >/dev/null
