@@ -517,6 +517,6 @@ echo mdrr <>coucou
 #ligne 3690
 
 #on gere pas
-export LS='ls -l' ; $LS
+#export LS='ls -l' ; $LS
 export A='   bonjour     je     suis    splited   ' ; echo "[$A]"
 export A='   bonjour   je   suis  splited ' ; echo "[$A]"
