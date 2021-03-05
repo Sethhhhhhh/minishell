@@ -112,6 +112,7 @@ int		options(char *whole_cmd, t_copy *copy, t_redir *redir)
 
 void	init_redir_copy(t_copy *copy, t_redir *redir)
 {
+	code = 0;
 	copy->i = 0;
 	copy->j = -1;
 	copy->cmd = NULL;
@@ -150,6 +151,7 @@ void	print_parsing(char **args, t_redir *redir)
 		printf("fd stderr = %d\n", redir->sstderr);
 		printf("fin du fichier ? = %d\n", redir->end);
 	}
+	printf("code = %d\n", code);
 }
 
 char	*cmd(char *whole_cmd, t_copy *copy, t_redir *redir) // retrouver la commande dans whole_cmd (peut etre une variable d'environnement)

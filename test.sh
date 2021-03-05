@@ -508,6 +508,15 @@ echo bonjour <\weshh #no such file or directory si weshh existe pas
 export A='fi le'] echo bonjour > $A
 
 
+#$?
+echz #command not found, 127
+echo foo >>>>> bar # pb syntaxe, 258
+echo a ;;;;; echo b # pb syntaxe, 258
+echo <coucou # No such file or directory, 1
+testlol: Permission denied # où test lol chmod 000, 1
+yes #arret avec un Ctrl-C, 130
+
+
 #---------------------------à gérer ?
 echo mdrr <>coucou
 

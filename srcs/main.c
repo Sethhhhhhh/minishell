@@ -50,7 +50,10 @@ void	loop()
 			minishell(list);
 		}
 		else
+		{
+			//printf("code = %d\n", code);
 			free(line);
+		}
 		prompt();
 	}
 	ft_putstr_fd("exit\n", 1);

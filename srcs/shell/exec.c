@@ -9,13 +9,27 @@ static int	_run(char **args, char *bin, int pipe)
 	else if (!pipe && g_pid < 0)
 	{
 		free(bin);
-		ft_putstr_fd("minishell: execve: failed to create a new process.", 2);
+		ft_putstr_fd("minishell: execve: failed to create a new process.", 2); // ?????
 		ft_putchar_fd('\n', 1);
 		return (-1);
 	}
 	if (!pipe)
 	{
 		wait(&g_pid);
+		if (WIFEXITED(g_pid))
+		{
+			//ft_putstr_fd("ca rentre 2\n", 2);
+			code = WEXITSTATUS(g_pid);
+		}
+		if (WIFSIGNALED(g_pid))
+		{
+			//ft_putstr_fd("ca rentre 1\n", 2);
+			code = WTERMSIG(g_pid);
+			if (code != 131)
+				code += 128;
+		}
+		//printf("g_pid = %d\n", g_pid);
+		//printf("code = %d\n", code);
 		g_pid = 0;
 	}
 	free(bin);
@@ -30,7 +44,7 @@ static int	_has_perm(char **args, char *bin, struct stat statbuf, int pipe)
 			return (_run(args, bin, pipe));
 		else
 		{
-			ft_putstr_fd("minishell: execve: permission denied: ", 2);
+			ft_putstr_fd("minishell: execve: permission denied: ", 2); // ?????
 			ft_putstr_fd(bin, 2);
 			ft_putchar_fd('\n', 2);
 		}
@@ -128,5 +142,7 @@ int			exec(char **args, t_redir *redir, int pipe)
 	ft_putstr_fd(args[0], 2);
 	ft_putstr_fd(": command not found", 2);
 	ft_putchar_fd('\n', 2);
+	code = 127;
+	//ft_putstr_fd("code = 127\n", 2);
 	return (0);
 }

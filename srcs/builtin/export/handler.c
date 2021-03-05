@@ -131,6 +131,7 @@ int	run_export(char **args)
 			ft_putstr_fd("bash: export: '", 2);
 			ft_putstr_fd(args[i], 2);
 			ft_putstr_fd("': not a valid identifier\n", 2);
+			code = 1;
 		}
 		if ((equal_index = ft_get_char_by_index(args[i], '=')) == -1)
 			equal_index = ft_strlen(args[i]);

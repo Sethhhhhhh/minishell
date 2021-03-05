@@ -7,9 +7,15 @@ void	sigint_handler(int sign_num)
 		if (!kill(g_pid, sign_num))
 		{
 			if (sign_num == SIGQUIT)
+			{
 				ft_putstr_fd("Quit: 3\n", 1);
+				//code = 3; ?????
+			}
 			else if (sign_num == SIGINT)
+			{
 				ft_putchar_fd('\n', 1);
+				code = 1;
+			}
 		}
 		else if (sign_num == SIGINT)
 		{

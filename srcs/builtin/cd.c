@@ -13,12 +13,14 @@ int	set_directory(char *path)
 		return (1);
 	}
 	ft_putstr_fd("cd: ", 2);
+	code = 1;
 	if (stat(path, &st) == -1)
 	{
 		ft_putstr_fd("no such file or directory: ", 2);
+		code = 127;
 	}
 	else if (!(st.st_mode & S_IXUSR))
-		ft_putstr_fd("permission denied: ", 2);
+		ft_putstr_fd("permission denied: ", 2);		
 	else
 		ft_putstr_fd("not a directory: ", 2);
 	ft_putstr_fd(path, 2);

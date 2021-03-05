@@ -39,6 +39,7 @@ int			run_unset(char **args)
 			ft_putstr_fd("bash: unset: `", 2);
 			ft_putstr_fd(args[i], 2);
 			ft_putstr_fd("': not a valid identifier\n", 2);
+			code = 1;
 		}
 		i++;
 	}
