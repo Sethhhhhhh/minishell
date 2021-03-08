@@ -87,8 +87,6 @@ static int	set(char *arg, size_t equ, size_t index)
 	char	*end;
 	size_t	equ_env;
 
-	printf("%zu\n", equ);
-	printf("%zu\n", ft_strlen(arg));
 	if (equ == ft_strlen(arg))
 		return (0);	
 	if ((equ_env = ft_get_char_by_index(g_envs[index], '=') == -1))
@@ -103,10 +101,7 @@ static int	set(char *arg, size_t equ, size_t index)
 	if (!(end = _strip_extra_spaces(end)))
 		return (0);
 	if (!(set_env(st, end)))
-	{
-		printf("OK\n");
 		return (0);
-	}
 	return (1);
 }
 
@@ -132,12 +127,12 @@ int	run_export(char **args)
 			ft_putstr_fd(args[i], 2);
 			ft_putstr_fd("': not a valid identifier\n", 2);
 			code = 1;
+			return (1);
 		}
 		if ((equal_index = ft_get_char_by_index(args[i], '=')) == -1)
 			equal_index = ft_strlen(args[i]);
 		if ((index = find_env(ft_substr(args[i], 0, equal_index))) != -1)
 			set(args[i], equal_index, index);
-
 		else
 		{
 			count = get_envs_count() + 1;

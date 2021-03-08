@@ -22,9 +22,12 @@ int	run_echo(char **args)
 	}
 	while (args[i])
 	{
-		if ((i > 1 && !n) || (i > (n + 1) && n))
-			ft_putchar_fd(' ', 1);
+		
 		ft_putstr_fd(args[i], 1);
+		if (((i >= 1 && !n) || (n && i >= n + 1)) && args[i + 1])
+		{
+			ft_putchar_fd(' ', 1);
+		}
 		i++;
 	}
 	if (!n)

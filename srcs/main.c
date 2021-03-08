@@ -34,7 +34,6 @@ void	loop()
 	signal(SIGINT, sigint_handler);
 	signal(SIGQUIT, sigint_handler);
 
-
 	prompt();
 	line = NULL;
 	while (get_next_line(0, &line) > 0)
@@ -70,13 +69,18 @@ void	loop_testeur(char *line)
 	char	**cmds;
 	size_t	i;
 
-	i = -1;
+	if (_check_space_colon(line))
+		return;
 	list = NULL;
-	cmds = ft_minishell_split(line, ';');
-	while (cmds[++i])
-		list = add_cell(list, cmds[i], i);
-	parse_pip(list);
-	minishell(list);
+	i = -1;
+	if (syntax_error(line, '|') != -1 && syntax_error(line, ';') != -1)
+	{
+		cmds = ft_minishell_split(line, ';');
+		while (cmds[++i])
+			list = add_cell(list, cmds[i], i);
+		parse_pip(list);
+		minishell(list);
+	}
 }
 
 void	prompt()
