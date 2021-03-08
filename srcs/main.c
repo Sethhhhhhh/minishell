@@ -34,6 +34,7 @@ void	loop()
 	signal(SIGINT, sigint_handler);
 	signal(SIGQUIT, sigint_handler);
 	prompt();
+	line = NULL;
 	while (get_next_line(0, &line) > 0)
 	{
 		if (_check_space_colon(line))
@@ -55,6 +56,7 @@ void	loop()
 			free(line);
 		}
 		prompt();
+		
 	}
 	ft_putstr_fd("exit\n", 1);
 	ft_exit();

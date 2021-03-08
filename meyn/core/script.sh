@@ -69,4 +69,4 @@ do
 	i=`expr $i + 1`
 done < input
 printf "$BOLDYELLOW \n\nVous avez reussi %d tests sur %d.\n\n$RESET" "$j" "$i"
-find . ! -name start.sh ! -name input ! -name script.sh ! -name core -delete >/dev/null
+find . ! -name start.sh ! -name input ! -name script.sh ! -name bash_output ! -name minishell_output ! -name core -delete >/dev/null

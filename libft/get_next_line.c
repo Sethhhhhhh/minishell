@@ -59,9 +59,13 @@ static int		ft_read(int fd, char *buf, char **str, char **line)
 		return (ft_free(str, buf, -1));
 	if (bytes)
 		return (ft_free(str, buf, 1));
-	while ((bytes = read(fd, buf, BUFFER_SIZE)) > 0)
+	while ((bytes = read(fd, buf, BUFFER_SIZE)) >= 0)
 	{
 		buf[bytes] = '\0';
+		if (buf[0] == '\0' && ft_strlen(*str))
+			continue;
+		else if (buf[0] == '\0' && ft_strlen(*str) <= 0)
+			return (ft_free(str, buf, 0));
 		tmp = *str;
 		*str = ft_strjoin(*str, buf);
 		free(tmp);
