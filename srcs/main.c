@@ -30,9 +30,11 @@ void	loop()
 	char	*line;
 	char	**cmds;
 	size_t	i;
-
+	
 	signal(SIGINT, sigint_handler);
 	signal(SIGQUIT, sigint_handler);
+
+
 	prompt();
 	line = NULL;
 	while (get_next_line(0, &line) > 0)

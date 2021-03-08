@@ -2,6 +2,7 @@
 
 static int	_run(char **args, char *bin, int pipe)
 {
+	
 	if (!pipe)
 		g_pid = fork();
 	if (pipe || !g_pid)
@@ -15,6 +16,7 @@ static int	_run(char **args, char *bin, int pipe)
 	}
 	if (!pipe)
 	{
+		signal(SIGINT, SIG_IGN);
 		wait(&g_pid);
 		if (WIFEXITED(g_pid))
 		{
@@ -31,6 +33,7 @@ static int	_run(char **args, char *bin, int pipe)
 		//printf("g_pid = %d\n", g_pid);
 		//printf("code = %d\n", code);
 		g_pid = 0;
+		
 	}
 	free(bin);
 	return (1);
