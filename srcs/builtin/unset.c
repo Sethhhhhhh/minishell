@@ -24,6 +24,7 @@ int			run_unset(char **args)
 	size_t	i;
 	ssize_t	index;
 
+	code = 0;
 	if (!args[1])
 		return (1);
 	i = 1;

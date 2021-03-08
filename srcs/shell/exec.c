@@ -12,11 +12,11 @@ static int	_run(char **args, char *bin, int pipe)
 		free(bin);
 		ft_putstr_fd("minishell: execve: failed to create a new process.", 2); // ?????
 		ft_putchar_fd('\n', 1);
+		code = 1;
 		return (-1);
 	}
 	if (!pipe)
 	{
-		signal(SIGINT, SIG_IGN);
 		wait(&g_pid);
 		if (WIFEXITED(g_pid))
 		{
@@ -33,7 +33,6 @@ static int	_run(char **args, char *bin, int pipe)
 		//printf("g_pid = %d\n", g_pid);
 		//printf("code = %d\n", code);
 		g_pid = 0;
-		
 	}
 	free(bin);
 	return (1);
@@ -47,9 +46,10 @@ static int	_has_perm(char **args, char *bin, struct stat statbuf, int pipe)
 			return (_run(args, bin, pipe));
 		else
 		{
-			ft_putstr_fd("minishell: execve: permission denied: ", 2); // ?????
+			ft_putstr_fd("minishell: execve: permission denied: ", 2);
 			ft_putstr_fd(bin, 2);
 			ft_putchar_fd('\n', 2);
+			code = 1;
 		}
 		free(bin);
 		return (0);

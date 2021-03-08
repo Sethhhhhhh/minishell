@@ -113,6 +113,7 @@ int	run_export(char **args)
 	size_t	equal_index;
 	size_t	count;
 
+	code = 0;
 	if (!args[1])
 	{
 		sort_env();

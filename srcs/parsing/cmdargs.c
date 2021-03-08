@@ -53,10 +53,7 @@ char	*args(char *whole_cmd, t_copy *copy, size_t i, t_redir *redir)// retrouver 
 		if ((whole_cmd[copy->i] == ' ' && whole_cmd[copy->i - 1] != '\\') && (copy->args[i][0] || (!copy->args[i][0] 
 			&& (whole_cmd[copy->i - 1] == '"' || whole_cmd[copy->i - 1] == '\'') 
 			&& (whole_cmd[copy->i - 2] == '"' || whole_cmd[copy->i - 2] == '\'' || j == 1))))
-			{
-				//printf("ca rentre\n");
 				break;
-			}
 		//printf("ca rentre pour %c, à copy->i = %d et j = %d\n", whole_cmd[copy->i], copy->i, j);
 		if (whole_cmd[copy->i] && (whole_cmd[copy->i] != ' ' || (whole_cmd[copy->i] == ' ' && whole_cmd[copy->i - 1] == '\\')) && j != 1 && j!= 4 && ((whole_cmd[copy->i] == '$' && whole_cmd[copy->i - 1] == '\\') || (whole_cmd[copy->i] != '$')))
 		{
@@ -65,6 +62,8 @@ char	*args(char *whole_cmd, t_copy *copy, size_t i, t_redir *redir)// retrouver 
 		}	
 	}
 	copy->args[i][copy->j + 1] = 0;
+	//printf("ca sort\n");
+	//printf("ca sort pour %c, à copy->i = %d et j = %d\n", whole_cmd[copy->i], copy->i, j);
 	//printf("copy->args[%zu] a la fin = %s\n", i, copy->args[i]);
 	return (copy->args[i]);
 }
@@ -96,9 +95,9 @@ int		options(char *whole_cmd, t_copy *copy, t_redir *redir)
 		if (error == -1)
 			return (-1);
 		if (!arg[0] && (whole_cmd[copy->i - 1] == '"' || whole_cmd[copy->i - 1] == '\'') && 
-			((whole_cmd[copy->i - 2] == '"' || whole_cmd[copy->i - 2] == '\'') && whole_cmd[copy->i - 3] != '\\') && !whole_cmd[copy->i])
+			((whole_cmd[copy->i - 2] == '"' || whole_cmd[copy->i - 2] == '\'') && whole_cmd[copy->i - 3] == ' ') && !whole_cmd[copy->i])
 			{
-				//printf("la ca rentre\n");
+				printf("la ca rentre woula\n");
 				//printf("whole_cmd[%d - 1] = %c\n", copy->i, whole_cmd[copy->i - 1]);
 				arg = args(whole_cmd, copy, ++i, redir);
 			}
@@ -112,7 +111,7 @@ int		options(char *whole_cmd, t_copy *copy, t_redir *redir)
 
 void	init_redir_copy(t_copy *copy, t_redir *redir)
 {
-	code = 0;
+	//code = 0;
 	copy->i = 0;
 	copy->j = -1;
 	copy->cmd = NULL;

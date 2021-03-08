@@ -46,6 +46,17 @@ int	    environnement(char *whole_cmd, t_copy *copy, int arg, int i) //variable 
         copy->i--;
         return (1);
     }
+    if (whole_cmd[copy->i] && whole_cmd[copy->i - 1] != '\\' && whole_cmd[copy->i - 1] != '$' && whole_cmd[copy->i] == '$' && whole_cmd[copy->i + 1] == '?') // ????? faire un atoi de code et copier le retour dans copy->cmd ou copy->arg
+    {
+        //printf("%d\n", code);
+        value = ft_itoa(code);
+        if (arg == 0) // si arg = 0 faut changer copy->cmd
+            copy->cmd = remalloc_cmdargs(copy, value, whole_cmd, copy->cmd);
+        else if (arg == 1)// si arg = 1 faut changer copy->args[i]
+            copy->args[i] = remalloc_cmdargs(copy, value, whole_cmd, copy->args[i]);
+        copy->i++;
+        return (1);
+    }
     copy->i++;
     //printf("ca rentre a whole_cmd[%d] = %c\n", copy->i, whole_cmd[copy->i]);
     if (whole_cmd[copy->i] == '\'' || whole_cmd[copy->i] == '"')
@@ -67,29 +78,17 @@ int	    environnement(char *whole_cmd, t_copy *copy, int arg, int i) //variable 
     //printf("value = %s\n", value);
     if (!value)
     {
-        //if (whole_cmd[copy->i] == '\\' && arg == 0 && quote == 1) // pour le cas de : echo "$PAT\H"
-         //   copy->cmd[++copy->j] = whole_cmd[copy->i];
-        //if (whole_cmd[copy->i] == '\\' && arg == 1 && quote == 1)
-        //    copy->args[i][++copy->j] = whole_cmd[copy->i];
-        //printf("ca rentre a whole_cmd[%d] = %c\n", copy->i, whole_cmd[copy->i]);
         if (whole_cmd[copy->i] == '"' || whole_cmd[copy->i] == '\'' || whole_cmd[copy->i] == '\\'|| whole_cmd[copy->i] == '|')
-        {
-            //printf("ca rentre 2 a whole_cmd[%d] = %c\n", copy->i, whole_cmd[copy->i]);
             copy->i--;
-        }
         if (whole_cmd[copy->i] == '$' && whole_cmd[copy->i - 1] != '\\')
             copy->i--;
-        //printf("ca rentre a whole_cmd[%d] = %c\n", copy->i, whole_cmd[copy->i]);
-        //printf("copy->i = %d, whole_cmd[copy->i]= %c\n", copy->i, whole_cmd[copy->i]);
         return (1);
     }
     if (arg == 0) // si arg = 0 faut changer copy->cmd
         copy->cmd = remalloc_cmdargs(copy, value, whole_cmd, copy->cmd);
     else if (arg == 1)// si arg = 1 faut changer copy->args[i]
         copy->args[i] = remalloc_cmdargs(copy, value, whole_cmd, copy->args[i]);
-    //if (whole_cmd[copy->i] != '"' && whole_cmd[copy->i] != '\'')
     copy->i--;
-    //printf("whole_cmd[copy->i] = %c\n", whole_cmd[copy->i]);
     return (1);
 }
 

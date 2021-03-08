@@ -32,6 +32,7 @@ int			run_cd(char **args)
 {
 	char	*home;
 
+	code = 0;
 	home = get_env("HOME");
 	if (!args[1] || ft_strequ(args[1], "~"))
 		return (set_directory(home));
