@@ -97,7 +97,7 @@ int		options(char *whole_cmd, t_copy *copy, t_redir *redir)
 		if (!arg[0] && (whole_cmd[copy->i - 1] == '"' || whole_cmd[copy->i - 1] == '\'') && 
 			((whole_cmd[copy->i - 2] == '"' || whole_cmd[copy->i - 2] == '\'') && whole_cmd[copy->i - 3] == ' ') && !whole_cmd[copy->i])
 			{
-				printf("la ca rentre woula\n");
+				//printf("la ca rentre woula\n");
 				//printf("whole_cmd[%d - 1] = %c\n", copy->i, whole_cmd[copy->i - 1]);
 				arg = args(whole_cmd, copy, ++i, redir);
 			}

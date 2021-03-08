@@ -52,7 +52,7 @@ do
 	then
    		continue
 	fi
-	printf "$BOLDBLUE[%-.4d]$RESET %-120s" "$i" "$line"
+	printf "$BOLDBLUE[%-.4d] $RESET%-120s" "$i" "$line"
 	./minishell -c "$line" >minishell_output
 	bash -c "$line" >bash_output
 	if cmp -s minishell_output bash_output;
@@ -68,5 +68,5 @@ do
 	fi
 	i=`expr $i + 1`
 done < input
-printf "$BOLDYELLOW \n\nVous avez reussi %d tests sur %d.\n\n$RESET" "$j" "$i"
+printf "$BOLDYELLOW \n\nVous avez reussi %d tests sur %d.\n\n$RESET" "$j" `expr $i - 1`
 find . ! -name start.sh ! -name input ! -name script.sh ! -name bash_output ! -name minishell_output ! -name core -delete >/dev/null
