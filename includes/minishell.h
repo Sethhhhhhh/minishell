@@ -108,6 +108,7 @@ int		run_export(char **args);
 void	sort_env(void);
 int		run_env(void);
 int		set_directory(char *path);
+void	run_exit(char **args);
 
 /* handler */
 void	sigint_handler(int sign_num);

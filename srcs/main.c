@@ -2,7 +2,7 @@
 
 void	ft_exit()
 {
-	exit(0);
+	exit(code);
 }
 
 static int	_check_space_colon(char *line)
@@ -81,6 +81,7 @@ void	loop_testeur(char *line)
 		parse_pip(list);
 		minishell(list);
 	}
+	ft_exit();
 }
 
 void	prompt()

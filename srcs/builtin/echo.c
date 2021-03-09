@@ -26,7 +26,7 @@ int	run_echo(char **args)
 {
 	size_t	i;
 	int		n;
-
+	
 	n = 1;
 	code = 0;
 	if (!args[1])
