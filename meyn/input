@@ -309,66 +309,51 @@ touch a b c; cp /usr/bin/ls bonjour; ./bonjour
 touch a b c; cp /usr/bin/ls bonjour; ./bonjour -l                  
 touch a b c; echo bonjour > a; cp /usr/bin/cat ls; ./ls . a b c    
 touch a b c; echo bonjour > a; cp /usr/bin/cat ls; ls . a b c      
-echo > somefile; chmod 000 somefile; ./somefile                    
-echo > somefile; chmod 001 somefile; ./somefile                    
-echo > somefile; chmod 002 somefile; ./somefile                    
-echo > somefile; chmod 003 somefile; ./somefile                    
-echo > somefile; chmod 004 somefile; ./somefile                    
-echo > somefile; chmod 005 somefile; ./somefile                    
-echo > somefile; chmod 006 somefile; ./somefile                    
-echo > somefile; chmod 007 somefile; ./somefile                    
-echo > somefile; chmod 010 somefile; ./somefile                    
-echo > somefile; chmod 020 somefile; ./somefile                    
-echo > somefile; chmod 030 somefile; ./somefile                    
-echo > somefile; chmod 040 somefile; ./somefile                    
-echo > somefile; chmod 050 somefile; ./somefile                    
-echo > somefile; chmod 060 somefile; ./somefile                    
-echo > somefile; chmod 070 somefile; ./somefile                    
-echo > somefile; chmod 100 somefile; ./somefile                    
-echo > somefile; chmod 200 somefile; ./somefile                    
-echo > somefile; chmod 300 somefile; ./somefile                    
-echo > somefile; chmod 400 somefile; ./somefile                    
-echo > somefile; chmod 500 somefile; ./somefile                    
-echo > somefile; chmod 600 somefile; ./somefile                    
-echo > somefile; chmod 700 somefile; ./somefile                    
-echo > somefile; chmod 755 somefile; ./somefile                    
-echo > somefile; chmod 644 somefile; ./somefile                    
-echo > somefile; chmod 311 somefile; ./somefile                    
-echo > somefile; chmod 111 somefile; ./somefile                    
-echo > somefile; chmod 222 somefile; ./somefile                    
-echo > somefile; chmod 333 somefile; ./somefile                    
-mkdir somedir; somedir/                                            
-mkdir somedir; ./somedir/                                          
-mkdir somedir; somedir                                             
+echo > somefile
+chmod 000 somefile; ./somefile                    
+chmod 001 somefile; ./somefile                    
+chmod 002 somefile; ./somefile                    
+chmod 003 somefile; ./somefile                    
+chmod 004 somefile; ./somefile                    
+chmod 005 somefile; ./somefile                    
+chmod 006 somefile; ./somefile                    
+chmod 007 somefile; ./somefile                    
+chmod 010 somefile; ./somefile                    
+chmod 020 somefile; ./somefile                    
+chmod 030 somefile; ./somefile                    
+chmod 040 somefile; ./somefile                    
+chmod 050 somefile; ./somefile                    
+chmod 060 somefile; ./somefile                    
+chmod 070 somefile; ./somefile                    
+chmod 100 somefile; ./somefile                    
+chmod 200 somefile; ./somefile                    
+chmod 300 somefile; ./somefile                    
+chmod 400 somefile; ./somefile                    
+chmod 500 somefile; ./somefile                    
+chmod 600 somefile; ./somefile                    
+chmod 700 somefile; ./somefile                    
+chmod 755 somefile; ./somefile                    
+chmod 644 somefile; ./somefile                    
+chmod 311 somefile; ./somefile                    
+chmod 111 somefile; ./somefile                    
+chmod 222 somefile; ./somefile                    
+chmod 333 somefile; ./somefile
+mkdir somedir; somedir/ 
+.mkdir somedir; /somedir/                                          
+mkdir somedir; somedir
 mkdir somedir; ./somedir                                           
-mkdir somedir; somedir                                             
-mkdir somedir; ln -s somedir somedirsoftlink; somedirsoftlink/     
-mkdir somedir; ln -s somedir somedirsoftlink; ./somedirsoftlink/   
-mkdir somedir; ln -s somedir somedirsoftlink; somedirsoftlink      
-mkdir somedir; ln -s somedir somedirsoftlink; ./somedirsoftlink    
-mkdir somedir; ln -s somedir somedirsoftlink; somedirsoftlink      
+mkdir somedir; somedir
+ln -s somedir somedirsoftlink; somedirsoftlink/     
+ln -s somedir somedirsoftlink; ./somedirsoftlink/   
+ln -s somedir somedirsoftlink; somedirsoftlink      
+ln -s somedir somedirsoftlink; ./somedirsoftlink    
+ln -s somedir somedirsoftlink; somedirsoftlink      
 touch _; _                                                         
 touch -; '-'                                                       
 touch _; ./_                                                       
 touch a; mv a ./-; ./-                                             
 touch .; ./.                                                       
 touch ..; ./..                                                     
-echo > somefile && chmod 0777 somefile; ./somefile                 
-echo > somefile && chmod 1000 somefile; ./somefile                 
-echo > somefile && chmod 2000 somefile; ./somefile                 
-echo > somefile && chmod 3000 somefile; ./somefile                 
-echo > somefile && chmod 4000 somefile; ./somefile                 
-echo > somefile && chmod 5000 somefile; ./somefile                 
-echo > somefile && chmod 6000 somefile; ./somefile                 
-echo > somefile && chmod 7000 somefile; ./somefile                 
-echo > somefile && chmod 1777 somefile; ./somefile                 
-echo > somefile && chmod 2777 somefile; ./somefile                 
-echo > somefile && chmod 3777 somefile; ./somefile                 
-echo > somefile && chmod 4777 somefile; ./somefile                 
-echo > somefile && chmod 5777 somefile; ./somefile                 
-echo > somefile && chmod 6777 somefile; ./somefile                 
-echo > somefile && chmod 7777 somefile; ./somefile                 
-echo > somefile && chmod 0000 somefile; ./somefile                 
 mkdir -m 0777 somedir; ./somedir                                   
 mkdir -m 1000 somedir; ./somedir                                   
 mkdir -m 2000 somedir; ./somedir                                   
@@ -484,13 +469,10 @@ echo a ; ; echo b
 ;;;;;                                                                     
 echo a ;; echo b                                                          
 echo a ;;;;; echo b                                                       
-#cat /etc/shells | head -c 10                                              
-#cat -e /etc/shells | head -c 10                                           
-#cat -e /etc/shells | cat -e | head -c 10                                  
-#cat -e /etc/shells | cat -e | cat -e | head -c 10                         
-#cat -e /dev/random | head -c 10                                           
-#cat -e /dev/random | cat -e | head -c 10                                  
-#cat -e /dev/random | cat -e | cat -e | head -c 10                         
+cat /etc/shells | head -c 10                                              
+cat -e /etc/shells | head -c 10                                           
+cat -e /etc/shells | cat -e | head -c 10                                  
+cat -e /etc/shells | cat -e | cat -e | head -c 10
 echo bonjour | cat                                                        
 echo bonjour | cat -e                                                     
 touch a b c d; mkdir m1 m2 m3; ls | cat -e                         

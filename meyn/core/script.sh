@@ -86,7 +86,9 @@ do
 		
 	printf "$BOLDBLUE[%-.4d] $RESET" "$i"
 	./minishell -c 2>m_stderr 1>m_stdout "$line"; echo $? > m_status
+	find . ! -name minishell ! -name ".git" ! -name start.sh ! -name input ! -name script.sh ! -name b_stdout ! -name m_stdout ! -name m_stderr ! -name b_stderr ! -name core ! -name copy.c ! -name b_status ! -name m_status -delete
 	bash -c 2>b_stderr 1>b_stdout "$line"; echo $? > b_status
+	find . ! -name minishell ! -name ".git" ! -name start.sh ! -name input ! -name script.sh ! -name b_stdout ! -name m_stdout ! -name m_stderr ! -name b_stderr ! -name core ! -name copy.c ! -name b_status ! -name m_status -delete
 	sed -i 's/bash/minishell/' b_stderr
 	sed -i 's/-c: //' b_stderr
 	sed -i 's/ line [0-9]://' b_stderr
