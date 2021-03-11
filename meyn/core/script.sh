@@ -44,6 +44,24 @@ printf "$BOLDGREEN         \::/    /                \::/    /                   
 printf "$BOLDGREEN          \/____/                  \/____/                                       \/____/          $RESET\n\n\n"
 
 
+function ProgressBar {
+# Process data
+	let _progress=(${1}*100/${2}*100)/100
+	let _done=(${_progress}*9)/10
+	let _left=90-$_done
+# Build progressbar string lengths
+	_done=$(printf "%${_done}s")
+	_left=$(printf "%${_left}s")
+
+printf "\r${BOLDGREEN}Loading : ${_done// /█}${_left// /.} ${_progress}%%${RESET}\r"
+}
+
+# Variables
+_start=1
+
+# This accounts as the "totalState" variable for the ProgressBar function
+_end=`expr $1 - 1`
+
 i=0
 j=0
 find ./core ! -name script.sh -delete >/dev/null
@@ -55,11 +73,17 @@ do
 	stderr=0
 	if [[ "$line" =~ ^#.*  ]] | [ -z "$line" ] | [ "$i" -lt "$1" ];
 	then
-   		continue
+		ProgressBar ${i} ${_end}
+		continue
 	elif [ "$i" -gt "$1" ];
 	then
 		break
 	fi
+	if [ "$i" -eq "$1" ];
+	then
+		printf "\n\n"
+	fi
+		
 	printf "$BOLDBLUE[%-.4d] $RESET" "$i"
 	./minishell -c 2>m_stderr 1>m_stdout "$line"; echo $? > m_status
 	bash -c 2>b_stderr 1>b_stdout "$line"; echo $? > b_status
@@ -136,5 +160,5 @@ then
 	
 fi
 
-find . ! -name start.sh ! -name input ! -name script.sh ! -name b_stdout ! -name m_stdout ! -name m_stderr ! -name b_stderr ! -name core ! -name copy.c ! -name b_status ! -name m_status -delete >/dev/null
-find . ! -name input ! -name start.sh ! -name core -exec mv '{}' 'core/' ';' >/dev/null
+find . ! -name ".git" ! -name start.sh ! -name input ! -name script.sh ! -name b_stdout ! -name m_stdout ! -name m_stderr ! -name b_stderr ! -name core ! -name copy.c ! -name b_status ! -name m_status -delete >/dev/null
+find . ! -name ".git" ! -name input ! -name start.sh ! -name core -exec mv '{}' 'core/' ';' >/dev/null
