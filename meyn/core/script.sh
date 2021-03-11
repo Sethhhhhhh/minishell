@@ -44,29 +44,84 @@ printf "$BOLDGREEN         \::/    /                \::/    /                   
 printf "$BOLDGREEN          \/____/                  \/____/                                       \/____/          $RESET\n\n\n"
 
 
-i=1
+i=0
 j=0
+find ./core ! -name script.sh -delete >/dev/null
 while read -r line;
 do
-	if [[ "$line" =~ ^#.*  ]];
+	i=`expr $i + 1`
+	status=0
+	stdout=0
+	stderr=0
+	if [[ "$line" =~ ^#.*  ]] | [ -z "$line" ] | [ "$i" -lt "$1" ];
 	then
    		continue
-	fi
-	printf "$BOLDBLUE[%-.4d] $RESET%-120s" "$i" "$line"
-	./minishell -c "$line" >minishell_output
-	bash -c "$line" >bash_output
-	if cmp -s minishell_output bash_output;
-	then
-		printf "$BOLDGREEN [GOOD] $RESET\n"
-		j=`expr $j + 1`
-	else
-		printf "$BOLDRED [FAIL] $RESET\n"
-	fi
-	if [[ $1 != 0 && $i == $1 ]];
+	elif [ "$i" -gt "$1" ];
 	then
 		break
 	fi
-	i=`expr $i + 1`
+	printf "$BOLDBLUE[%-.4d] $RESET" "$i"
+	./minishell -c 2>m_stderr 1>m_stdout "$line"; echo $? > m_status
+	bash -c 2>b_stderr 1>b_stdout "$line"; echo $? > b_status
+	sed -i 's/bash/minishell/' b_stderr
+	sed -i 's/-c: //' b_stderr
+	sed -i 's/ line [0-9]://' b_stderr
+	if cmp -s b_status m_status;
+	then
+		status=1
+	fi
+	if cmp -s m_stdout b_stdout;
+	then
+		stdout=1
+	fi
+	if cmp -s m_stderr b_stderr;
+	then
+		stderr=1
+	fi
+	if [[ $status == 1 ]] && [[ $stdout == 1 ]] && [[ $stderr == 1 ]];
+	then
+		printf "$BOLDGREEN%-120s %s$RESET\n" "$line" "[PASS]"
+		j=`expr $j + 1`
+	else
+		printf "$BOLDRED%-120s %s" "$line" "[FAIL]"
+		
+		if [[ $status == 0 ]];
+		then
+			printf "['\$?']"
+		fi
+		if [[ $stdout == 0 ]];
+		then
+			printf "['STDOUT']"
+		fi
+		if [[ $stderr == 0 ]];
+		then
+			printf "['STDERR']"
+		fi
+		printf "$RESET\n"
+	fi
 done < input
-printf "$BOLDYELLOW \n\nVous avez reussi %d tests sur %d.\n\n$RESET" "$j" `expr $i - 1`
-find . ! -name start.sh ! -name input ! -name script.sh ! -name bash_output ! -name minishell_output ! -name core -delete >/dev/null
+
+if [[ $1 -eq 0 ]]
+then
+	printf "$BOLDYELLOW \nYou have passed %d out of %d tests.\n$RESET" "$j" `expr $i - 1`
+fi
+printf "\n"
+if [[ $1 == "show" ]] | [[ $2 == "show" ]];
+then
+	printf "\n[STDERR - BASH]\n"
+	cat b_stderr | cat -e
+	printf "[STDERR - MINISHELL]\n"
+	cat m_stderr | cat -e
+	printf "\n\n[STDOUT - BASH]\n"
+	cat b_stdout | cat -e
+	printf "[STDOUT - MINISHELL]\n"
+	cat m_stdout | cat -e
+	printf "\n[STATUS - BASH]\n"
+	cat b_status | cat -e
+	printf "[STATUS - MINISHELL]\n"
+	cat m_status | cat -e
+	printf "\n"
+fi
+
+find . ! -name start.sh ! -name input ! -name script.sh ! -name b_stdout ! -name m_stdout ! -name m_stderr ! -name b_stderr ! -name core ! -name copy.c ! -name b_status ! -name m_status -delete >/dev/null
+find . ! -name input ! -name start.sh ! -name core -exec mv '{}' 'core/' ';' >/dev/null
