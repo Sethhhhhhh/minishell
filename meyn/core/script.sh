@@ -108,19 +108,32 @@ fi
 printf "\n"
 if [[ $1 == "show" ]] | [[ $2 == "show" ]];
 then
-	printf "\n[STDERR - BASH]\n"
+	printf "\n$BOLDBLUE[STDERR - BASH]$\n"
 	cat b_stderr | cat -e
-	printf "[STDERR - MINISHELL]\n"
+	printf "$RESET\n$BOLDYELLOW[STDERR - MINISHELL]\n"
 	cat m_stderr | cat -e
-	printf "\n\n[STDOUT - BASH]\n"
+	printf "\n$RESET$BOLDRED[STDERR - DIFF]\n"
+	diff -u b_stderr m_stderr
+
+	printf "$BOLDWHITE\n.....................................................................................................\n$RESET"
+
+	printf "\n$BOLDBLUE[STDOUT - BASH]\n"
 	cat b_stdout | cat -e
-	printf "[STDOUT - MINISHELL]\n"
+	printf "\n$RESET$BOLDYELLOW[STDOUT - MINISHELL]\n"
 	cat m_stdout | cat -e
-	printf "\n[STATUS - BASH]\n"
+	printf "\n$RESET$BOLDRED[STDOUT - DIFF]\n"
+	diff -u b_stdout m_stdout
+
+	printf "$BOLDWHITE\n.....................................................................................................\n$RESET"
+	
+	printf "\n$BOLDBLUE[STATUS - BASH]\n"
 	cat b_status | cat -e
-	printf "[STATUS - MINISHELL]\n"
+	printf "$RESET\n$BOLDYELLOW[STATUS - MINISHELL]\n"
 	cat m_status | cat -e
-	printf "\n"
+	printf "\n$RESET$BOLDRED[STATUS - DIFF]\n"
+	diff -u b_status m_status
+	printf "$RESET\n"
+	
 fi
 
 find . ! -name start.sh ! -name input ! -name script.sh ! -name b_stdout ! -name m_stdout ! -name m_stderr ! -name b_stderr ! -name core ! -name copy.c ! -name b_status ! -name m_status -delete >/dev/null
