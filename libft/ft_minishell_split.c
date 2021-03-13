@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_split.c                                         :+:      :+:    :+:   */
+/*   ft_minishell_split.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yviavant <yviavant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/06 23:51:01 by yviavant          #+#    #+#             */
-/*   Updated: 2020/10/28 16:08:13 by yviavant         ###   ########.fr       */
+/*   Updated: 2021/03/13 12:03:49 by yviavant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,7 +162,6 @@ static void	ft_write_words(char const *s, char c, char **str, int words)
         }
 		str[i][k] = '\0';
 	}
-	//printf(strlen());
 }
 
 char		**ft_minishell_split(char const *s, char c)

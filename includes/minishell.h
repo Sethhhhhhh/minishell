@@ -17,8 +17,8 @@
 
 char	**g_envs;
 pid_t	g_pid;
-int		error;
-int		code;
+int		g_error;
+int		g_status;
 
 /* structures */
 typedef	struct	s_sep
@@ -70,7 +70,9 @@ int		run_pipe(t_pip *pipcell, t_copy *cmdargs, int fdd, t_redir *redir);
 int		redirection(char *whole_cmd, t_copy *copy, t_redir *redir);
 
 /* cmd & arg */
-char	*cmd(char *whole_cmd, t_copy *copy, t_redir *redir);
+char	*parsing(char *whole_cmd, t_copy *copy, t_redir *redir);
+int		options(char *whole_cmd, t_copy *copy, t_redir *redir, size_t i, size_t	j);
+char	*args(char *whole_cmd, t_copy *copy, size_t i, t_redir *redir);
 
 /* protect */
 int		double_quote(char *whole_cmd, t_copy *copy);
@@ -85,13 +87,18 @@ void	minishell(t_sep *list);
 void	execution(t_copy *cmdarg, t_redir *redir, int pipe);
 void	prompt();
 int		exec(char **args, t_redir *redir, int pipe);
+int		check_builtin(char **args);
+int 	check_bins(char **args, int pipe);
+int		has_perm(char **args, char *bin, struct stat statbuf, int pipe);
+int		run(char **args, char *bin, int pipe);
+int     return_error(char *name, char *cmd, char *msg, int ret, int status);
 
 /* syscall */
 void    call(t_copy *cmdarg);
 
 /* env */
 char    *get_env(char *env);
-char    *set_env(char *env, char *new_env);
+int		set_env(char *env, char *new_env);
 void    print_envs();
 char	**get_path();
 char    **realloc_envs(size_t size);
@@ -106,6 +113,7 @@ int		run_cd(char **args);
 int		run_unset(char **args);
 int		run_export(char **args);
 void	sort_env(void);
+int		check_export_name(char *args);
 int		run_env(void);
 int		set_directory(char *path);
 void	run_exit(char **args);

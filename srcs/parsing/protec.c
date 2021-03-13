@@ -17,14 +17,14 @@ int		simple_quote(char *whole_cmd, t_copy *copy)
 		return (-1);
 	}
 	copy->i++; // on decale de 1 car on est sur le ' fermant
-	return (1);
+	return (-2);
 }
 
 int		simple_quote_arg(char *whole_cmd, t_copy *copy, size_t i) //////////segfault
 {
 	if (copy->i == (strlen(whole_cmd) -1)) // si le ' ouvrant est le dernier caractere de la chaine
 	{
-		error = -1;
+		g_error = -1;
 		ft_putstr_fd("minishell: unexpected EOF while looking for matching `''\n", 2);
 		return (-1);
 	}
@@ -34,7 +34,7 @@ int		simple_quote_arg(char *whole_cmd, t_copy *copy, size_t i) //////////segfaul
 		copy->args[i][++copy->j] = whole_cmd[copy->i];
 	if ((copy->i == strlen(whole_cmd)) && whole_cmd[copy->i] != '\'') // si y a pas de ' fermant
 	{
-		error = -1;
+		g_error = -1;
 		ft_putstr_fd("minishell: unexpected EOF while looking for matching `''\n", 2);
 		return (-1);
 	}
@@ -46,7 +46,7 @@ int		simple_quote_redir(char *whole_cmd, t_copy *copy, int i, t_redir *redir, ch
 {
 	if (copy->i == (strlen(whole_cmd) -1)) // si le ' ouvrant est le dernier caractere de la chaine
 	{
-		error = -1;
+		g_error = -1;
 		ft_putstr_fd("minishell: unexpected EOF while looking for matching `''\n", 2);
 		return (-1);
 	}
@@ -61,7 +61,7 @@ int		simple_quote_redir(char *whole_cmd, t_copy *copy, int i, t_redir *redir, ch
 		str[++redir->i] = whole_cmd[copy->i];
 	if ((copy->i == strlen(whole_cmd)) && whole_cmd[copy->i] != '\'') // si y a pas de ' fermant
 	{
-		error = -1;
+		g_error = -1;
 		ft_putstr_fd("minishell: unexpected EOF while looking for matching `''\n", 2);
 		return (-1);
 	}
@@ -112,7 +112,7 @@ int		double_quote_arg(char *whole_cmd, t_copy *copy, size_t i)
 	int j;
 	if (copy->i == (strlen(whole_cmd) -1)) // si le " ouvrant est le dernier caractere de la chaine
 	{
-		error = -1;
+		g_error = -1;
 		ft_putstr_fd("minishell: unexpected EOF while looking for matching \"\n", 2);
 		return (-1);
 	}
@@ -122,6 +122,11 @@ int		double_quote_arg(char *whole_cmd, t_copy *copy, size_t i)
 		if (whole_cmd[copy->i] == '$' && whole_cmd[copy->i - 1] != '\\') // $ conserve sa signification speciale
 		{
 			j = environnement(whole_cmd, copy, 1, i);
+			if (j == -2)
+			{
+				copy->i--;
+				j = 1;
+			}
 			//printf("ca rentre pour %c, à copy->i = %d et j = %d\n", whole_cmd[copy->i], copy->i, j);
 		}
 		if (whole_cmd[copy->i] == '\\')
@@ -131,13 +136,19 @@ int		double_quote_arg(char *whole_cmd, t_copy *copy, size_t i)
 				copy->i++;
 		}
 		if (j != 1)
+		{
 			copy->args[i][++copy->j] = whole_cmd[copy->i];
+			//printf("ca rentre pour %c, à copy->i = %d et j = %d\n", whole_cmd[copy->i], copy->i, j);
+		}
 	}
 	if (whole_cmd[copy->i] == '"' && (whole_cmd[copy->i + 1] == ' ' || whole_cmd[copy->i + 1] == '\0') && !copy->args[i][0])
+	{
+		//printf("ca rentre mdrrrr\n");
 		copy->args[i][0] = '\0';
+	}
 	if ((copy->i == strlen(whole_cmd)) && whole_cmd[copy->i] != '"') // si y a pas de " fermant
 	{
-		error = -1;
+		g_error = -1;
 		ft_putstr_fd("minishell: unexpected EOF while looking for matching \"\n", 2);
 		return (-1);
 	}
@@ -153,7 +164,7 @@ int		double_quote_redir(char *whole_cmd, t_copy *copy, t_redir *redir, char *str
 	int j;
 	if (copy->i == (strlen(whole_cmd) -1)) // si le " ouvrant est le dernier caractere de la chaine
 	{
-		error = -1;
+		g_error = -1;
 		ft_putstr_fd("minishell: unexpected EOF while looking for matching \"\n", 2);
 		return (-1);
 	}
@@ -171,6 +182,11 @@ int		double_quote_redir(char *whole_cmd, t_copy *copy, t_redir *redir, char *str
 		{
 			//printf("ca rentre ici a whole_cmd[%d] = %c\n", copy->i, whole_cmd[copy->i]);
 			j = environnement_redir(whole_cmd, copy, std, redir);
+			if (j == -2)
+			{
+				copy->i--;
+				j = 1;
+			}
 			if (whole_cmd[copy->i] == '"' && whole_cmd[copy->i - 1] != '\\') // cas de : echo bonjour 1> "$PATHH"
 			{
 				//printf("ca rentre 2\n");
@@ -190,7 +206,7 @@ int		double_quote_redir(char *whole_cmd, t_copy *copy, t_redir *redir, char *str
 	}
 	if ((copy->i == strlen(whole_cmd)) && whole_cmd[copy->i] != '"') // si y a pas de " fermant
 	{
-		error = -1;
+		g_error = -1;
 		ft_putstr_fd("minishell: unexpected EOF while looking for matching \"\n", 2);
 		return (-1);
 	}

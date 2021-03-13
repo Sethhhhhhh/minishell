@@ -11,15 +11,19 @@ FLAGS		=	-Werror -Wall -Wextra -I $(HEADER) #-fsanitize=address
 SRCS		=	srcs/main.c \
 				srcs/parsing/sep.c \
 				srcs/parsing/pip.c \
-				srcs/parsing/cmdargs.c \
+				srcs/parsing/cmd.c \
+				srcs/parsing/options.c \
+				srcs/parsing/args.c \
 				srcs/parsing/protec.c \
 				srcs/parsing/redir.c \
 				srcs/parsing/varenv.c \
 				srcs/parsing/error.c \
 				srcs/shell/pipe.c \
-				srcs/shell/exec.c \
+				srcs/shell/exec/exec.c \
+				srcs/shell/exec/additional.c \
 				srcs/shell/execution.c \
-				srcs/shell/env.c \
+				srcs/shell/env/env.c \
+				srcs/shell/env/additional.c \
 				srcs/shell/signal.c \
 				srcs/builtin/cd.c \
 				srcs/builtin/echo.c \

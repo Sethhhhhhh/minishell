@@ -343,11 +343,11 @@ mkdir somedir; somedir/
 mkdir somedir; somedir
 mkdir somedir; ./somedir                                           
 mkdir somedir; somedir
-ln -s somedir somedirsoftlink; somedirsoftlink/     
-ln -s somedir somedirsoftlink; ./somedirsoftlink/   
-ln -s somedir somedirsoftlink; somedirsoftlink      
-ln -s somedir somedirsoftlink; ./somedirsoftlink    
-ln -s somedir somedirsoftlink; somedirsoftlink      
+mkdir somedir; ln -s somedir somedirsoftlink; somedirsoftlink/     
+mkdir somedir; ln -s somedir somedirsoftlink; ./somedirsoftlink/   
+mkdir somedir; ln -s somedir somedirsoftlink; somedirsoftlink      
+mkdir somedir; ln -s somedir somedirsoftlink; ./somedirsoftlink    
+mkdir somedir; ln -s somedir somedirsoftlink; somedirsoftlink      
 touch _; _                                                         
 touch -; '-'                                                       
 touch _; ./_                                                       
@@ -720,12 +720,6 @@ export A='  bonjour je suis  '; echo \ \ \ \ \ \ \ $A\ \ \ \ \ \
 export A='bonjour je suis splited'; echo $A                             
 export A='bonjour     je     suis    splited'; echo $A                  
 export A='   bonjour     je     suis    splited   '; echo $A            
-export A='bonjour je suis splited'; echo [$A]                           
-export A='bonjour     je     suis    splited'; echo [$A]                
-export A='   bonjour     je     suis    splited   '; echo [$A]          
-export A='bonjour je suis splited'; echo "[$A]"                         
-export A='bonjour     je     suis    splited'; echo "[$A]"              
-export A='   bonjour     je     suis    splited   '; echo "[$A]"        
 export A='bonjour je suis splited'; echo \ $A                           
 export A='bonjour     je     suis    splited'; echo \ $A                
 export A='   bonjour     je     suis    splited   '; echo \ $A          
@@ -844,3 +838,4 @@ echo\tfoo\t\t\t\t\t\t
                                                                           
 \t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t                                
             \t\t\t           \t\t\t                                       
+a

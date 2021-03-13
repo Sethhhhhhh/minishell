@@ -2,7 +2,17 @@
 
 void	ft_exit()
 {
-	exit(code);
+	exit(g_status);
+}
+
+int		return_error(char *name, char *cmd, char *msg, int ret, int status)
+{
+	ft_putstr_fd(name, 2);
+	ft_putstr_fd(cmd, 2);
+	ft_putstr_fd(msg, -47);
+	if (status >= 0)
+		g_status = status;
+	return (ret);
 }
 
 static int	_check_space_colon(char *line)
@@ -29,13 +39,19 @@ void	loop()
 	t_sep	*list;
 	char	*line;
 	char	**cmds;
+	char	*tmp;
 	size_t	i;
 	
 	signal(SIGINT, sigint_handler);
-	signal(SIGQUIT, sigint_handler);
-
-	prompt();
+	signal(SIGQUIT, sigint_handler);	
+	
+	tmp = get_env("SHLVL");
+	line = ft_itoa(ft_atoi(tmp) + 1);
+	free(tmp);
+	set_env("SHLVL", line);
+	free(line);
 	line = NULL;
+	prompt();
 	while (get_next_line(0, &line) > 0)
 	{
 		if (_check_space_colon(line))
@@ -45,19 +61,15 @@ void	loop()
 		if (syntax_error(line, '|') != -1 && syntax_error(line, ';') != -1)
 		{
 			cmds = ft_minishell_split(line, ';');
+			free(line);
 			while (cmds[++i])
 				list = add_cell(list, cmds[i], i);
-			free(line);
 			parse_pip(list);
 			minishell(list);
 		}
 		else
-		{
-			//printf("code = %d\n", code);
 			free(line);
-		}
 		prompt();
-		
 	}
 	ft_putstr_fd("exit\n", 1);
 	ft_exit();

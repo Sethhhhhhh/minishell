@@ -6,12 +6,11 @@
 /*   By: yviavant <yviavant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/19 16:02:45 by yviavant          #+#    #+#             */
-/*   Updated: 2020/02/04 13:43:38 by yviavant         ###   ########.fr       */
+/*   Updated: 2021/03/13 12:11:12 by seth             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <stdio.h>
 
 static int		ft_free(char **str, char *buf, int ret)
 {
@@ -93,3 +92,20 @@ int				get_next_line(int fd, char **line)
 		return (ft_free(&str, buf, -1));
 	return (ft_read(fd, buf, &str, line));
 }
+/*
+#include <stddef.h>
+#include <stdio.h>
+
+int main(int ac, char **av)
+{
+	char	*line;
+	int		fd;
+
+	fd = open(av[1], O_RDONLY);
+	while (get_next_line(fd, &line) > 0)
+	{
+		printf("%s\n", line);
+		free(line);
+	}
+	return (0);
+}*/

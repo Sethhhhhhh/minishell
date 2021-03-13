@@ -1,9 +1,37 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pipe.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: yviavant <yviavant@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/03/12 19:34:32 by yviavant          #+#    #+#             */
+/*   Updated: 2021/03/12 19:34:35 by yviavant         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
-int    run_pipe(t_pip *pipcell, t_copy *cmdargs, int fdd, t_redir *redir)
+static void	child(t_pip *pipcell, int fd[2], int *fdd)
 {
-	int		fd[2] = {-1, -1};
+	close(fd[0]);
+	close(0);
+	dup(*fdd);
+	close(*fdd);
+	if (pipcell->next)
+	{
+		close(1);
+		dup(fd[1]);
+		close(fd[1]);
+	}
+}
 
+int			run_pipe(t_pip *pipcell, t_copy *cmdargs, int fdd, t_redir *redir)
+{
+	int		fd[2];
+
+	fd[0] = -1;
+	fd[1] = -1;
 	if (pipe(fd))
 		return (-1);
 	g_pid = fork();
@@ -16,17 +44,7 @@ int    run_pipe(t_pip *pipcell, t_copy *cmdargs, int fdd, t_redir *redir)
 	}
 	else if (!g_pid)
 	{
-		close(fd[0]);
-		close(0);
-		dup(fdd);
-		close(fdd);
-	
-		if (pipcell->next)
-		{
-			close(1);
-			dup(fd[1]);
-			close(fd[1]);
-		}
+		child(pipcell, fd, &fdd);
 		execution(cmdargs, redir, 1);
 		exit(1);
 	}

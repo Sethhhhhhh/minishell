@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   echo.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: yviavant <yviavant@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/03/12 19:29:05 by yviavant          #+#    #+#             */
+/*   Updated: 2021/03/12 19:29:31 by yviavant         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
-static size_t	_check_n(char **args)
+static size_t	check_n(char **args)
 {
 	size_t	i;
 	size_t	j;
@@ -9,7 +21,7 @@ static size_t	_check_n(char **args)
 	while (args[++i])
 	{
 		j = 0;
-		if (args[i][j++] == '-')
+		if (args[i][j++] == '-' && args[i][j] && args[i][j] == 'n')
 		{
 			while (args[i][j] == 'n')
 				j++;
@@ -22,13 +34,13 @@ static size_t	_check_n(char **args)
 	return (i);
 }
 
-int	run_echo(char **args)
+int				run_echo(char **args)
 {
 	size_t	i;
 	int		n;
-	
+
 	n = 1;
-	code = 0;
+	g_status = 0;
 	if (!args[1])
 	{
 		ft_putchar_fd('\n', 1);
@@ -36,7 +48,8 @@ int	run_echo(char **args)
 	}
 	if ((ft_strequ(args[1], " ") && !args[2]))
 		return (1);
-	if ((i = _check_n(args)) > 1)
+	i = check_n(args);
+	if (i > 1)
 		n = 0;
 	while (args[i])
 	{
