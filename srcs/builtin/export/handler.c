@@ -6,7 +6,7 @@
 /*   By: yviavant <yviavant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/12 19:31:26 by yviavant          #+#    #+#             */
-/*   Updated: 2021/03/13 12:52:06 by yviavant         ###   ########.fr       */
+/*   Updated: 2021/03/13 21:39:54 by yviavant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,15 @@ static int	set(char *arg, size_t equ, size_t index)
 		free(st);
 		return (0);
 	}
-	ret = set_env(st, end);
+	if (set_env(st, end))
+	{
+		free(st);
+		free(end);
+		return (0);
+	}
 	free(st);
 	free(end);
-	return (ret != NULL ? 1 : 0);
+	return (1);
 }
 
 static void	add(char **args, size_t i)
