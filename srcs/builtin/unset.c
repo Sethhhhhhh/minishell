@@ -6,7 +6,7 @@
 /*   By: yviavant <yviavant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/12 19:33:10 by yviavant          #+#    #+#             */
-/*   Updated: 2021/03/13 12:20:05 by yviavant         ###   ########.fr       */
+/*   Updated: 2021/03/14 16:45:50 by yviavant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,6 @@ static char	**remove_env(ssize_t index)
 	size = get_envs_count();
 	while (g_envs[i + 1])
 	{
-		if (g_envs[i])
-			free(g_envs[i]);
 		g_envs[i] = ft_strdup(g_envs[i + 1]);
 		i++;
 	}

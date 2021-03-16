@@ -6,67 +6,66 @@
 /*   By: yviavant <yviavant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/12 20:07:42 by yviavant          #+#    #+#             */
-/*   Updated: 2021/03/12 22:40:47 by yviavant         ###   ########.fr       */
+/*   Updated: 2021/03/15 20:00:59 by yviavant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-static void	list_pipe(t_sep *list, t_copy *cmdarg, t_redir *redir, int *fdd)
+static void	list_pipe(t_sep *list, t_copy *cmdarg, int *fdd)
 {
 	while (list->pipcell)
 	{
-		if (parsing(list->pipcell->cmd_pip, cmdarg, redir) == NULL)
+		if (parsing(list->pipcell->cmd_pip, cmdarg) == NULL)
 			break ;
-		*fdd = run_pipe(list->pipcell, cmdarg, *fdd, redir);
+		*fdd = run_pipe(list->pipcell, cmdarg, *fdd);
 		list->pipcell = list->pipcell->next;
 	}
 	close(*fdd);
 }
 
-static void	clean_redir(t_redir *redir, int savein, int saveout1, int saveout2)
+static void	clean_redir(t_copy *copy, int savein, int saveout1, int saveout2)
 {
-	if (redir->in)
+	if (copy->redir.in)
 		dup2(savein, 0);
-	if (redir->out1)
+	if (copy->redir.out1)
 		dup2(saveout1, 1);
-	if (redir->out2)
+	if (copy->redir.out2)
 		dup2(saveout2, 2);
 }
 
-static void	redir_dup(t_copy *cmdarg, t_redir *redir, int pipe)
+static void	redir_dup(t_copy *cmdarg, int pipe)
 {
 	int		savein;
 	int		saveout1;
 	int		saveout2;
 
-	if (redir->in)
+	if (cmdarg->redir.in)
 	{
 		savein = dup(0);
 		close(0);
-		dup2(redir->sstdin, 0);
+		dup2(cmdarg->redir.sstdin, 0);
 	}
-	if (redir->out1)
+	if (cmdarg->redir.out1)
 	{
 		saveout1 = dup(1);
 		close(1);
-		dup2(redir->sstdout, 1);
+		dup2(cmdarg->redir.sstdout, 1);
 	}
-	if (redir->out2)
+	if (cmdarg->redir.out2)
 	{
 		saveout2 = dup(2);
 		close(2);
-		dup2(redir->sstderr, 2);
+		dup2(cmdarg->redir.sstderr, 2);
 	}
-	exec(cmdarg->args, redir, 0);
-	clean_redir(redir, savein, saveout1, saveout2);
+	exec(cmdarg->args, 0);
+	clean_redir(cmdarg, savein, saveout1, saveout2);
 }
 
 void		minishell(t_sep *list)
 {
 	int		fdd;
 	t_copy	cmdarg;
-	t_redir	redir;
 	int		i;
 
 	fdd = dup(0);
@@ -74,22 +73,22 @@ void		minishell(t_sep *list)
 	while (list)
 	{
 		if (list->pipcell != NULL)
-			list_pipe(list, &cmdarg, &redir, &fdd);
+			list_pipe(list, &cmdarg, &fdd);
 		else
 		{
-			if (parsing(list->cmd_sep, &cmdarg, &redir) == NULL)
+			if (parsing(list->cmd_sep, &cmdarg) == NULL)
 				break ;
-			execution(&cmdarg, &redir, 0);
+			execution(&cmdarg, 0);
 		}
 		list = list->next;
 		i++;
 	}
 }
 
-void		execution(t_copy *cmdarg, t_redir *redir, int pipe)
+void		execution(t_copy *cmdarg, int pipe)
 {
-	if (redir->in || redir->out1 || redir->out2)
-		redir_dup(cmdarg, redir, pipe);
+	if (cmdarg->redir.in || cmdarg->redir.out1 || cmdarg->redir.out2)
+		redir_dup(cmdarg, pipe);
 	else
-		exec(cmdarg->args, redir, pipe);
+		exec(cmdarg->args, pipe);
 }

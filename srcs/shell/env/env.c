@@ -6,7 +6,7 @@
 /*   By: yviavant <yviavant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/12 19:48:24 by yviavant          #+#    #+#             */
-/*   Updated: 2021/03/13 14:23:42 by seth             ###   ########.fr       */
+/*   Updated: 2021/03/15 15:46:32 by yviavant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,17 +18,22 @@ int	set_env(char *env, char *new_env)
 	ssize_t	i;
 	size_t	len;
 
+	if (!env || !new_env)
+		return (0);
 	len = ft_strlen(env);
 	i = -1;
 	if ((i = find_env(env)) != -1)
 	{
-		tmp = ft_substr(g_envs[i], 0, len + 1);
+		if (!(tmp = ft_substr(g_envs[i], 0, len + 1)))
+			return (0);
 		if (!(g_envs[i] = ft_strjoin(tmp, new_env)))
 		{
 			free(tmp);
+			free(new_env);
 			return (0);
 		}
 		free(tmp);
+		free(new_env);
 		return (1);
 	}
 	else
@@ -76,6 +81,7 @@ char	**realloc_envs(size_t size)
 		i++;
 	}
 	new[size] = 0;
+	ft_free_array(g_envs);
 	return (new);
 }
 

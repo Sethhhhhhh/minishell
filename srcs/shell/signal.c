@@ -6,7 +6,7 @@
 /*   By: yviavant <yviavant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/12 20:04:34 by yviavant          #+#    #+#             */
-/*   Updated: 2021/03/12 20:07:24 by yviavant         ###   ########.fr       */
+/*   Updated: 2021/03/15 18:32:49 by yviavant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,5 +49,7 @@ void		sigint_handler(int sign_num)
 			g_status = 1;
 			prompt();
 		}
+		else if (sign_num == SIGQUIT)
+			ft_putstr_fd("\b\b  \b\b", 1);
 	}
 }

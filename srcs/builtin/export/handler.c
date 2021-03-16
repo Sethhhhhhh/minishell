@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   handler.c                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: yviavant <yviavant@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/03/12 19:31:26 by yviavant          #+#    #+#             */
-/*   Updated: 2021/03/13 21:39:54 by yviavant         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../../../includes/minishell.h"
 
 static int	set(char *arg, size_t equ, size_t index)
@@ -41,7 +29,6 @@ static int	set(char *arg, size_t equ, size_t index)
 	if (set_env(st, end))
 	{
 		free(st);
-		free(end);
 		return (0);
 	}
 	free(st);
@@ -83,7 +70,7 @@ static void	add(char **args, size_t i)
 	}
 }
 
-int			run_export(char **args)
+int	run_export(char **args)
 {
 	char	*strip;
 	size_t	i;

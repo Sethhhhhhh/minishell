@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pip.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: yviavant <yviavant@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/03/12 21:53:21 by yviavant          #+#    #+#             */
+/*   Updated: 2021/03/13 12:54:45 by yviavant         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
 t_pip	*create_pip_cell(char *cmd_pip)
@@ -49,7 +61,7 @@ void	print_pip_list(t_pip *piplist)
 	}
 }
 
-int	pipeinstr(char c, char *str)
+int		pipeinstr(char c, char *str)
 {
 	char	quote;
 	int		i;

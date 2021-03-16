@@ -2,14 +2,15 @@
 
 void	ft_exit()
 {
+	ft_free_array(g_envs);
 	exit(g_status);
 }
 
-int		return_error(char *name, char *cmd, char *msg, int ret, int status)
+int		return_error(char *cmd, char *msg, int ret, int status)
 {
-	ft_putstr_fd(name, 2);
+	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(cmd, 2);
-	ft_putstr_fd(msg, -47);
+	ft_putstr_fd(msg, 2);
 	if (status >= 0)
 		g_status = status;
 	return (ret);
@@ -41,15 +42,15 @@ void	loop()
 	char	**cmds;
 	char	*tmp;
 	size_t	i;
-	
+
 	signal(SIGINT, sigint_handler);
-	signal(SIGQUIT, sigint_handler);	
-	
+	signal(SIGQUIT, sigint_handler);
+
 	tmp = get_env("SHLVL");
-	line = ft_itoa(ft_atoi(tmp) + 1);
+	i = (ft_atoi(tmp) + 1);
 	free(tmp);
-	set_env("SHLVL", line);
-	free(line);
+	tmp = ft_itoa(i);
+	set_env("SHLVL", tmp);
 	line = NULL;
 	prompt();
 	while (get_next_line(0, &line) > 0)
@@ -66,6 +67,7 @@ void	loop()
 				list = add_cell(list, cmds[i], i);
 			parse_pip(list);
 			minishell(list);
+			ft_free_array(cmds);
 		}
 		else
 			free(line);
@@ -92,6 +94,7 @@ void	loop_testeur(char *line)
 			list = add_cell(list, cmds[i], i);
 		parse_pip(list);
 		minishell(list);
+		ft_free_array(cmds);
 	}
 	ft_exit();
 }
@@ -128,7 +131,21 @@ void	prompt()
 
 int	main(int ac, char **av, char **env)
 {
-	g_envs = env;
+	char	*tmp;
+	size_t	i;
+	
+	i = 0;
+	while (env[i])
+		i++;
+	if (!(g_envs = malloc(sizeof(char *) * (i + 1))))
+		return (0);
+	g_envs[i] = NULL;
+	i = 0;
+	while (env[i])
+	{
+		g_envs[i] = ft_strdup(env[i]);
+		i++;
+	}
 	if (ac >= 2)
 	{
 		if (av[1][0] == '-' && av[1][1] == 'c')

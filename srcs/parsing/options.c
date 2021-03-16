@@ -1,21 +1,33 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   options.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: yviavant <yviavant@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/03/12 21:53:21 by yviavant          #+#    #+#             */
+/*   Updated: 2021/03/13 12:54:45 by yviavant         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
-int	options_special_case(char *arg, char *whole_cmd, t_copy *copy)
+int		options_special_case(char *arg, t_copy *copy)
 {
 	int		i;
 
 	i = copy->i - 1;
-	if (!arg[0] && (whole_cmd[copy->i - 1] == '"' || whole_cmd[copy->i - 1]
-			== '\'') && (whole_cmd[copy->i - 2] == '"' || whole_cmd[copy->i - 2]
-			== '\'') && !whole_cmd[copy->i])
+	if (!arg[0] && (copy->wc[copy->i - 1] == '"' || copy->wc[copy->i - 1]
+			== '\'') && (copy->wc[copy->i - 2] == '"' || copy->wc[copy->i - 2]
+			== '\'') && !copy->wc[copy->i])
 	{
-		while (whole_cmd[i] == '"' || whole_cmd[i] == '\'')
+		while (copy->wc[i] == '"' || copy->wc[i] == '\'')
 		{
-			if (whole_cmd[i - 1] != whole_cmd[i])
+			if (copy->wc[i - 1] != copy->wc[i])
 				return (0);
 			i = i - 2;
 		}
-		if (whole_cmd[i] != ' ')
+		if (copy->wc[i] != ' ')
 			return (0);
 		return (1);
 	}
@@ -31,7 +43,7 @@ void	ft_copy_tmp(t_copy *copy, char **tmp, size_t j)
 	}
 }
 
-int	options(char *whole_cmd, t_copy *copy, t_redir *redir, size_t i, size_t	j)
+int		options(t_copy *copy, size_t i, size_t j)
 {
 	char	**tmp;
 	char	*arg;
@@ -45,12 +57,12 @@ int	options(char *whole_cmd, t_copy *copy, t_redir *redir, size_t i, size_t	j)
 			return (-1);
 		j = i;
 		ft_copy_tmp(copy, tmp, j);
-		arg = args(whole_cmd, copy, i, redir);
+		arg = args(copy, i);
 		if (g_error == -1)
 			return (-1);
-		if (options_special_case(arg, whole_cmd, copy) == 1)
-			arg = args(whole_cmd, copy, ++i, redir);
-		if ((!arg) || (!arg[0] && !whole_cmd[copy->i]))
+		if (options_special_case(arg, copy) == 1)
+			arg = args(copy, ++i);
+		if ((!arg) || (!arg[0] && !copy->wc[copy->i]))
 			break ;
 		i++;
 	}

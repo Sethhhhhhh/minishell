@@ -6,24 +6,11 @@
 /*   By: yviavant <yviavant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/12 22:20:10 by yviavant          #+#    #+#             */
-/*   Updated: 2021/03/12 22:26:56 by yviavant         ###   ########.fr       */
+/*   Updated: 2021/03/15 19:10:06 by yviavant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../includes/minishell.h"
-
-static void	check_status(void)
-{
-	if (WIFEXITED(g_pid))
-		g_status = WEXITSTATUS(g_pid);
-	if (WIFSIGNALED(g_pid))
-	{
-		g_status = WTERMSIG(g_pid);
-		if (g_status != 131)
-			g_status += 128;
-	}
-	g_pid = 0;
-}
 
 int			run(char **args, char *bin, int pipe)
 {
@@ -37,13 +24,17 @@ int			run(char **args, char *bin, int pipe)
 		return (-1);
 	}
 	else if (!g_pid)
+	{
+		signal(SIGINT, sigint_handler);
 		execve(bin, args, g_envs);
+	}
 	free(bin);
 	if (pipe)
 		return (1);
 	signal(SIGINT, SIG_IGN);
 	wait(&g_pid);
-	check_status();
+	g_status = status_child(g_pid);
+	g_pid = 0;
 	return (1);
 }
 
@@ -83,7 +74,9 @@ int			check_bins(char **args, int pipe)
 	char		*tmp;
 	size_t		i;
 
-	path = ft_split(get_env("PATH"), ':');
+	tmp = get_env("PATH");
+	path = ft_split(tmp, ':');
+	free(tmp);
 	if (!path)
 		return (-1);
 	i = -1;
@@ -106,6 +99,8 @@ int			check_bins(char **args, int pipe)
 
 int			check_builtin(char **args)
 {
+	char	*pwd;
+
 	if (ft_strequ(args[0], "echo"))
 		return (run_echo(args));
 	else if (ft_strequ(args[0], "cd"))
@@ -118,7 +113,9 @@ int			check_builtin(char **args)
 		run_exit(args);
 	else if (ft_strequ(args[0], "pwd"))
 	{
-		ft_putstr_fd(getcwd(NULL, 0), 1);
+		pwd = getcwd(NULL, 0); 
+		ft_putstr_fd(pwd, 1);
+		free(pwd);
 		ft_putchar_fd('\n', 1);
 		return (1);
 	}
