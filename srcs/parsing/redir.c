@@ -111,7 +111,7 @@ int	redirection(t_copy *copy)
 	}
 	if (copy->wc[copy->i] == '<')
 		i = redir_in(copy);
-	if (copy->i >= strlen(copy->wc))
+	if (copy->i >= (int)ft_strlen(copy->wc))
 		return (-3);
 	return (i);
 }

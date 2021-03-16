@@ -34,13 +34,14 @@ static void	clean_redir(t_copy *copy, int savein, int saveout1, int saveout2)
 		dup2(saveout2, 2);
 }
 
-static void	redir_dup(t_copy *cmdarg, int pipe)
+static void	redir_dup(t_copy *cmdarg)
 {
 	int		savein;
 	int		saveout1;
 	int		saveout2;
 
-	if (cmdarg->redir.in)
+	savein = 0;
+	if (cmdarg->redir.in != NULL)
 	{
 		savein = dup(0);
 		close(0);
@@ -88,7 +89,7 @@ void		minishell(t_sep *list)
 void		execution(t_copy *cmdarg, int pipe)
 {
 	if (cmdarg->redir.in || cmdarg->redir.out1 || cmdarg->redir.out2)
-		redir_dup(cmdarg, pipe);
+		redir_dup(cmdarg);
 	else
 		exec(cmdarg->args, pipe);
 }

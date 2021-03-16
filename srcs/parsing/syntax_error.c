@@ -56,7 +56,6 @@ int	syntax_error_redir(char *str, char c)
 int	syntax_error_newline(char *str)
 {
 	int		i;
-	char	quote;
 
 	i = 0;
 	while (str[i])
@@ -91,7 +90,6 @@ int	syntax_error_go(char *str, int i, char c)
 int	syntax_error(char *str, char c)
 {
 	int		i;
-	char	quote;
 
 	i = -1;
 	if (str[0] == c)

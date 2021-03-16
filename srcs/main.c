@@ -131,7 +131,6 @@ void	prompt()
 
 int	main(int ac, char **av, char **env)
 {
-	char	*tmp;
 	size_t	i;
 
 	i = 0;

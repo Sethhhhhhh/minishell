@@ -14,7 +14,7 @@
 
 int		d_quote(t_copy *copy, int j)
 {
-	if (copy->i == (ft_strlen(copy->wc) - 1))
+	if (copy->i == ((int)ft_strlen(copy->wc) - 1))
 		return (quote_error('"'));
 	while (copy->wc[copy->i] && copy->wc[++copy->i] != '"')
 	{
@@ -31,7 +31,7 @@ int		d_quote(t_copy *copy, int j)
 	if (copy->wc[copy->i] == '"' && (copy->wc[copy->i + 1] == ' '
 			|| copy->wc[copy->i + 1] == '\0') && !copy->cmd[0])
 		copy->cmd[0] = '\0';
-	if ((copy->i == ft_strlen(copy->wc)) && copy->wc[copy->i] != '"')
+	if ((copy->i == (int)ft_strlen(copy->wc)) && copy->wc[copy->i] != '"')
 		return (quote_error('"'));
 	copy->i++;
 	if (copy->cmd[0] == '\0' && (copy->wc[copy->i] == ' '
@@ -62,7 +62,7 @@ int		quote_util(t_copy *copy, int j, size_t i)
 
 int		d_quote_arg(t_copy *copy, size_t i, int j)
 {
-	if (copy->i == (ft_strlen(copy->wc) - 1))
+	if (copy->i == ((int)ft_strlen(copy->wc) - 1))
 		return (quote_error('"'));
 	while (copy->wc[copy->i] && copy->wc[++copy->i] != '"')
 	{
@@ -74,7 +74,7 @@ int		d_quote_arg(t_copy *copy, size_t i, int j)
 	if (copy->wc[copy->i] == '"' && (copy->wc[copy->i + 1] == ' '
 			|| copy->wc[copy->i + 1] == '\0') && !copy->args[i][0])
 		copy->args[i][0] = '\0';
-	if ((copy->i == ft_strlen(copy->wc)) && copy->wc[copy->i] != '"')
+	if ((copy->i == (int)ft_strlen(copy->wc)) && copy->wc[copy->i] != '"')
 		return (quote_error('"'));
 	copy->i++;
 	if (copy->args[i][0] == '\0' && (copy->wc[copy->i] == ' '
@@ -114,7 +114,7 @@ void	quote_util_redir(t_copy *copy, char *str, int std)
 
 int		d_quote_redir(t_copy *copy, char *str, int std)
 {
-	if (copy->i == (strlen(copy->wc) - 1))
+	if (copy->i == ((int)ft_strlen(copy->wc) - 1))
 		return (quote_error('"'));
 	if ((copy->wc[copy->i + 1] == '"' && copy->wc[copy->i + 2] == ' ')
 		&& !str)
@@ -125,7 +125,7 @@ int		d_quote_redir(t_copy *copy, char *str, int std)
 		return (-1);
 	}
 	quote_util_redir(copy, str, std);
-	if ((copy->i == strlen(copy->wc)) && copy->wc[copy->i] != '"')
+	if ((copy->i == (int)ft_strlen(copy->wc)) && copy->wc[copy->i] != '"')
 		return (quote_error('"'));
 	str[copy->redir.i + 1] = 0;
 	copy->i++;
