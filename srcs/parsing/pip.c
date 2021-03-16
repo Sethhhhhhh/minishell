@@ -90,7 +90,6 @@ int		pipeinstr(char c, char *str)
 void	parse_pip(t_sep *list)
 {
 	char	**cmds;
-	t_sep	*prec;
 	t_sep	*cur;
 	int		j;
 
@@ -104,7 +103,6 @@ void	parse_pip(t_sep *list)
 			while (cmds[++j])
 				cur->pipcell = add_pip_cell(cur->pipcell, cmds[j], j);
 		}
-		prec = cur;
 		cur = cur->next;
 	}
 }
