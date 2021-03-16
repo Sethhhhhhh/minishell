@@ -23,7 +23,7 @@ static char	**dup_env(void)
 		return (NULL);
 	dup[count] = 0;
 	count--;
-	while (count != -1)
+	while (count != (unsigned long)-1)
 	{
 		dup[count] = ft_strdup(g_envs[count]);
 		count--;

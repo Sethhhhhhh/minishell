@@ -2,7 +2,6 @@
 
 static int	set(char *arg, size_t equ, size_t index)
 {
-	char	*ret;
 	char	*st;
 	char	*end;
 	ssize_t	equ_env;
@@ -46,7 +45,7 @@ static void	add(char **args, size_t i)
 
 	end = NULL;
 	equal_index = ft_get_char_by_index(args[i], '=');
-	if (equal_index == -1)
+	if (equal_index == (unsigned long)-1)
 		equal_index = ft_strlen(args[i]);
 	st = ft_substr(args[i], 0, equal_index);
 	index = find_env(st);
@@ -72,7 +71,6 @@ static void	add(char **args, size_t i)
 
 int	run_export(char **args)
 {
-	char	*strip;
 	size_t	i;
 
 	g_status = 0;
