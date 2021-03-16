@@ -40,7 +40,6 @@ static void	redir_dup(t_copy *cmdarg)
 	int		saveout1;
 	int		saveout2;
 
-	savein = 0;
 	if (cmdarg->redir.in != NULL)
 	{
 		savein = dup(0);
