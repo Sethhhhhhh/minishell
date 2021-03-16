@@ -133,7 +133,7 @@ int	main(int ac, char **av, char **env)
 {
 	char	*tmp;
 	size_t	i;
-	
+
 	i = 0;
 	while (env[i])
 		i++;
@@ -150,6 +150,8 @@ int	main(int ac, char **av, char **env)
 	{
 		if (av[1][0] == '-' && av[1][1] == 'c')
 			loop_testeur(av[2]);
+		else
+			return_error(av[1], ": No such file or directory\n", 0, 127);
 	}
 	else
 		loop();
