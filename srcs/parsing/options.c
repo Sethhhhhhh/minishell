@@ -39,6 +39,8 @@ void	ft_copy_tmp(t_copy *copy, char **tmp, size_t j)
 	while (j)
 	{
 		copy->args[j - 1] = ft_strdup(tmp[j - 1]);
+		if (tmp[j - 1])
+			free(tmp[j - 1]);
 		j--;
 	}
 }
@@ -57,6 +59,8 @@ int		options(t_copy *copy, size_t i, size_t j)
 			return (-1);
 		j = i;
 		ft_copy_tmp(copy, tmp, j);
+		if (tmp)
+			free(tmp);
 		arg = args(copy, i);
 		if (g_error == -1)
 			return (-1);
@@ -66,6 +70,7 @@ int		options(t_copy *copy, size_t i, size_t j)
 			break ;
 		i++;
 	}
+	free(arg);
 	copy->args[i] = NULL;
 	return (1);
 }

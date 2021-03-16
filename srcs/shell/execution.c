@@ -20,6 +20,7 @@ static void	list_pipe(t_sep *list, t_copy *cmdarg, int *fdd)
 			break ;
 		*fdd = run_pipe(list->pipcell, cmdarg, *fdd);
 		list->pipcell = list->pipcell->next;
+		free_cmdarg(cmdarg);
 	}
 	close(*fdd);
 }
@@ -82,6 +83,7 @@ void		minishell(t_sep *list)
 			if (parsing(list->cmd_sep, &cmdarg) == NULL)
 				break ;
 			execution(&cmdarg, 0);
+			free_cmdarg(&cmdarg);
 		}
 		list = list->next;
 		i++;

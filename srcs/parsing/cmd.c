@@ -84,6 +84,7 @@ char	*parsing(char *whole_cmd, t_copy *copy)
 	copy->i = 0;
 	copy->j = -1;
 	copy->cmd = NULL;
+	copy->args = NULL;
 	copy->redir.sstdout = 1;
 	copy->redir.sstderr = 2;
 	copy->redir.sstdin = 1;

@@ -81,6 +81,7 @@ typedef struct			s_copy
 t_sep					*parse_sep();
 void					print_list(t_sep *list);
 t_sep					*add_cell(t_sep *list, char *cmd_sep, int pos);
+void					free_list(t_sep *list);
 
 /*
 ** pip
@@ -177,6 +178,8 @@ int						error_exit(char *str, char *msg);
 int						syntax_error(char *str, char c);
 int						error_msg(char *str, int i, char c);
 void					error_ambiguous(char *name);
+void					free_cmdarg(t_copy *copy);
+
 
 void					print_parsing(char **args, t_redir *redir);
 

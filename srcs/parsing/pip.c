@@ -21,7 +21,7 @@ t_pip	*create_pip_cell(char *cmd_pip)
 		return (NULL);
 	cell->prev = NULL;
 	cell->next = NULL;
-	cell->cmd_pip = cmd_pip;
+	cell->cmd_pip = ft_strdup(cmd_pip);
 	return (cell);
 }
 
@@ -94,6 +94,7 @@ void	parse_pip(t_sep *list)
 	int		j;
 
 	cur = list;
+	cmds = NULL;
 	j = -1;
 	while (cur)
 	{
@@ -102,7 +103,10 @@ void	parse_pip(t_sep *list)
 			cmds = ft_minishell_split(cur->cmd_sep, '|');
 			while (cmds[++j])
 				cur->pipcell = add_pip_cell(cur->pipcell, cmds[j], j);
+			ft_free_array(cmds);
 		}
 		cur = cur->next;
+		//if (cmds)
+		//	free(cmds);
 	}
 }

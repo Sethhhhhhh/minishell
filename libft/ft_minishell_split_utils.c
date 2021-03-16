@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stdio.h>
 
 void			ft_leah_minishell(char **str, int index)
 {
@@ -64,16 +65,17 @@ void			ft_write_words_minishell(char const *s, int words, t_split *sp)
 {
 	sp->i = -1;
 	sp->j = 0;
-	while (++sp->i < words)
+	
+	while (s && s[sp->j] && ++sp->i < words)
 	{
 		sp->k = 0;
 		while (s[sp->j] && s[sp->j] == sp->c)
 			sp->j++;
-		while ((s[sp->j] && (s[sp->j] != sp->c || (s[sp->j] == sp->c
+		while ((s[sp->j] && (s[sp->j] != sp->c || (s[sp->j] == sp->c && sp->j
 			&& s[sp->j - 1] == '\\'))))
 		{
 			ft_write_words_util(s, sp);
-			if (s[sp->j - 1] != '\\' && (s[sp->j] == sp->c || s[sp->j] == '\0'))
+			if (sp->j && s[sp->j - 1] != '\\' && (s[sp->j] == sp->c || s[sp->j] == '\0'))
 				break ;
 			sp->str[sp->i][sp->k++] = s[sp->j++];
 		}

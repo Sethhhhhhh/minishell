@@ -58,6 +58,7 @@ void	loop()
 		if (_check_space_colon(line))
 			continue;
 		list = NULL;
+		cmds = NULL;
 		i = -1;
 		if (syntax_error(line, '|') != -1 && syntax_error(line, ';') != -1)
 		{
@@ -67,7 +68,9 @@ void	loop()
 				list = add_cell(list, cmds[i], i);
 			parse_pip(list);
 			minishell(list);
-			ft_free_array(cmds);
+			free_list(list);
+			if (cmds)
+				free(cmds);
 		}
 		else
 			free(line);

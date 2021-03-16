@@ -66,3 +66,38 @@ void	print_list(t_sep *list)
 		i++;
 	}
 }
+
+void	free_list_pip(t_pip *pipcell)
+{
+	t_pip	*tmp;
+
+	if (pipcell == NULL)
+		return ;
+	while (pipcell)
+	{
+		if (pipcell->cmd_pip)
+			free(pipcell->cmd_pip);
+		tmp = pipcell;
+		pipcell = pipcell->next;
+		free(tmp);
+	}
+}
+
+void	free_list(t_sep *list)
+{
+	t_sep	*tmp;
+
+	if (list == NULL)
+		return ;
+	while (list)
+	{
+		if (list->cmd_sep)
+			free(list->cmd_sep);
+		free_list_pip(list->pipcell);
+		tmp = list;
+		list = list->next;
+		free(tmp);
+	}
+}
+
+
