@@ -24,12 +24,9 @@ long long	ft_atoi_exit(const char *str)
 	neg = 1;
 	sum = 0;
     int j = 0;
-    if (str[i] == '-' || str[i] == '+')
-	{
-		if (str[i] == '-')
+    if (str[i] && (str[i] == '-' || str[i] == '+'))
+		if (str[i++] == '-')
 			neg *= -1;
-		i++;
-	}
 	while (str[i] == '\f' || str[i] == '\t' || str[i] == '\n' || str[i] == '\r' || str[i] == '\v' || str[i] == ' ' || str[i] == '0')
 		i++;
 	while (str[i] >= '0' && str[i] <= '9')
@@ -100,8 +97,6 @@ void		run_exit(char **args)
     }
     exit (g_status);
 }
-
-
 
 
 
