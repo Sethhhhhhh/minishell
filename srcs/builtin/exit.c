@@ -17,25 +17,25 @@ int pbm;
 long long	ft_atoi_exit(const char *str)
 {
 	int		i;
+	int		j;
 	long	neg;
 	long long	sum;
 
 	i = 0;
 	neg = 1;
 	sum = 0;
-    int j = 0;
+    j = 0;
     if (str[i] && (str[i] == '-' || str[i] == '+'))
 		if (str[i++] == '-')
 			neg *= -1;
-	while (str[i] == '\f' || str[i] == '\t' || str[i] == '\n' || str[i] == '\r' || str[i] == '\v' || str[i] == ' ' || str[i] == '0')
+	while (str[i] && (ft_isspace(str[i]) || str[i] == '0'))
 		i++;
-	while (str[i] >= '0' && str[i] <= '9')
+	while (str[i] >= '0' && str[i] <= '9' && ++j)
 	{
 		sum = (sum * 10) + (str[i] - 48);
         if (((i == 18 && neg == 1) && (str[i] > '7' && str[i] <= '9')) || ((i == 19 && neg == -1) && (str[i] == '9')))
             pbm = 1;
 		i++;
-        j++;
 	}
     while (str[i++])
         j++;
