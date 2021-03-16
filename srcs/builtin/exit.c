@@ -14,7 +14,7 @@
 
 int pbm;
 
-long long	ft_atoi_exit(const char *str, int i)
+long long	ft_atoi_exit(const char *str, int i, int *pbm)
 {
 	int			j;
 	long		neg;
@@ -33,13 +33,13 @@ long long	ft_atoi_exit(const char *str, int i)
 		sum = (sum * 10) + (str[i] - 48);
 		if (((i == 18 && neg == 1) && (str[i] > '7' && str[i] <= '9'))
 			|| ((i == 19 && neg == -1) && (str[i] == '9')))
-			pbm = 1;
+			*pbm = 1;
 		i++;
 	}
 	while (str[i++])
 		j++;
 	if ((j > 19 && neg == 1) || (j > 20 && neg == -1))
-		pbm = 1;
+		*pbm = 1;
 	return (sum * neg);
 }
 
@@ -74,6 +74,7 @@ void		exit_arg(char *arg)
 void		run_exit(char **args)
 {
 	size_t		i;
+	int			pbm;
 	long long	code2;
 
 	pbm = 0;
@@ -91,7 +92,7 @@ void		run_exit(char **args)
 	}
 	else
 	{
-		code2 = ft_atoi_exit(args[1], 0);
+		code2 = ft_atoi_exit(args[1], 0, &pbm);
 		if (pbm == 1)
 			exit_error_numeric(args[1]);
 		g_status = code2 % 256;
