@@ -1,32 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strcat.c                                        :+:      :+:    :+:   */
+/*   ft_space_in_middle.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yviavant <yviavant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/07 09:54:26 by yviavant          #+#    #+#             */
-/*   Updated: 2019/11/26 15:52:37 by yviavant         ###   ########.fr       */
+/*   Created: 2021/03/12 21:53:21 by yviavant          #+#    #+#             */
+/*   Updated: 2021/03/13 12:54:45 by yviavant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strcat(char *s1, char *s2)
+int	ft_space_in_middle(char *str)
 {
-	char	*s;
 	int		i;
 
-	if (!s1 || !s2)
-		return (NULL);
-	if (!(s = (char *)malloc(sizeof(char) * (ft_strlen(s1) +
-		ft_strlen(s2) + 1))))
-		return (NULL);
 	i = 0;
-	while (*s1)
-		s[i++] = *s1++;
-	while (*s2)
-		s[i++] = *s2++;
-	s[i] = '\0';
-	return (s);
+	while (str[i] == ' ')
+		i++;
+	while (str[i] && str[i] != ' ')
+		i++;
+	while (str[i] == ' ')
+	{
+		i++;
+		if (str[i] && str[i] != ' ')
+			return (1);
+	}
+	return (0);
 }

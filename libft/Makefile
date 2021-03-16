@@ -63,7 +63,11 @@ SRCS		=	ft_atoi.c \
 				ft_strequ.c \
 				ft_strnequ.c \
 				ft_minishell_split.c \
+				ft_minishell_split_utils.c \
 				ft_strip_extra_spaces.c \
+				ft_strip_extra_spaces_before.c \
+				ft_only_spaces.c \
+				ft_space_in_middle.c 
 				
 SRCS_BONUS	=	ft_lstnew_bonus.c \
 				ft_lstdelone_bonus.c \

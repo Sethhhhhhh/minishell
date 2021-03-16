@@ -92,20 +92,3 @@ int				get_next_line(int fd, char **line)
 		return (ft_free(&str, buf, -1));
 	return (ft_read(fd, buf, &str, line));
 }
-/*
-#include <stddef.h>
-#include <stdio.h>
-
-int main(int ac, char **av)
-{
-	char	*line;
-	int		fd;
-
-	fd = open(av[1], O_RDONLY);
-	while (get_next_line(fd, &line) > 0)
-	{
-		printf("%s\n", line);
-		free(line);
-	}
-	return (0);
-}*/
