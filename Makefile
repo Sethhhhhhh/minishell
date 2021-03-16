@@ -6,7 +6,7 @@ LIBFT		=	libft/libft.a
 
 CC			=	gcc
 
-FLAGS		=	-Werror -Wall -Wextra -I $(HEADER) -fsanitize=address
+FLAGS		=	-Werror -Wall -Wextra -I $(HEADER) #-fsanitize=address
 
 SRCS		=	srcs/main.c \
 				srcs/parsing/sep.c \
