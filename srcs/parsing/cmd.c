@@ -92,7 +92,7 @@ char	*parsing(char *whole_cmd, t_copy *copy)
 	copy->redir.in = NULL;
 	copy->wc = whole_cmd;
 	g_error = 0;
-	copy->cmd = malloc(sizeof(char) * (strlen(copy->wc) + 1));
+	copy->cmd = malloc(sizeof(char) * (ft_strlen(copy->wc) + 1));
 	if (!(copy->cmd) || !(copy->wc))
 		return (NULL);
 	copy->cmd[0] = 0;

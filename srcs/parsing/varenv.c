@@ -71,7 +71,7 @@ int		env(t_copy *copy, int arg, int i, int space)
 
 	value = NULL;
 	name = NULL;
-	if (!(name = malloc(sizeof(char) * strlen(copy->wc) + 1)))
+	if (!(name = malloc(sizeof(char) * ft_strlen(copy->wc) + 1)))
 		return (-1);
 	if (multiple_dollars(copy, arg, i) != 0 || status_env(
 		copy, arg, i) == 1)
@@ -94,7 +94,7 @@ int		env_redir(t_copy *copy, int std, int spce)
 	char	*value;
 	int		count;
 
-	if (!(name = malloc(sizeof(char) * strlen(copy->wc) + 1)))
+	if (!(name = malloc(sizeof(char) * ft_strlen(copy->wc) + 1)))
 		return (-1);
 	copy->i++;
 	if (copy->wc[copy->i] == '\'' || copy->wc[copy->i] == '"')

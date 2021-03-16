@@ -16,7 +16,7 @@ int		init_malloc_args(t_copy *copy, size_t i)
 {
 	copy->j = -1;
 	copy->args[i] = NULL;
-	copy->args[i] = malloc(sizeof(char) * (strlen(copy->wc) + 1));
+	copy->args[i] = malloc(sizeof(char) * ((ft_strlen(copy->wc) + 1)));
 	if (!(copy->args[i]))
 		return (-1);
 	copy->args[i][0] = 0;
