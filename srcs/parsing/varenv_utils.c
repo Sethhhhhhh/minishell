@@ -87,8 +87,8 @@ int		no_value(t_copy *copy, char *value)
 		if (copy->wc[copy->i] == '"' || copy->wc[copy->i] == '\''
 			|| copy->wc[copy->i] == '\\' || copy->wc[copy->i] == '|'
 			|| copy->wc[copy->i] == '/' || copy->wc[copy->i] == '='
-			|| copy->wc[copy->i] == ',' || copy->wc[copy->i] != ']'
-			|| copy->wc[copy->i] != '[')
+			|| copy->wc[copy->i] == ',' || copy->wc[copy->i] == ']'
+			|| copy->wc[copy->i] == '[')
 			copy->i--;
 		if (copy->wc[copy->i] == ' ' && copy->wc[copy->i - 1] != '\\')
 			return (-2);
