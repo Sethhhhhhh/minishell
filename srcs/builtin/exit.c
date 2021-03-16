@@ -88,9 +88,9 @@ void		run_exit(char **args)
 		ft_putstr_fd("minishell: ligne 0 : exit: trop d'arguments\n", 2);
 		g_status = 1;
 	}
-	else if (--i)
+	else
 	{
-		code2 = ft_atoi_exit(args[1], --i, &pbm);
+		code2 = ft_atoi_exit(args[1], 0, &pbm);
 		if (pbm == 1)
 			exit_error_numeric(args[1]);
 		g_status = code2 % 256;
