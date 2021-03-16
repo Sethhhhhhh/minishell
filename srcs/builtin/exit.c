@@ -14,14 +14,12 @@
 
 int pbm;
 
-long long	ft_atoi_exit(const char *str)
+long long	ft_atoi_exit(const char *str, int i)
 {
-	int		i;
 	int		j;
 	long	neg;
 	long long	sum;
 
-	i = 0;
 	neg = 1;
 	sum = 0;
     j = 0;
@@ -61,7 +59,8 @@ void        exit_arg(char *arg)
             i++;
     while (arg[i])
     {
-        if (arg[i] != '\f' && arg[i] != '\t' && arg[i] != '\r' && arg[i] != '\v' && arg[i] != ' ')
+        if (arg[i] != '\f' && arg[i] != '\t' && arg[i] != '\r'
+			&& arg[i] != '\v' && arg[i] != ' ')
         {
             if (arg[i] < 48 || arg[i] > 57)
                 exit_error_numeric(arg);
@@ -90,7 +89,7 @@ void		run_exit(char **args)
     }
     else
     {
-        code2 = ft_atoi_exit(args[1]);
+        code2 = ft_atoi_exit(args[1], 0);
         if (pbm == 1)
             exit_error_numeric(args[1]);
         g_status = code2 % 256;
