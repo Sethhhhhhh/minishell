@@ -12,8 +12,6 @@
 
 #include "../../includes/minishell.h"
 
-int pbm;
-
 long long	ft_atoi_exit(const char *str, int i, int *pbm)
 {
 	int			j;
