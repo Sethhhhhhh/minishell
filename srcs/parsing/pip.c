@@ -67,25 +67,16 @@ void	print_pip_list(t_pip *piplist)
 
 int		pipeinstr(char c, char *str)
 {
-	char	quote;
 	int		i;
 
 	i = -1;
 	while (str[++i])
 	{
-		while (str[i] == '\'' || str[i] == '"')
-		{
-			quote = str[i];
-			while (str[i] && str[++i] != quote)
-			{
-				if (str[i] == '\\')
-					i++;
-			}
+		if ((i = (inside_quote(str, i))) == (int)ft_strlen(str))
+			break ;
+		if (str[i] && str[i] == '\\')
 			i++;
-		}
-		if (str[i] == '\\')
-			i++;
-		if (str[i] == c && str[i - 1] != '\\')
+		if (str[i] && str[i] == c && str[i - 1] != '\\')
 			return (i);
 	}
 	return (-1);

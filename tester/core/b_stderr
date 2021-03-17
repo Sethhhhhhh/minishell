@@ -1,1 +1,2 @@
-minishell: ttt: command not found
+minishell: ligne 0: erreur de syntaxe près du symbole inattendu « | »
+minishell: ligne 0: `echo bonjour | | cat -e'

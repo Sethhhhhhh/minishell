@@ -117,6 +117,7 @@ int						d_quote_arg(t_copy *copy, size_t i, int j);
 int						s_quote_arg(t_copy *copy, size_t i);
 int						s_quote_redir(t_copy *copy, char *str);
 int						d_quote_redir(t_copy *copy, char *str, int std);
+int						inside_quote(char *str, int i);
 
 /*
 ** execution
