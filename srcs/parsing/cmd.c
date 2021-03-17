@@ -94,7 +94,7 @@ char	*parsing(char *whole_cmd, t_copy *copy)
 	copy->wc = whole_cmd;
 	g_error = 0;
 	copy->cmd = malloc(sizeof(char) * (ft_strlen(copy->wc) + 1));
-	printf("copy->cmd : %p malloc\n", copy->cmd);
+	//printf("copy->cmd : %p malloc\n", copy->cmd);
 	if (!(copy->cmd) || !(copy->wc))
 		return (NULL);
 	copy->cmd[0] = 0;
@@ -103,7 +103,7 @@ char	*parsing(char *whole_cmd, t_copy *copy)
 	if (cmd(copy) == NULL || g_error == -1)
 		return (NULL);
 	copy->args = (char **)malloc(sizeof(char *) * 1);
-	printf("copy->args : %p malloc\n", copy->args);
+	//printf("copy->args  char** : %p cmd malloc\n", copy->args);
 	if (!(copy->args) || options(copy, 1, 0) == -1)
 		return (NULL);
 	return (copy->cmd);

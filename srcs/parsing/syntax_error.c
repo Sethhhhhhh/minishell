@@ -16,12 +16,13 @@ int	inside_quote(char *str, int i)
 {
 	char	quote;
 
-	while (str[i] == '\'' || str[i] == '"')
+	while (str[i] && (str[i] == '\'' || str[i] == '"'))
 	{
+		printf("i = %d et str[i] = %c\n", i, str[i]);
 		quote = str[i];
-		while (str[i] && str[++i] != quote)
+		while (str[i] && str[++i] && str[i] != quote)
 		{
-			if (str[i] == '\\')
+			if (str[i] && str[i] == '\\')
 				i++;
 		}
 		i++;
@@ -39,7 +40,7 @@ int	syntax_error_redir(char *str, char c)
 	{
 		j = 0;
 		inside_quote(str, i);
-		while (str[i] == c || str[i] == ' ')
+		while (str[i] && (str[i] == c || str[i] == ' '))
 		{
 			if (str[i] == c)
 				j++;
@@ -76,7 +77,7 @@ int	syntax_error_newline(char *str)
 int	syntax_error_go(char *str, int i, char c)
 {
 	i--;
-	if (str[i] == '|')
+	if (str[i] && str[i] == '|')
 		return (error_msg(str, i, c));
 	if (syntax_error_redir(str, '>') == -1 || syntax_error_redir(str, '<') == -1
 		|| syntax_error_newline(str) == -1)
@@ -92,6 +93,8 @@ int	syntax_error(char *str, char c)
 	int		i;
 
 	i = -1;
+	if (!str)
+		return (0);
 	if (str[0] == c)
 		return (error_msg(str, 0, c));
 	while (str[++i] && (str[i] == ' ' || str[i] == '>'
@@ -101,7 +104,7 @@ int	syntax_error(char *str, char c)
 	while (str[++i])
 	{
 		inside_quote(str, i);
-		if (str[i] == c)
+		if (str[i] && str[i] == c)
 		{
 			while (str[++i] && (str[i] == ' ' || str[i] == '>'
 					|| str[i] == '<' || str[i] == c))
