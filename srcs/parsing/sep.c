@@ -17,6 +17,7 @@ t_sep	*create_cell(char *cmd_sep)
 	t_sep	*cell;
 
 	cell = malloc(sizeof(t_sep));
+	//printf("cell t_sep %p malloc\n", cell);
 	if (!(cell))
 		return (NULL);
 	cell->prev = NULL;
@@ -67,21 +68,22 @@ void	print_list(t_sep *list)
 	}
 }
 
-void	free_list_pip(t_pip *pipcell)
+/*void	free_list_pip(t_pip *pipcell)
 {
 	t_pip	*tmp;
-
 	if (pipcell == NULL)
 		return ;
+	ft_putstr_fd("ca rentre2\n", 2);
 	while (pipcell)
 	{
 		if (pipcell->cmd_pip)
 			free(pipcell->cmd_pip);
 		tmp = pipcell;
+		printf("tmp t_pip : %p free\n", tmp);
 		pipcell = pipcell->next;
 		free(tmp);
 	}
-}
+}*/
 
 void	free_list(t_sep *list)
 {
@@ -93,9 +95,10 @@ void	free_list(t_sep *list)
 	{
 		if (list->cmd_sep)
 			free(list->cmd_sep);
-		free_list_pip(list->pipcell);
+		//free_list_pip(list->pipcell);
 		tmp = list;
 		list = list->next;
+		//printf("tmp t_sep : %p free\n", tmp);
 		free(tmp);
 	}
 }

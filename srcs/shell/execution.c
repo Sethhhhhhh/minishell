@@ -14,12 +14,22 @@
 
 static void	list_pipe(t_sep *list, t_copy *cmdarg, int *fdd)
 {
+	t_pip	*tmp;
+
 	while (list->pipcell)
 	{
+		tmp = list->pipcell;
 		if (parsing(list->pipcell->cmd_pip, cmdarg) == NULL)
 			break ;
-		*fdd = run_pipe(list->pipcell, cmdarg, *fdd);
+		//*fdd = run_pipe(list->pipcell, cmdarg, *fdd);
 		list->pipcell = list->pipcell->next;
+		if (tmp->cmd_pip)
+		{
+			//printf("tmp->cmd_pip char * : %p free\n", tmp->cmd_pip);
+			free(tmp->cmd_pip);
+		}
+		//printf("tmp t_pip : %p free\n", tmp);
+		free(tmp);
 		free_cmdarg(cmdarg);
 	}
 	close(*fdd);
@@ -82,7 +92,7 @@ void		minishell(t_sep *list)
 		{
 			if (parsing(list->cmd_sep, &cmdarg) == NULL)
 				break ;
-			execution(&cmdarg, 0);
+			//execution(&cmdarg, 0);
 			free_cmdarg(&cmdarg);
 		}
 		list = list->next;
