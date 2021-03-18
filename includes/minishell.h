@@ -162,7 +162,7 @@ int						run_unset(char **args);
 int						run_export(char **args);
 void					sort_env(void);
 int						run_env(void);
-int						set_directory(char *path);
+int						set_directory(char *path, int home);
 void					run_exit(char **args);
 int						check_export_name(char *args);
 

@@ -12,8 +12,8 @@
 
 #include "../../includes/minishell.h"
 
-int	set_directory(char *path, int home)
-{
+int	set_directory(char *path, char *home)
+
 	struct stat	st;
 	char		*pwd;
 
@@ -30,8 +30,7 @@ int	set_directory(char *path, int home)
 			set_env("PWD", pwd);
 			free(pwd);
 		}
-		if (home)
-			free(path);
+		//free(path);
 		return (1);
 	}
 	ft_putstr_fd("minishell: cd: ", 2);
@@ -48,8 +47,7 @@ int	set_directory(char *path, int home)
 		ft_putstr_fd(": Not a directory", 2);
 	ft_putchar_fd('\n', 2);
 	free(pwd);
-	if (home)
-		free(path);
+	//free(path);
 	return (1);
 }
 
@@ -59,14 +57,14 @@ int	s_path(char **args)
 
 	if (ft_strequ(args[1], "-"))
 	{
-		set_directory(get_env("OLDPWD"), 0);
+		set_directory(get_env("OLDPWD"));
 		tmp = get_env("PWD");
 		ft_putstr_fd(tmp, 1);
 		free(tmp);
 		ft_putchar_fd('\n', 1);
 		return (1);
 	}
-	return (set_directory(args[1], 0));
+	return (set_directory(args[1]));
 }
 
 int	run_cd(char **args)
@@ -87,7 +85,7 @@ int	run_cd(char **args)
 			ft_putstr_fd("minishell: cd: HOME not set\n", 2);
 			return (1);
 		}
-		return (set_directory(home, 1));
+		return (set_directory(args, home));
 	}
 	return (s_path(args));
 }
