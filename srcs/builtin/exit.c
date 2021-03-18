@@ -12,12 +12,6 @@
 
 #include "../../includes/minishell.h"
 
-void		out(void)
-{
-	ft_putstr_fd("exit\n", 2);
-	exit(g_status);
-}
-
 long long	ft_atoi_exit(const char *str, int i, int *pbm)
 {
 	int			j;
@@ -53,7 +47,7 @@ void		exit_error_numeric(char *arg)
 	ft_putstr_fd(arg, 2);
 	ft_putstr_fd(": numeric argument required\n", 2);
 	g_status = 2;
-	out();
+	ft_exit();
 }
 
 void		exit_arg(char *arg)
@@ -85,7 +79,7 @@ void		run_exit(char **args)
 	i = 1;
 	g_status = 0;
 	if (!args[1])
-		out();
+		ft_exit();
 	exit_arg(args[1]);
 	while (args[i])
 		i++;
@@ -101,5 +95,5 @@ void		run_exit(char **args)
 			exit_error_numeric(args[1]);
 		g_status = code2 % 256;
 	}
-	out();
+	ft_exit();
 }

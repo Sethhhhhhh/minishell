@@ -3,6 +3,8 @@
 void	ft_exit()
 {
 	ft_free_array(g_envs);
+	if (!g_tester)
+		ft_putstr_fd("exit\n", 2);
 	exit(g_status);
 }
 
@@ -43,6 +45,7 @@ void	loop()
 	char	*tmp;
 	size_t	i;
 
+	g_tester = 0;
 	tmp = get_env("SHLVL");
 	i = (ft_atoi(tmp) + 1);
 	free(tmp);
@@ -78,7 +81,6 @@ void	loop()
 			free(line);
 		prompt();
 	}
-	ft_putstr_fd("exit\n", 1);
 	ft_exit();
 }
 
@@ -88,6 +90,7 @@ void	loop_testeur(char *line)
 	char	**cmds;
 	size_t	i;
 
+	g_tester = 1;
 	if (_check_space_colon(line))
 		return;
 	list = NULL;

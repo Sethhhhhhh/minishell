@@ -30,10 +30,12 @@
 /*
 ** global
 */
+
 char					**g_envs;
 pid_t					g_pid;
 int						g_error;
 int						g_status;
+int						g_tester;
 
 /*
 ** structures
@@ -178,14 +180,13 @@ int						error_exit(char *str, char *msg);
 int						syntax_error(char *str, char c);
 int						error_msg(char *str, int i, char c);
 void					error_ambiguous(char *name);
+void					ft_exit();
 
 /*
 ** free
 */
 void					free_cmdarg(t_copy *copy);
 void					free_list(t_sep *list);
-
-
 
 void					print_parsing(char **args, t_redir *redir);
 
