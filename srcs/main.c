@@ -105,7 +105,9 @@ void	loop_testeur(char *line)
 			list = add_cell(list, cmds[i], i);
 		parse_pip(list);
 		minishell(list);
-		ft_free_array(cmds);
+		free_list(list);
+		if (cmds)
+			free(cmds);
 	}
 	ft_exit();
 }
