@@ -26,7 +26,7 @@ static size_t	check_n(char **args)
 			while (args[i][j] == 'n')
 				j++;
 			if (args[i][j] && args[i][j] != 'n')
-				return (i + 1);
+				return (1);
 		}
 		else
 			return (i);

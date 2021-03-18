@@ -1,1 +1,2 @@
-minishell: ttt: command not found
+minishell: exit: ++3: numeric argument required
+exit
