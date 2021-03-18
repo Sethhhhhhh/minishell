@@ -37,7 +37,7 @@ int		cmd_quoting(t_copy *copy, int j)
 int		cmd_redir_env(t_copy *copy, int j)
 {
 	if (copy->wc[copy->i] && copy->wc[copy->i] == '$'
-		&& copy->wc[copy->i - 1] != '\\')
+		&& (copy->i == 0 || copy->wc[copy->i - 1] != '\\'))
 	{
 		if (copy->wc[copy->i + 1] == '\\')
 			copy->cmd[++copy->j] = copy->wc[copy->i];
@@ -45,7 +45,7 @@ int		cmd_redir_env(t_copy *copy, int j)
 			j = env(copy, 0, 0, 1);
 	}
 	if ((copy->wc[copy->i] == '>' || copy->wc[copy->i] == '<')
-		&& copy->wc[copy->i - 1] != '\\')
+		&& (copy->i == 0 || copy->wc[copy->i - 1] != '\\'))
 		j = redirection(copy);
 	return (j);
 }
@@ -70,13 +70,14 @@ char	*cmd(t_copy *copy)
 						|| j == 1))))
 			break ;
 		if (copy->i < (int)ft_strlen(copy->wc) && ((copy->wc[copy->i] == '$'
-					&& copy->wc[copy->i - 1] == '\\') || (copy->wc[copy->i]
+					&& (copy->i == 0 || copy->wc[copy->i - 1] == '\\')) || (copy->wc[copy->i]
 					!= '$' && j == -2)))
 			copy->cmd[++copy->j] = copy->wc[copy->i];
 		if (copy->i < (int)ft_strlen(copy->wc))
 			copy->i++;
 		//printf("passe pour copy->wc[%d] = %c\n", copy->i, copy->wc[copy->i]);
 	}
+	//printf("copy->j = %d\n", copy->j);
 	copy->cmd[copy->j + 1] = 0;
 	return (copy->cmd);
 }
@@ -96,6 +97,7 @@ char	*parsing(char *whole_cmd, t_copy *copy)
 	copy->wc = whole_cmd;
 	g_error = 0;
 	copy->cmd = malloc(sizeof(char) * (ft_strlen(copy->wc) + 1));
+	//printf("ft_strlen(copy->wc) + 1 = %ld\n", ft_strlen(copy->wc) + 1);
 	//printf("copy->cmd : %p malloc\n", copy->cmd);
 	if (!(copy->cmd) || !(copy->wc))
 		return (NULL);

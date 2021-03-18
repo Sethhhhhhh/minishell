@@ -18,10 +18,7 @@ void		free_cmdarg(t_copy *copy)
 
 	i = 0;
 	if (copy->cmd)
-	{
-		//printf("copy->cmd : %s free\n", copy->cmd);
 		free(copy->cmd);
-	}
 	if (copy->args)
 	{
 		while (copy->args[i])

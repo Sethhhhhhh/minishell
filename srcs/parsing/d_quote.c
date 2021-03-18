@@ -83,14 +83,14 @@ int		d_quote_arg(t_copy *copy, size_t i, int j)
 	return (0);
 }
 
-void	quote_util_redir(t_copy *copy, char *str, int std)
+int		quote_util_redir(t_copy *copy, char *str, int std)
 {
 	int		j;
 
 	while (copy->wc[copy->i] && copy->wc[++copy->i] != '"')
 	{
 		j = 0;
-		if (copy->wc[copy->i] == '$' && copy->wc[copy->i - 1] != '\\')
+		if (copy->wc[copy->i] == '$' && (copy->i == 0 || copy->wc[copy->i - 1] != '\\'))
 		{
 			j = env_redir(copy, std, 0);
 			if (j == -2)
@@ -110,13 +110,14 @@ void	quote_util_redir(t_copy *copy, char *str, int std)
 		if (j != 1)
 			str[++copy->redir.i] = copy->wc[copy->i];
 	}
+	return (j);
 }
 
 int		d_quote_redir(t_copy *copy, char *str, int std)
 {
 	if (copy->i == ((int)ft_strlen(copy->wc) - 1))
 		return (quote_error('"'));
-	if ((copy->wc[copy->i + 1] == '"' && copy->wc[copy->i + 2] == ' ')
+	if ((copy->wc[copy->i + 1] && copy->wc[copy->i + 1] == '"' && copy->wc[copy->i + 2] == ' ')
 		&& !str)
 	{
 		str[copy->redir.i] = ' ';
@@ -124,7 +125,8 @@ int		d_quote_redir(t_copy *copy, char *str, int std)
 		copy->i = copy->i + 2;
 		return (-1);
 	}
-	quote_util_redir(copy, str, std);
+	if (quote_util_redir(copy, str, std) != 0 && (copy->i == (int)ft_strlen(copy->wc) - 1))
+		return (-1);
 	if ((copy->i == (int)ft_strlen(copy->wc)) && copy->wc[copy->i] != '"')
 		return (quote_error('"'));
 	str[copy->redir.i + 1] = 0;

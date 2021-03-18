@@ -26,6 +26,8 @@ int		multiple_dollars(t_copy *copy, int arg, int i)
 		if (arg == 1)
 			copy->args[i][++copy->j] = copy->wc[copy->i];
 		copy->i++;
+		if (ft_strlen(copy->wc) == 1 && copy->wc[0] == '$')
+			return (1);
 		j++;
 	}
 	if (j > 0)
@@ -71,11 +73,11 @@ int		env(t_copy *copy, int arg, int i, int space)
 
 	value = NULL;
 	name = NULL;
-	if (!(name = malloc(sizeof(char) * ft_strlen(copy->wc) + 1)))
-		return (-1);
 	if (multiple_dollars(copy, arg, i) != 0 || status_env(
 		copy, arg, i) == 1)
 		return (1);
+	if (!(name = malloc(sizeof(char) * ft_strlen(copy->wc) + 1)))
+		return (-1);
 	if (find_name(copy, 0, &name) != 1)
 	{
 		free(name);

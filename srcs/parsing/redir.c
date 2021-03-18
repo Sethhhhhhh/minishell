@@ -70,6 +70,8 @@ int	redir_in(t_copy *copy)
 	while (copy->wc[copy->i] && copy->wc[copy->i] != ' ')
 	{
 		i = redir_quoting(copy, 0, copy->redir.in);
+		if (copy->i == (int)ft_strlen(copy->wc))
+			break ;
 		if (i != 0)
 			return (i);
 		if ((copy->wc[copy->i] == '<' || copy->wc[copy->i] == '>')
