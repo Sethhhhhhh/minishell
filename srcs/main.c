@@ -61,7 +61,10 @@ void	loop()
 	{
 		signal(SIGINT, sigint_handler);
 		if (_check_space_colon(line))
+		{
+			free(line);
 			continue;
+		}
 		list = NULL;
 		cmds = NULL;
 		i = -1;
