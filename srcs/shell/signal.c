@@ -38,9 +38,7 @@ static void	process(int sign_num)
 void		sigint_handler(int sign_num)
 {
 	if ((sign_num == SIGINT || sign_num == SIGQUIT) && g_pid != 0)
-	{
 		process(sign_num);
-	}
 	else
 	{
 		if (sign_num == SIGINT)

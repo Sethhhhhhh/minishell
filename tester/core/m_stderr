@@ -1,1 +1,2 @@
-minishell: syntax error near unexpected token `|'
+minishell: exit: 18446744073709551615: numeric argument required
+exit

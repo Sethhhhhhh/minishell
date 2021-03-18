@@ -19,15 +19,11 @@ static int	set(char *arg, size_t equ, size_t index)
 	st = ft_substr(g_envs[index], 0, (size_t)equ_env);
 	if (!st)
 		return (0);
-	end = ft_substr(arg, equ + 1, ft_strlen(arg));
-	if (!end)
-	{
-		free(st);
-		return (0);
-	}
+	end = ft_substr(arg, (equ + 1), ft_strlen(arg));
 	if (set_env(st, end))
 	{
 		free(st);
+		free(end);
 		return (0);
 	}
 	free(st);
@@ -45,7 +41,7 @@ static void	add(char **args, size_t i)
 
 	end = NULL;
 	equal_index = ft_get_char_by_index(args[i], '=');
-	if (equal_index == (unsigned long)-1)
+	if (equal_index == (size_t)-1)
 		equal_index = ft_strlen(args[i]);
 	st = ft_substr(args[i], 0, equal_index);
 	index = find_env(st);

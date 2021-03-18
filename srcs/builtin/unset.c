@@ -14,6 +14,7 @@
 
 static char	**remove_env(ssize_t index)
 {
+	char	*tmp;
 	size_t	i;
 	size_t	size;
 
@@ -21,7 +22,9 @@ static char	**remove_env(ssize_t index)
 	size = get_envs_count();
 	while (g_envs[i + 1])
 	{
-		g_envs[i] = ft_strdup(g_envs[i + 1]);
+		tmp = ft_strdup(g_envs[i + 1]);
+		free(g_envs[i]);
+		g_envs[i] = tmp;
 		i++;
 	}
 	return (realloc_envs((size - 1)));

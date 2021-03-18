@@ -15,6 +15,7 @@
 int	set_env(char *env, char *new_env)
 {
 	char	*tmp;
+	char	*new;
 	ssize_t	i;
 	size_t	len;
 
@@ -24,16 +25,11 @@ int	set_env(char *env, char *new_env)
 	i = -1;
 	if ((i = find_env(env)) != -1)
 	{
-		if (!(tmp = ft_substr(g_envs[i], 0, len + 1)))
-			return (0);
-		if (!(g_envs[i] = ft_strjoin(tmp, new_env)))
-		{
-			free(tmp);
-			free(new_env);
-			return (0);
-		}
+		tmp = ft_substr(g_envs[i], 0, (len + 1));
+		new = ft_strjoin(tmp, new_env);
+		free(g_envs[i]);
 		free(tmp);
-		free(new_env);
+		g_envs[i] = new;
 		return (1);
 	}
 	else

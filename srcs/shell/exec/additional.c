@@ -24,14 +24,12 @@ int			run(char **args, char *bin, int pipe)
 		return (-1);
 	}
 	else if (!g_pid)
-	{
-		signal(SIGINT, sigint_handler);
 		execve(bin, args, g_envs);
-	}
 	free(bin);
 	if (pipe)
 		return (1);
-	signal(SIGINT, SIG_IGN);
+	if (ft_strequ(args[0], "./minishell"))
+		signal(SIGINT, SIG_IGN);
 	wait(&g_pid);
 	g_status = status_child(g_pid);
 	g_pid = 0;

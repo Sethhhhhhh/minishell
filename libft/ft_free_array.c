@@ -19,7 +19,7 @@ void	ft_free_array(char **array)
 	if (!array)
 		return ;
 	i = 0;
-	while (array[i])
+	while (array[i] != NULL)
 	{
 		free(array[i]);
 		i++;

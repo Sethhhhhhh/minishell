@@ -21,9 +21,15 @@ int	set_directory(char *path)
 	if (!chdir(path))
 	{
 		if (pwd)
+		{
 			set_env("OLDPWD", pwd);
+			free(pwd);
+		}
 		if ((pwd = getcwd(NULL, 0)))
+		{
 			set_env("PWD", pwd);
+			free(pwd);
+		}
 		free(path);
 		return (1);
 	}

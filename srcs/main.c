@@ -43,18 +43,20 @@ void	loop()
 	char	*tmp;
 	size_t	i;
 
-	signal(SIGINT, sigint_handler);
-	signal(SIGQUIT, sigint_handler);
-
 	tmp = get_env("SHLVL");
 	i = (ft_atoi(tmp) + 1);
 	free(tmp);
 	tmp = ft_itoa(i);
+	signal(SIGQUIT, sigint_handler);
+	signal(SIGINT, sigint_handler);
 	set_env("SHLVL", tmp);
+	free(tmp);
 	line = NULL;
 	prompt();
+	g_pid = 0;
 	while (get_next_line(0, &line) > 0)
 	{
+		signal(SIGINT, sigint_handler);
 		if (_check_space_colon(line))
 			continue;
 		list = NULL;
@@ -134,20 +136,20 @@ void	prompt()
 
 int	main(int ac, char **av, char **env)
 {
-	size_t	i;
+	size_t  i;  
 
-	i = 0;
-	while (env[i])
-		i++;
-	if (!(g_envs = malloc(sizeof(char *) * (i + 1))))
-		return (0);
-	g_envs[i] = NULL;
-	i = 0;
-	while (env[i])
-	{
-		g_envs[i] = ft_strdup(env[i]);
-		i++;
-	}
+    i = 0;
+    while (env[i])
+        i++;
+    if (!(g_envs = (char **)malloc(sizeof(char *) * (i + 1))))
+        return (0);
+    i = 0;
+    while (env[i])
+    {   
+        g_envs[i] = ft_strdup(env[i]);
+        i++;
+    }   
+    g_envs[i] = 0;
 	if (ac >= 2)
 	{
 		if (av[1][0] == '-' && av[1][1] == 'c')
