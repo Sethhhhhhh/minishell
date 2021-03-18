@@ -30,14 +30,16 @@ int	syntax_error_redir(char *str, char c)
 	int		i;
 	int		j;
 
-	i = -1;
-	while (str[++i])
+	//printf("ft_strlen de str = %d\n", (int)ft_strlen(str));
+	i = 0;
+	while (str[i])
 	{
 		j = 0;
 		if ((i = (inside_quote(str, i))) == (int)ft_strlen(str))
 			break ;
 		while (str[i] && (str[i] == c || str[i] == ' '))
 		{
+			//printf("avant i = %d et str[i] = %c\n", i, str[i]);
 			if (str[i] == c)
 				j++;
 			i++;
@@ -46,6 +48,10 @@ int	syntax_error_redir(char *str, char c)
 			if (j > 3)
 				return (error_msg(str, i, c));
 		}
+		if (i == (int)ft_strlen(str))
+			break ;
+		i++;
+		//printf("apres i = %d et str[i] = %c\n", i, str[i]);
 	}
 	return (0);
 }
@@ -89,7 +95,7 @@ int	syntax_error(char *str, char c)
 {
 	int		i;
 
-	i = -1;
+	i = 0;
 	if (!str)
 		return (0);
 	if (str[0] == c)
@@ -98,7 +104,7 @@ int	syntax_error(char *str, char c)
 			|| str[i] == '<' || str[i] == c))
 		if (str[i] == c)
 			return (error_msg(str, i, c));
-	while (str[++i])
+	while (str[i])
 	{
 		if ((i = (inside_quote(str, i))) == (int)ft_strlen(str))
 			break ;
@@ -111,6 +117,7 @@ int	syntax_error(char *str, char c)
 			if (str[i] == '\0')
 				break ;
 		}
+		i++;
 	}
 	return (syntax_error_go(str, i, c));
 }

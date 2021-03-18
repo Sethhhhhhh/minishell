@@ -103,10 +103,8 @@ int	redirection(t_copy *copy)
 			copy->redir.end = 1;
 			copy->i++;
 		}
-		if ((copy->redir.end == 0 && (copy->wc[copy->i - 2] == '2' &&
-			(copy->wc[copy->i - 3] == ' ' || copy->i == 2))) ||
-			(copy->redir.end == 1 && (copy->wc[copy->i - 3] == '2' &&
-			(copy->wc[copy->i - 4] == ' ' || copy->i == 3))))
+		if ((copy->redir.end == 0 && (copy->i == 2 || (copy->i > 3 && copy->wc[copy->i - 2] == '2' && copy->wc[copy->i - 3] == ' '))) ||
+			(copy->redir.end == 1 && (copy->i == 3 || (copy->i > 4 && copy->wc[copy->i - 3] == '2' && (copy->wc[copy->i - 4] == ' ' )))))
 			i = redir_out_error(copy);
 		else
 			i = redir_out(copy);

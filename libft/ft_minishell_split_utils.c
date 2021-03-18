@@ -36,6 +36,8 @@ int				protection(char const *s, int i, char c, t_split *split)
 		split->k++;
 		i++;
 	}
+	if (i == (int)ft_strlen(s))
+		return (i);
 	i++;
 	split->k = split->k + 2;
 	return (i);
@@ -45,7 +47,7 @@ void			ft_write_words_util(char const *s, t_split *sp)
 {
 	char	quote;
 
-	while (s[sp->j] == '\'' || s[sp->j] == '"')
+	while (s[sp->j] && (s[sp->j] == '\'' || s[sp->j] == '"'))
 	{
 		quote = s[sp->j];
 		sp->str[sp->i][sp->k++] = s[sp->j++];
@@ -53,8 +55,12 @@ void			ft_write_words_util(char const *s, t_split *sp)
 		{
 			if (s[sp->j] == '\\')
 				sp->str[sp->i][sp->k++] = s[sp->j++];
+			if (sp->j == (int)ft_strlen(s))
+				return ;
 			sp->str[sp->i][sp->k++] = s[sp->j++];
 		}
+		if (sp->j == (int)ft_strlen(s))
+			return ;
 		sp->str[sp->i][sp->k++] = s[sp->j++];
 	}
 	if (s[sp->j] == '\\')

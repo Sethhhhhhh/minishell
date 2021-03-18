@@ -54,7 +54,8 @@ int			has_perm(char **args, char *bin, struct stat statbuf, int pipe)
 	}
 	else
 	{
-		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(args[0], 2);
+		ft_putstr_fd(": ", 2);
 		ft_putstr_fd(args[1], 2);
 		ft_putstr_fd(": Is a directory\n", 2);
 		g_status = 1;

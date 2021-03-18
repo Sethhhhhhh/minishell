@@ -16,12 +16,15 @@
 
 int			ft_count_words_util(char const *s, t_split *sp)
 {
+	//printf("ft_strlen de s = %d\n", (int)ft_strlen(s));
 	while (s[sp->i] && (s[sp->i] == '\'' || s[sp->i] == '"'))
 	{
+		//printf("avant i = %d et s[i] = %c\n", sp->i, s[sp->i]);
 		while (s[sp->i] && s[sp->i] == '"')
 			sp->i = protection(s, sp->i, '"', sp);
 		while (s[sp->i] && s[sp->i] == '\'')
 			sp->i = protection(s, sp->i, '\'', sp);
+		//printf("apres i = %d et s[i] = %c\n", sp->i, s[sp->i]);
 	}
 	if (sp->i == sp->len)
 		return (-1);
@@ -64,12 +67,12 @@ int			ft_malloc_words_util(char const *s, char c, t_split *sp)
 		while (s[sp->j] == '\'')
 			sp->j = protection(s, sp->j, '\'', sp);
 	}
-	if (s[sp->j] == '\\')
+	if (s[sp->j] && s[sp->j] == '\\')
 	{
 		sp->j++;
 		sp->k++;
 	}
-	if (s[sp->j] == '\0' || (s[sp->j] == c && s[sp->j - 1] != '\\'))
+	if ((s[sp->j] && s[sp->j] == '\0') || (s[sp->j] == c && s[sp->j - 1] != '\\'))
 		return (-1);
 	return (0);
 }
@@ -83,11 +86,13 @@ int			ft_malloc_words(char const *s, char **str, int words,
 	{
 		sp->k = 0;
 		while (s[++sp->j] && (s[sp->j] != sp->c || (s[sp->j] == sp->c
-			&& s[sp->j - 1] == '\\')))
+			&& (sp->j == 0 || s[sp->j - 1] == '\\'))))
 		{
 			if (ft_malloc_words_util(s, sp->c, sp) == -1)
 				break ;
 			sp->k++;
+			if (sp->j == (int)ft_strlen(s))
+				break ;
 		}
 		while (s[sp->j] && s[sp->j] == sp->c)
 			sp->j++;
@@ -112,6 +117,7 @@ char		**ft_minishell_split(char const *s, char c)
 	if (!s)
 		return (NULL);
 	count_words = ft_count_words(s, c, &split);
+	//printf("count_words = %d\n", count_words);
 	if ((str = (char **)malloc(sizeof(char *) * (count_words + 1))) == NULL)
 		return (NULL);
 	if (!ft_malloc_words(s, str, count_words, &split))

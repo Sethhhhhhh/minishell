@@ -4,7 +4,7 @@ void	ft_exit()
 {
 	ft_free_array(g_envs);
 	if (!g_tester)
-		ft_putstr_fd("exit\n", 2);
+		ft_putstr_fd("exit\n", 1);
 	exit(g_status);
 }
 
@@ -45,7 +45,6 @@ void	loop()
 	char	*tmp;
 	size_t	i;
 
-	g_tester = 0;
 	tmp = get_env("SHLVL");
 	i = (ft_atoi(tmp) + 1);
 	free(tmp);
@@ -57,6 +56,7 @@ void	loop()
 	line = NULL;
 	prompt();
 	g_pid = 0;
+	g_tester = 0;
 	while (get_next_line(0, &line) > 0)
 	{
 		signal(SIGINT, sigint_handler);
@@ -90,11 +90,11 @@ void	loop_testeur(char *line)
 	char	**cmds;
 	size_t	i;
 
-	g_tester = 1;
 	if (_check_space_colon(line))
 		return;
 	list = NULL;
 	i = -1;
+	g_tester = 1;
 	if (syntax_error(line, '|') != -1 && syntax_error(line, ';') != -1)
 	{
 		cmds = ft_minishell_split(line, ';');

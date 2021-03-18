@@ -77,16 +77,21 @@ int		status_env(t_copy *copy, int arg, int i)
 	char	*value;
 	int		j;
 
+	value = NULL;
 	j = copy->i;
 	if (arg >= 2)
 		j += 1;
-	if (copy->wc[j] && copy->wc[j - 1] != '\\' && copy->wc[j - 1] != '$' &&
-		copy->wc[j] == '$' && copy->wc[j + 1] == '?')
+	if (copy->wc[j] && copy->wc[j] == '$' && copy->wc[j + 1] == '?')
 	{
-		value = ft_itoa(g_status);
-		env_copy(copy, arg, i, value);
-		copy->i++;
-		return (1);
+		if (j == 0 || (j > 0 && copy->wc[j - 1] != '\\' && copy->wc[j - 1] != '$'))
+		{
+			value = ft_itoa(g_status);
+			env_copy(copy, arg, i, value);
+			if (value)
+				free(value);
+			copy->i++;
+			return (1);
+		}
 	}
 	return (0);
 }

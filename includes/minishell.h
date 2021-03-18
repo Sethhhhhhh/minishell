@@ -30,7 +30,6 @@
 /*
 ** global
 */
-
 char					**g_envs;
 pid_t					g_pid;
 int						g_error;

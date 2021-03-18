@@ -17,11 +17,11 @@ int		options_special_case(char *arg, t_copy *copy)
 	int		i;
 
 	i = copy->i - 1;
-	if (!arg[0] && (copy->wc[copy->i - 1] == '"' || copy->wc[copy->i - 1]
+	if (!arg[0] && i >= 2 &&(copy->wc[copy->i - 1] == '"' || copy->wc[copy->i - 1]
 			== '\'') && (copy->wc[copy->i - 2] == '"' || copy->wc[copy->i - 2]
 			== '\'') && !copy->wc[copy->i])
 	{
-		while (copy->wc[i] == '"' || copy->wc[i] == '\'')
+		while (i >= 2 && (copy->wc[i] == '"' || copy->wc[i] == '\''))
 		{
 			if (copy->wc[i - 1] != copy->wc[i])
 				return (0);
@@ -55,6 +55,7 @@ int		options(t_copy *copy, size_t i, size_t j)
 	char	*arg;
 
 	arg = NULL;
+	//printf("ca rentre");
 	copy->args[0] = ft_strdup(copy->cmd);
 	//printf("copy->args[0] char * : %p options malloc\n", copy->args[0]);
 	while (1)

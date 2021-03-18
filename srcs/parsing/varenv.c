@@ -18,8 +18,8 @@ int		multiple_dollars(t_copy *copy, int arg, int i)
 
 	j = 0;
 	while (copy->wc[copy->i] && copy->wc[copy->i] == '$' && (copy->wc
-		[copy->i + 1] == '\0' || copy->wc[copy->i + 1] == '$' || copy->wc
-		[copy->i - 1] == '$'))
+		[copy->i + 1] == '\0' || copy->wc[copy->i + 1] == '$' || (copy->i > 0
+		&& copy->wc[copy->i - 1] == '$')))
 	{
 		if (arg == 0)
 			copy->cmd[++copy->j] = copy->wc[copy->i];
