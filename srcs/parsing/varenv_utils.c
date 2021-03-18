@@ -21,12 +21,16 @@ char	*remalloc_cmdargs(t_copy *copy, char *value, char *str)
 	tmp = NULL;
 	str[copy->j + 1] = 0;
 	tmp = ft_strjoin(str, value);
+	if (str)
+		free(str);
 	copy->j = -1;
 	if (!(str = malloc(sizeof(char) * (ft_strlen(tmp) +
 		ft_strlen(copy->wc) + 1))))
 		return (NULL);
 	while (tmp[++j])
 		str[++copy->j] = tmp[j];
+	if (tmp)
+		free(tmp);
 	return (str);
 }
 
@@ -39,12 +43,18 @@ char	*remalloc_redir(t_copy *copy, char *value, char *str)
 	tmp = NULL;
 	str[copy->redir.i + 1] = 0;
 	tmp = ft_strjoin(str, value);
+	if (str)
+		free(str);
 	if (!(str = malloc(sizeof(char) * (ft_strlen(tmp) + 1))))
 		return (NULL);
 	while (tmp[++j])
 		str[j] = tmp[j];
 	str[j] = 0;
-	copy->redir.i = ft_strlen(str);
+	if (tmp)
+		free(tmp);
+	copy->redir.i = ft_strlen(str) - 1;
+	if (copy->i == (int)ft_strlen(copy->wc))
+		copy->i++;
 	return (str);
 }
 

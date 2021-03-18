@@ -49,6 +49,7 @@ int			run_pipe(t_pip *pipcell, t_copy *cmdargs, int fdd)
 	fd[1] = -1;
 	if (pipe(fd))
 		return (-1);
+	//printf("copy->cmd avant fork = %s / = %p\n", cmdargs->cmd, cmdargs->cmd);
 	g_pid = fork();
 	if (g_pid < 0)
 	{
@@ -67,5 +68,6 @@ int			run_pipe(t_pip *pipcell, t_copy *cmdargs, int fdd)
 	g_status = status_child(g_pid);
 	close(fdd);
 	close(fd[1]);
+	//printf("copy->cmd après fork = %s / %p\n", cmdargs->cmd, cmdargs->cmd);
 	return (fd[0]);
 }

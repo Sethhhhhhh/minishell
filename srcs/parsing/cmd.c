@@ -73,7 +73,9 @@ char	*cmd(t_copy *copy)
 					&& copy->wc[copy->i - 1] == '\\') || (copy->wc[copy->i]
 					!= '$' && j == -2)))
 			copy->cmd[++copy->j] = copy->wc[copy->i];
-		copy->i++;
+		if (copy->i < (int)ft_strlen(copy->wc))
+			copy->i++;
+		//printf("passe pour copy->wc[%d] = %c\n", copy->i, copy->wc[copy->i]);
 	}
 	copy->cmd[copy->j + 1] = 0;
 	return (copy->cmd);

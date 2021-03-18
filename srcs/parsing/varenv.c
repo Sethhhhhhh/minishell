@@ -77,13 +77,22 @@ int		env(t_copy *copy, int arg, int i, int space)
 		copy, arg, i) == 1)
 		return (1);
 	if (find_name(copy, 0, &name) != 1)
+	{
+		free(name);
 		return (0);
+	}
 	value = get_env(name);
+	free(name);
 	if (space == 1 && value)
 		value = ft_strip_extra_spaces(value, copy->wc, copy->i);
 	if ((space = no_value(copy, value)) != 0)
+	{
+		if (value)
+			free(value);
 		return (space);
+	}
 	env_copy(copy, arg, i, value);
+	free(value);
 	copy->i--;
 	return (1);
 }
@@ -94,15 +103,20 @@ int		env_redir(t_copy *copy, int std, int spce)
 	char	*value;
 	int		count;
 
+	value = NULL;
 	if (!(name = malloc(sizeof(char) * ft_strlen(copy->wc) + 1)))
 		return (-1);
 	copy->i++;
 	if (copy->wc[copy->i] == '\'' || copy->wc[copy->i] == '"')
+	{
+		free(name);
 		return (0);
+	}
 	if (status_env(copy, std + 2, 0) == 1)
 		return (1);
 	find_name(copy, 1, &name);
 	value = get_env(name);
+	free(name);
 	if (spce == 1 && value)
 		value = ft_strip_extra_spaces(value, copy->wc, copy->i);
 	if (value && spce == 1 && (only_spaces(value) || ft_space_in_middle(value)))
@@ -110,8 +124,13 @@ int		env_redir(t_copy *copy, int std, int spce)
 	if (!value && spce == 1)
 		error_ambiguous(name);
 	if ((count = no_value(copy, value)) != 0)
+	{
+		if (value)
+			free(value);
 		return (count);
+	}
 	env_copy(copy, std + 2, 0, value);
+	free(value);
 	copy->i--;
 	return (1);
 }

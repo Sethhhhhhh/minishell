@@ -92,11 +92,16 @@ char			*ft_strip_extra_spaces(char *str, char *whole_cmd, int v)
 	size_t	k;
 	size_t	len;
 
+	tmp = NULL;
 	tmp = ft_strdup(str);
 	len = len_without_extra_spaces(str);
 	new = (char *)malloc(sizeof(char) * (len + 3));
 	if (!new)
+	{
+		if (tmp)
+			free(tmp);
 		return (NULL);
+	}
 	k = ft_strlen(str);
 	while (str[k - 1] && ft_isspace(str[k - 1]))
 		k--;
@@ -105,8 +110,16 @@ char			*ft_strip_extra_spaces(char *str, char *whole_cmd, int v)
 	while (str[i] && ft_isspace(str[i]))
 		i++;
 	copy(&new, str, i);
+	if (str)
+		free(str);
 	if (add_space_before(tmp, whole_cmd, v, &new) == -1)
+	{
+		if (tmp)
+			free(tmp);
 		return (new);
+	}
 	add_space_after(tmp, whole_cmd, v, &new);
+	if (tmp)
+		free(tmp);
 	return (new);
 }

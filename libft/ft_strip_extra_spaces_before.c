@@ -54,13 +54,18 @@ int				add_space_before(char *tmp, char *whole_cmd, int v, char **new)
 
 	i = 0;
 	j = 0;
+	copy = NULL;
 	copy = ft_strdup(*new);
 	v--;
 	if (tmp[i] == ' ')
 	{
 		v = add_space_before_util(whole_cmd, v, tmp);
 		if (v == -1)
+		{
+			if (copy)
+				free(copy);
 			return (-1);
+		}
 		if (add_space_before_condition(whole_cmd, v) == 1)
 		{
 			while (copy[j])
@@ -72,5 +77,7 @@ int				add_space_before(char *tmp, char *whole_cmd, int v, char **new)
 			(*new)[j + 1] = '\0';
 		}
 	}
+	if (copy)
+		free(copy);
 	return (1);
 }

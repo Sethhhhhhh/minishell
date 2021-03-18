@@ -30,7 +30,7 @@ int	set_directory(char *path)
 			set_env("PWD", pwd);
 			free(pwd);
 		}
-		free(path);
+		//free(path);
 		return (1);
 	}
 	ft_putstr_fd("minishell: cd: ", 2);
@@ -47,7 +47,7 @@ int	set_directory(char *path)
 		ft_putstr_fd(": Not a directory", 2);
 	ft_putchar_fd('\n', 2);
 	free(pwd);
-	free(path);
+	//free(path);
 	return (1);
 }
 

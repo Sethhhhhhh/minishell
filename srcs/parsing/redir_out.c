@@ -76,7 +76,13 @@ int	redir_out(t_copy *copy)
 		copy->i++;
 	while (copy->wc[copy->i] && copy->wc[copy->i] != ' ')
 	{
+		//printf("redir out 1 avant = %s\n", copy->redir.out1);
 		i = redir_quoting(copy, 1, copy->redir.out1);
+		//printf("copy->i = %d, wc = %ld, copy->wc de i %c\n", copy->i, ft_strlen(copy->wc), copy->wc[copy->i]);
+		if (copy->i == (int)ft_strlen(copy->wc))
+			break ;
+		//printf("copy->i = %d, wc = %ld, copy->wc de i %c\n", copy->i, ft_strlen(copy->wc), copy->wc[copy->i]);
+		//printf("passe pour copy->redir.out1[%d] = %c\n", copy->redir.i, copy->redir.out1[copy->redir.i]);
 		if (i != 0)
 			return (i);
 		if ((copy->wc[copy->i] == '<' || copy->wc[copy->i] == '>')
@@ -85,7 +91,10 @@ int	redir_out(t_copy *copy)
 			copy->i--;
 			break ;
 		}
+		//printf("redir out 1 = %s\n", copy->redir.out1);
+		//printf("passe pour copy->redir.out1[%d] = %c\n", copy->redir.i, copy->redir.out1[copy->redir.i]);
 		copy->redir.out1[++copy->redir.i] = copy->wc[copy->i];
+		//printf("passe pour copy->redir.out1[%d] = %c\n", copy->redir.i, copy->redir.out1[copy->redir.i]);
 		copy->i++;
 	}
 	copy->redir.out1[copy->redir.i + 1] = 0;
