@@ -4,7 +4,7 @@ void	ft_exit()
 {
 	ft_free_array(g_envs);
 	if (!g_tester)
-		ft_putstr_fd("exit\n", 1);
+		ft_putstr_fd("exit\n", 2);
 	exit(g_status);
 }
 
