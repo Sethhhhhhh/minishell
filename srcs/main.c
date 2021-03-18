@@ -160,7 +160,7 @@ int	main(int ac, char **av, char **env)
     g_envs[i] = 0;
 	if (ac >= 2)
 	{
-		if (av[1][0] == '-' && av[1][1] == 'c')
+		if (av[1][0] == '-' && av[1][1] == 'c' && av[2])
 			loop_testeur(av[2]);
 		else
 			return_error(av[1], ": No such file or directory\n", 0, 127);
