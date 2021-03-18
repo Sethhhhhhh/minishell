@@ -33,4 +33,10 @@ void		free_cmdarg(t_copy *copy)
 		//printf("copy->args char **: %p parsing free\n", copy->args);
 		free(copy->args);
 	}
+	if (copy->redir.out1)
+		free(copy->redir.out1);
+	if (copy->redir.out2)
+		free(copy->redir.out2);
+	if (copy->redir.in)
+		free(copy->redir.in);
 }
