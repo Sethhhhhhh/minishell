@@ -47,22 +47,20 @@ void		free_cmdarg(t_copy *copy)
 	copy->redir.in = NULL;
 }
 
-/*void	free_list_pip(t_pip *pipcell)
+void	free_list_pip(t_pip *pipcell)
 {
 	t_pip	*tmp;
 	if (pipcell == NULL)
 		return ;
-	ft_putstr_fd("ca rentre2\n", 2);
 	while (pipcell)
 	{
 		if (pipcell->cmd_pip)
 			free(pipcell->cmd_pip);
 		tmp = pipcell;
-		printf("tmp t_pip : %p free\n", tmp);
 		pipcell = pipcell->next;
 		free(tmp);
 	}
-}*/
+}
 
 void	free_list(t_sep *list)
 {

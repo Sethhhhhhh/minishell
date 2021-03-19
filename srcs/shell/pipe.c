@@ -62,7 +62,8 @@ int			run_pipe(t_pip *pipcell, t_copy *cmdargs, int fdd)
 	{
 		child(pipcell, fd, &fdd);
 		execution(cmdargs, 1);
-		exit(g_status);
+		free_list_pip(pipcell);
+		ft_exit(cmdargs);
 	}
 	wait(&g_pid);
 	g_status = status_child(g_pid);
