@@ -104,26 +104,34 @@ void	loop()
 
 void	loop_testeur(char *line)
 {
-	t_sep	*list;
 	t_copy	cmdarg;
-	char	**cmds;
 	size_t	i;
 
+	ft_bzero(&cmdarg, sizeof(t_copy));
 	if (_check_space_colon(line))
 		return;
-	list = NULL;
+	cmdarg.list = NULL;
 	i = -1;
 	g_tester = 1;
 	if (syntax_error(line, '|') != -1 && syntax_error(line, ';') != -1)
 	{
-		cmds = ft_minishell_split(line, ';');
-		while (cmds[++i])
-			list = add_cell(list, cmds[i], i);
-		parse_pip(list);
-		minishell(list, &cmdarg);
-		free_list(list);
-		if (cmds)
-			free(cmds);
+		cmdarg.list = NULL;
+		cmdarg.cmdssep = NULL;
+		cmdarg.cmdssep = ft_minishell_split(line, ';');
+		while (cmdarg.cmdssep[++i])
+			cmdarg.list = add_cell(cmdarg.list, cmdarg.cmdssep[i], i);
+		parse_pip(cmdarg.list);
+		minishell(cmdarg.list, &cmdarg);
+		if (cmdarg.list)
+		{
+			free_list(cmdarg.list);
+			cmdarg.list = NULL;
+		}
+		if (cmdarg.cmdssep)
+		{
+			free(cmdarg.cmdssep);
+			cmdarg.cmdssep = NULL;
+		}
 	}
 	ft_exit(&cmdarg);
 }
