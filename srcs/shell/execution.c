@@ -27,7 +27,7 @@ static void	list_pipe(t_pip *pipcell, t_copy *cmdarg, int *fdd)
 			free_cmdarg(cmdarg);
 			break ;
 		}
-		*fdd = run_pipe(pipcell, cmdarg, *fdd);
+		//*fdd = run_pipe(pipcell, cmdarg, *fdd);
 		pipcell = pipcell->next;
 		//if (tmp->cmd_pip)
 		//{

@@ -19,13 +19,13 @@ t_pip	*create_pip_cell(char *cmd_pip)
 	cell = malloc(sizeof(t_pip));
 	if (!(cell))
 		return (NULL);
-	//printf("cell t_pip %p malloc\n", cell);
+	printf("cell t_pip %p malloc\n", cell);
 	cell->cmd_pip = NULL;
 	cell->prev = NULL;
 	cell->next = NULL;
 	cell->cmd_pip = cmd_pip;
-	//if (cell->cmd_pip)
-		//printf("cell->cmd_pip char * %p malloc\n", cell->cmd_pip);
+	if (cell->cmd_pip)
+		printf("cell->cmd_pip char * %p malloc\n", cell->cmd_pip);
 	return (cell);
 }
 

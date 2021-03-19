@@ -56,12 +56,12 @@ void	free_list_pip(t_pip *pipcell)
 	{
 		if (pipcell->cmd_pip)
 		{
-			//printf("tmp t_pip : %p free\n", pipcell->cmd_pip);
+			printf("tmp t_pip : %p free\n", pipcell->cmd_pip);
 			free(pipcell->cmd_pip);
 		}
 		tmp = pipcell;
 		pipcell = pipcell->next;
-		//printf("tmp t_pip : %p free\n", tmp);
+		printf("tmp t_pip : %p free\n", tmp);
 		free(tmp);
 	}
 }
@@ -70,13 +70,14 @@ void	free_list(t_sep *list)
 {
 	t_sep	*tmp;
 
+	printf("ca rentre");
 	if (list == NULL)
 		return ;
 	while (list)
 	{
 		if (list->cmd_sep)
 			free(list->cmd_sep);
-		//free_list_pip(list->pipcell);
+		free_list_pip(list->pipcell);
 		tmp = list;
 		list = list->next;
 		//printf("tmp t_sep : %p free\n", tmp);
