@@ -33,7 +33,6 @@ static int	_check_space_colon(char *line)
 			colon = 1;
 		i++;
 	}
-	prompt();
 	return (1);
 }
 
@@ -63,6 +62,7 @@ void	loop()
 		if (_check_space_colon(line))
 		{
 			free(line);
+			prompt();
 			continue;
 		}
 		list = NULL;
