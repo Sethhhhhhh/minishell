@@ -1,8 +1,13 @@
 #include "../includes/minishell.h"
 
-void	ft_exit()
+void	ft_exit(t_copy *copy)
 {
+	free_cmdarg(copy);
 	ft_free_array(g_envs);
+	if (copy->list)
+		free_list(copy->list);
+	if (copy->cmdssep)
+		free(copy->cmdssep);
 	if (!g_tester)
 		ft_putstr_fd("exit\n", 2);
 	exit(g_status);
@@ -38,9 +43,8 @@ static int	_check_space_colon(char *line)
 
 void	loop()
 {
-	t_sep	*list;
+	t_copy	cmdarg;
 	char	*line;
-	char	**cmds;
 	char	*tmp;
 	size_t	i;
 
@@ -65,31 +69,29 @@ void	loop()
 			prompt();
 			continue;
 		}
-		list = NULL;
-		cmds = NULL;
+		cmdarg.list = NULL;
+		cmdarg.cmdssep = NULL;
 		i = -1;
 		if (syntax_error(line, '|') != -1 && syntax_error(line, ';') != -1)
 		{
-			cmds = ft_minishell_split(line, ';');
+			cmdarg.cmdssep = ft_minishell_split(line, ';');
 			free(line);
-			while (cmds[++i])
-				list = add_cell(list, cmds[i], i);
-			parse_pip(list);
-			minishell(list);
-			free_list(list);
-			if (cmds)
-				free(cmds);
+			while (cmdarg.cmdssep[++i])
+				cmdarg.list = add_cell(cmdarg.list, cmdarg.cmdssep[i], i);
+			parse_pip(cmdarg.list);
+			minishell(cmdarg.list, &cmdarg);
 		}
 		else
 			free(line);
 		prompt();
 	}
-	ft_exit();
+	ft_exit(&cmdarg);
 }
 
 void	loop_testeur(char *line)
 {
 	t_sep	*list;
+	t_copy	cmdarg;
 	char	**cmds;
 	size_t	i;
 
@@ -104,12 +106,12 @@ void	loop_testeur(char *line)
 		while (cmds[++i])
 			list = add_cell(list, cmds[i], i);
 		parse_pip(list);
-		minishell(list);
+		minishell(list, &cmdarg);
 		free_list(list);
 		if (cmds)
 			free(cmds);
 	}
-	ft_exit();
+	ft_exit(&cmdarg);
 }
 
 void	prompt()

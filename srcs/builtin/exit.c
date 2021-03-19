@@ -41,16 +41,16 @@ long long	ft_atoi_exit(const char *str, int i, int *pbm)
 	return (sum * neg);
 }
 
-void		exit_error_numeric(char *arg)
+void		exit_error_numeric(char *arg, t_copy *copy)
 {
 	ft_putstr_fd("minishell: exit: ", 2);
 	ft_putstr_fd(arg, 2);
 	ft_putstr_fd(": numeric argument required\n", 2);
 	g_status = 2;
-	ft_exit();
+	ft_exit(copy);
 }
 
-void		exit_arg(char *arg)
+void		exit_arg(char *arg, t_copy *copy)
 {
 	int		i;
 
@@ -63,13 +63,13 @@ void		exit_arg(char *arg)
 			&& arg[i] != '\v' && arg[i] != ' ')
 		{
 			if (arg[i] < 48 || arg[i] > 57)
-				exit_error_numeric(arg);
+				exit_error_numeric(arg, copy);
 		}
 		i++;
 	}
 }
 
-void		run_exit(char **args)
+void		run_exit(char **args, t_copy *copy)
 {
 	size_t		i;
 	int			pbm;
@@ -79,8 +79,8 @@ void		run_exit(char **args)
 	i = 1;
 	g_status = 0;
 	if (!args[1])
-		ft_exit();
-	exit_arg(args[1]);
+		ft_exit(copy);
+	exit_arg(args[1], copy);
 	while (args[i])
 		i++;
 	if (i > 2)
@@ -92,8 +92,8 @@ void		run_exit(char **args)
 	{
 		code2 = ft_atoi_exit(args[1], 0, &pbm);
 		if (pbm == 1)
-			exit_error_numeric(args[1]);
+			exit_error_numeric(args[1], copy);
 		g_status = code2 % 256;
 	}
-	ft_exit();
+	ft_exit(copy);
 }

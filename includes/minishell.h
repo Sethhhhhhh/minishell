@@ -68,6 +68,8 @@ typedef	struct			s_redir
 
 typedef struct			s_copy
 {
+	t_sep				*list;
+	char				**cmdssep;
 	char				*wc;
 	char				**args;
 	char				*cmd;
@@ -122,11 +124,11 @@ int						inside_quote(char *str, int i);
 /*
 ** execution
 */
-void					minishell(t_sep *list);
+void					minishell(t_sep *list, t_copy *cmdarg);
 void					execution(t_copy *cmdarg, int pipe);
 void					prompt();
-int						exec(char **args, int pipe);
-int						check_builtin(char **args);
+int						exec(char **args, int pipe, t_copy *copy);
+int						check_builtin(char **args, t_copy *copy);
 int						check_bins(char **args, int pipe);
 int						has_perm(char **args, char *bin, struct stat statbuf,
 						int pipe);
@@ -164,7 +166,7 @@ int						run_export(char **args);
 void					sort_env(void);
 int						run_env(void);
 int						set_directory(char *path, int home);
-void					run_exit(char **args);
+void					run_exit(char **args, t_copy *copy);
 int						check_export_name(char *args);
 
 /*
@@ -179,7 +181,7 @@ int						error_exit(char *str, char *msg);
 int						syntax_error(char *str, char c);
 int						error_msg(char *str, int i, char c);
 void					error_ambiguous(char *name);
-void					ft_exit();
+void					ft_exit(t_copy *copy);
 
 /*
 ** free

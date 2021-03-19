@@ -94,7 +94,7 @@ int			check_bins(char **args, int pipe)
 	return (0);
 }
 
-int			check_builtin(char **args)
+int			check_builtin(char **args, t_copy *copy)
 {
 	char	*pwd;
 
@@ -107,7 +107,7 @@ int			check_builtin(char **args)
 	else if (ft_strequ(args[0], "export"))
 		return (run_export(args));
 	else if (ft_strequ(args[0], "exit"))
-		run_exit(args);
+		run_exit(args, copy);
 	else if (ft_strequ(args[0], "pwd"))
 	{
 		pwd = getcwd(NULL, 0); 

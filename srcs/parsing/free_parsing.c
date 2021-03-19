@@ -17,7 +17,6 @@ void		free_cmdarg(t_copy *copy)
 	int		i;
 
 	i = 0;
-	//if (copy->args[0])
 	//	printf("copy->args[0] ap : %s\n", copy->args[0]);
 	if (copy->cmd)
 		free(copy->cmd);
@@ -41,6 +40,11 @@ void		free_cmdarg(t_copy *copy)
 		free(copy->redir.out2);
 	if (copy->redir.in)
 		free(copy->redir.in);
+	copy->cmd = NULL;
+	copy->args = NULL;
+	copy->redir.out1 = NULL;
+	copy->redir.out2 = NULL;
+	copy->redir.in = NULL;
 }
 
 /*void	free_list_pip(t_pip *pipcell)

@@ -37,7 +37,7 @@ static int	check(char **args, int pipe)
 	return (return_error(args[0], ": command not found\n", 0, 127));
 }
 
-int			exec(char **args, int pipe)
+int			exec(char **args, int pipe, t_copy *copy)
 {
 	char		*path;
 	int			is_cmd;
@@ -49,7 +49,7 @@ int			exec(char **args, int pipe)
 	if (ft_strequ(args[0], "whoami") && !path)
 		return (return_error(args[0], ": No such file or directory\n", 0, 127));
 	free(path);
-	is_cmd = check_builtin(args) || check_bins(args, pipe);
+	is_cmd = check_builtin(args, copy) || check_bins(args, pipe);
 	if (is_cmd > 0)
 		return (1);
 	else if (is_cmd < 0)
