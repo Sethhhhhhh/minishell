@@ -66,6 +66,8 @@ void	loop()
 	g_tester = 0;
 	while (get_next_line(0, &line) > 0)
 	{
+		cmdarg.list = NULL;
+		cmdarg.cmdssep = NULL;
 		signal(SIGINT, sigint_handler);
 		if (_check_space_colon(line))
 		{
@@ -73,8 +75,6 @@ void	loop()
 			prompt();
 			continue;
 		}
-		cmdarg.list = NULL;
-		cmdarg.cmdssep = NULL;
 		i = -1;
 		if (syntax_error(line, '|') != -1 && syntax_error(line, ';') != -1)
 		{
@@ -84,6 +84,16 @@ void	loop()
 				cmdarg.list = add_cell(cmdarg.list, cmdarg.cmdssep[i], i);
 			parse_pip(cmdarg.list);
 			minishell(cmdarg.list, &cmdarg);
+			if (cmdarg.list)
+			{
+				free_list(cmdarg.list);
+				cmdarg.list = NULL;
+			}
+			if (cmdarg.cmdssep)
+			{
+				free(cmdarg.cmdssep);
+				cmdarg.cmdssep = NULL;
+			}
 		}
 		else
 			free(line);
