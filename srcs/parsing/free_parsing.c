@@ -55,9 +55,13 @@ void	free_list_pip(t_pip *pipcell)
 	while (pipcell)
 	{
 		if (pipcell->cmd_pip)
+		{
+			//printf("tmp t_pip : %p free\n", pipcell->cmd_pip);
 			free(pipcell->cmd_pip);
+		}
 		tmp = pipcell;
 		pipcell = pipcell->next;
+		//printf("tmp t_pip : %p free\n", tmp);
 		free(tmp);
 	}
 }

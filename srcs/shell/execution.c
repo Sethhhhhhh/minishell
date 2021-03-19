@@ -12,14 +12,14 @@
 
 #include "../../includes/minishell.h"
 
-static void	list_pipe(t_sep *list, t_copy *cmdarg, int *fdd)
+static void	list_pipe(t_pip *pipcell, t_copy *cmdarg, int *fdd)
 {
 	t_pip	*tmp;
 
-	while (list->pipcell)
+	while (pipcell)
 	{
-		tmp = list->pipcell;
-		if (parsing(list->pipcell->cmd_pip, cmdarg) == NULL)
+		tmp = pipcell;
+		if (parsing(pipcell->cmd_pip, cmdarg) == NULL)
 		{
 			if (tmp->cmd_pip)
 				free(tmp->cmd_pip);
@@ -27,11 +27,15 @@ static void	list_pipe(t_sep *list, t_copy *cmdarg, int *fdd)
 			free_cmdarg(cmdarg);
 			break ;
 		}
-		*fdd = run_pipe(list->pipcell, cmdarg, *fdd);
-		list->pipcell = list->pipcell->next;
-		if (tmp->cmd_pip)
-			free(tmp->cmd_pip);
-		free(tmp);
+		*fdd = run_pipe(pipcell, cmdarg, *fdd);
+		pipcell = pipcell->next;
+		//if (tmp->cmd_pip)
+		//{
+		//	printf("tmp t_pip : %p free\n", tmp->cmd_pip);
+		//	free(tmp->cmd_pip);
+		//}
+		//free(tmp);
+		//printf("tmp t_pip : %p free\n", tmp);
 		free_cmdarg(cmdarg);
 	}
 	close(*fdd);
@@ -88,7 +92,7 @@ void		minishell(t_sep *list, t_copy *cmdarg)
 	while (list)
 	{
 		if (list->pipcell != NULL)
-			list_pipe(list, cmdarg, &fdd);
+			list_pipe(list->pipcell, cmdarg, &fdd);
 		else
 		{
 			if (parsing(list->cmd_sep, cmdarg) == NULL)
