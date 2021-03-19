@@ -107,12 +107,12 @@ void	loop_testeur(char *line)
 	t_copy	cmdarg;
 	size_t	i;
 
+	g_tester = 1;
 	ft_bzero(&cmdarg, sizeof(t_copy));
 	if (_check_space_colon(line))
-		return;
+		ft_exit(&cmdarg);
 	cmdarg.list = NULL;
 	i = -1;
-	g_tester = 1;
 	if (syntax_error(line, '|') != -1 && syntax_error(line, ';') != -1)
 	{
 		cmdarg.list = NULL;
