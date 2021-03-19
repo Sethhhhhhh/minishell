@@ -3,7 +3,8 @@
 void	ft_exit(t_copy *copy)
 {
 	free_cmdarg(copy);
-	ft_free_array(g_envs);
+	if (g_envs)
+		ft_free_array(g_envs);
 	if (copy->list)
 		free_list(copy->list);
 	if (copy->cmdssep)
@@ -48,6 +49,7 @@ void	loop()
 	char	*tmp;
 	size_t	i;
 
+	ft_bzero(&cmdarg, sizeof(t_copy));
 	tmp = get_env("SHLVL");
 	i = (ft_atoi(tmp) + 1);
 	free(tmp);
