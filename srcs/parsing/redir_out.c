@@ -42,6 +42,8 @@ int	redir_out_error(t_copy *copy)
 {
 	int		i;
 
+	if (copy->redir.out2)
+		free(copy->redir.out2);
 	if (!(copy->redir.out2 = malloc(sizeof(char) * ft_strlen(copy->wc) + 1)))
 		return (-1);
 	while (copy->wc[copy->i] && copy->wc[copy->i] == ' ')
@@ -71,7 +73,9 @@ int	redir_out_error(t_copy *copy)
 int	redir_out(t_copy *copy)
 {
 	int		i;
-
+	
+	if (copy->redir.out1)
+		free(copy->redir.out1);
 	if (!(copy->redir.out1 = malloc(sizeof(char) * ft_strlen(copy->wc) + 1)))
 		return (-1);
 	while (copy->wc[copy->i] && copy->wc[copy->i] == ' ')

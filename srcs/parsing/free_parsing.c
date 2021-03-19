@@ -17,18 +17,23 @@ void		free_cmdarg(t_copy *copy)
 	int		i;
 
 	i = 0;
+	//if (copy->args[0])
+	//	printf("copy->args[0] ap : %s\n", copy->args[0]);
 	if (copy->cmd)
 		free(copy->cmd);
 	if (copy->args)
 	{
 		while (copy->args[i])
 		{
-			//printf("copy->args[%d] : %s parsing free\n", i, copy->args[i]);
-			free(copy->args[i]);
-			i++;
+				//printf("copy->args[%d]: %s\n", i, copy->args[i]);
+				//printf("copy->args[%d] : %s parsing free\n", i, copy->args[i]);
+				free(copy->args[i]);
+				i++;
 		}
+		//printf("copy->args[%d]: %s\n", i, copy->args[i]);
 		//printf("copy->args char **: %p parsing free\n", copy->args);
 		free(copy->args);
+		//printf("copy->args[%d]: %s\n", i, copy->args[i]);
 	}
 	if (copy->redir.out1)
 		free(copy->redir.out1);

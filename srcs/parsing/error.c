@@ -18,7 +18,7 @@ int		ft_error_token(char *msg, char c, int i, char *str)
 	ft_putstr_fd(msg, 2);
 	if (c == 'n')
 		ft_putstr_fd("newline\'\n", 2);
-	else if (str[i - 1] == c || str[i + 1] == c)
+	else if (str[i + 1] == c || (i > 0 && str[i - 1] == c))
 	{
 		ft_putchar_fd(c, 2);
 		ft_putchar_fd(c, 2);

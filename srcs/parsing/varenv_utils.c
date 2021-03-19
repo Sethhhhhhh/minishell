@@ -39,6 +39,7 @@ char	*remalloc_redir(t_copy *copy, char *value, char *str)
 	char	*tmp;
 	int		j;
 
+	//printf("ca rentre");
 	j = -1;
 	tmp = NULL;
 	str[copy->redir.i + 1] = 0;

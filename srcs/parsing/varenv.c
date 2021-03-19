@@ -60,9 +60,11 @@ int		find_name(t_copy *copy, int i, char **name)
 		if (i == 0 && (copy->wc[copy->i] == '\'' || copy->wc[copy->i] == '"'))
 			return (0);
 		(*name)[++count] = copy->wc[copy->i];
+		//printf("name[%d] = %c\n", count, (*name)[count]);
 		copy->i++;
 	}
 	(*name)[count + 1] = 0;
+	//printf("name[%d] = %c\n", count + 1, (*name)[count + 1]);
 	return (1);
 }
 
@@ -108,6 +110,7 @@ int		env_redir(t_copy *copy, int std, int spce)
 	value = NULL;
 	if (!(name = malloc(sizeof(char) * ft_strlen(copy->wc) + 1)))
 		return (-1);
+	name[0] = 0;
 	copy->i++;
 	if (copy->wc[copy->i] == '\'' || copy->wc[copy->i] == '"')
 	{
@@ -118,13 +121,13 @@ int		env_redir(t_copy *copy, int std, int spce)
 		return (1);
 	find_name(copy, 1, &name);
 	value = get_env(name);
-	free(name);
 	if (spce == 1 && value)
 		value = ft_strip_extra_spaces(value, copy->wc, copy->i);
 	if (value && spce == 1 && (only_spaces(value) || ft_space_in_middle(value)))
 		error_ambiguous(name);
 	if (!value && spce == 1)
 		error_ambiguous(name);
+	free(name);
 	if ((count = no_value(copy, value)) != 0)
 	{
 		if (value)

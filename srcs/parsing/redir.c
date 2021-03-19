@@ -63,6 +63,8 @@ int	redir_in(t_copy *copy)
 	int		i;
 
 	copy->i++;
+	if (copy->redir.in)
+		free(copy->redir.in);
 	if (!(copy->redir.in = malloc(sizeof(char) * ft_strlen(copy->wc) + 1)))
 		return (-1);
 	while (copy->wc[copy->i] && copy->wc[copy->i] == ' ')

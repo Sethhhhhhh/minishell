@@ -90,15 +90,25 @@ char	*args(t_copy *copy, size_t i)
 	{
 		j = 0;
 		j = args_quoting(copy, j, i);
+		//if (i == 2)
+		//	printf("copy->args[2] avant : %s\n", copy->args[2]);
 		j = args_redir_env(copy, j, i);
+		//if (i == 2)
+		//	printf("copy->args[2] apres : %s\n", copy->args[2]);
 		if (j == -3)
+		{
+			//printf("ca passe\n");
+			copy->args[i][copy->j + 1] = 0; //tester avec echo bonjour1>test1
 			return (copy->args[i]);
+		}
 		if ((copy->wc[copy->i] == ' ' && copy->wc[copy->i - 1] != '\\')
 			&& (copy->args[i][0] || (!copy->args[i][0] && (copy->wc
 						[copy->i - 1] == '"' || copy->wc[copy->i - 1] == '\'')
 					&& (copy->wc[copy->i - 2] == '"' || copy->wc
 						[copy->i - 2] == '\'' || j == 1))))
+		{
 			break ;
+		}
 		copy_arg(copy, i, j);
 	}
 	copy->args[i][copy->j + 1] = 0;
