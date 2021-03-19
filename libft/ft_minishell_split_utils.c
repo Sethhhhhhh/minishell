@@ -77,11 +77,13 @@ void			ft_write_words_minishell(char const *s, int words, t_split *sp)
 		sp->k = 0;
 		while (s[sp->j] && s[sp->j] == sp->c)
 			sp->j++;
-		while ((s[sp->j] && (s[sp->j] != sp->c || (s[sp->j] == sp->c && sp->j
+		while ((s[sp->j] && (s[sp->j] != sp->c || (s[sp->j] == sp->c && sp->j > 0
 			&& s[sp->j - 1] == '\\'))))
 		{
 			ft_write_words_util(s, sp);
 			if (sp->j && s[sp->j - 1] != '\\' && (s[sp->j] == sp->c || s[sp->j] == '\0'))
+				break ;
+			if (sp->j == (int)ft_strlen(s))
 				break ;
 			sp->str[sp->i][sp->k++] = s[sp->j++];
 		}

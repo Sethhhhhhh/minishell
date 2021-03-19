@@ -69,15 +69,18 @@ int		pipeinstr(char c, char *str)
 {
 	int		i;
 
-	i = -1;
-	while (str[++i])
+	i = 0;
+	while (str[i])
 	{
 		if ((i = (inside_quote(str, i))) == (int)ft_strlen(str))
 			break ;
 		if (str[i] && str[i] == '\\')
 			i++;
+		if (i == (int)ft_strlen(str))
+			break;
 		if (str[i] && str[i] == c && str[i - 1] != '\\')
 			return (i);
+		i++;
 	}
 	return (-1);
 }
