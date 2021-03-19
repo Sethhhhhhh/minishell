@@ -2,6 +2,8 @@
 
 void	ft_exit(t_copy *copy)
 {
+	if (copy && copy->list && copy->list->pipcell)
+		free_list_pip(copy->list->pipcell);
 	free_cmdarg(copy);
 	if (g_envs)
 		ft_free_array(g_envs);
