@@ -31,7 +31,13 @@ int	create_file_in(t_copy *copy)
 {
 	copy->redir.sstdin = open(copy->redir.in, O_RDONLY);
 	if (!copy->redir.in[0] || copy->redir.sstdin == -1)
-		return (error_exit(copy->redir.in, "No such file or directory"));
+	{
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(copy->redir.in, 2);
+		ft_putstr_fd(": No such file or directory", 2);
+	}
+	g_status = 1;
+	g_error = 1;
 	return (0);
 }
 

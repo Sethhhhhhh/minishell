@@ -40,7 +40,8 @@ int				run_echo(char **args)
 	int		n;
 
 	n = 1;
-	g_status = 0;
+	if (g_error != 1)
+		g_status = 0;
 	if (!args[1])
 	{
 		ft_putchar_fd('\n', 1);

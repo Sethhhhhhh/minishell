@@ -5,6 +5,7 @@
 
 #########Echo#########
 echo bonjour
+cat < dontexist ; echo $?
         echo echo hey
 echo bonjourheybonjour salut
 echo lalalala                lalalalal      alalalalal alalalala
