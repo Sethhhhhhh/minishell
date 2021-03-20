@@ -1,4 +1,29 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   handler.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: yviavant <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/03/20 02:26:36 by yviavant          #+#    #+#             */
+/*   Updated: 2021/03/20 02:32:54 by yviavant         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../../includes/minishell.h"
+
+static int	sub_free(char *st, char *end)
+{
+	if (set_env(st, end))
+	{
+		free(st);
+		free(end);
+		return (0);
+	}
+	free(st);
+	free(end);
+	return (1);
+}
 
 static int	set(char *arg, size_t equ, size_t index)
 {
@@ -20,26 +45,37 @@ static int	set(char *arg, size_t equ, size_t index)
 	if (!st)
 		return (0);
 	end = ft_substr(arg, (equ + 1), ft_strlen(arg));
-	if (set_env(st, end))
+	return (sub_free(st, end));
+}
+
+static void	modify(char **args, char *st, size_t i)
+{
+	char	*end;
+	size_t	count;
+
+	end = NULL;
+	count = get_envs_count() + 1;
+	g_envs = realloc_envs(count);
+	if (!(st = ft_substr(args[i], 0,
+		ft_get_char_by_index(args[i], '=') + 1)))
+		return ;
+	if (!(end = ft_substr(args[i],
+		ft_get_char_by_index(args[i], '=') + 1, ft_strlen(args[i]))))
 	{
 		free(st);
-		free(end);
-		return (0);
+		return ;
 	}
+	g_envs[count - 1] = ft_strjoin(st, end);
 	free(st);
 	free(end);
-	return (1);
 }
 
 static void	add(char **args, size_t i)
 {
 	ssize_t	index;
 	size_t	equal_index;
-	size_t	count;
 	char	*st;
-	char	*end;
 
-	end = NULL;
 	equal_index = ft_get_char_by_index(args[i], '=');
 	if (equal_index == (size_t)-1)
 		equal_index = ft_strlen(args[i]);
@@ -49,23 +85,10 @@ static void	add(char **args, size_t i)
 	if (index != -1)
 		set(args[i], equal_index, index);
 	else
-	{
-		count = get_envs_count() + 1;
-		g_envs = realloc_envs(count);
-		if (!(st = ft_substr(args[i], 0, ft_get_char_by_index(args[i], '=') + 1)))
-			return ;
-		if (!(end = ft_substr(args[i], ft_get_char_by_index(args[i], '=') + 1, ft_strlen(args[i]))))
-		{
-			free(st);
-			return ;
-		}
-		g_envs[count - 1] = ft_strjoin(st, end);
-		free(st);
-		free(end);
-	}
+		modify(args, st, i);
 }
 
-int	run_export(char **args)
+int			run_export(char **args)
 {
 	size_t	i;
 

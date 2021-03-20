@@ -6,7 +6,7 @@
 /*   By: yviavant <yviavant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/12 22:20:10 by yviavant          #+#    #+#             */
-/*   Updated: 2021/03/15 19:10:06 by yviavant         ###   ########.fr       */
+/*   Updated: 2021/03/20 03:27:09 by yviavant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int			run(char **args, char *bin, int pipe)
 	if (ft_strequ(args[0], "./minishell"))
 		signal(SIGINT, SIG_IGN);
 	wait(&g_pid);
-	g_status = status_child(g_pid);
+	status_child();
 	g_pid = 0;
 	return (1);
 }
@@ -71,10 +71,7 @@ int			check_bins(char **args, int pipe)
 	char		*tmp;
 	size_t		i;
 
-	tmp = get_env("PATH");
-	path = ft_split(tmp, ':');
-	free(tmp);
-	if (!path)
+	if (!(path = get_path()))
 		return (-1);
 	i = -1;
 	while (path[++i])
@@ -110,16 +107,13 @@ int			check_builtin(char **args, t_copy *copy)
 		run_exit(args, copy);
 	else if (ft_strequ(args[0], "pwd"))
 	{
-		pwd = getcwd(NULL, 0); 
+		pwd = getcwd(NULL, 0);
 		ft_putstr_fd(pwd, 1);
 		free(pwd);
 		ft_putchar_fd('\n', 1);
 		return (1);
 	}
 	else if (ft_strequ(args[0], "env"))
-	{
-		run_env();
-		return (1);
-	}
+		return (run_env());
 	return (0);
 }

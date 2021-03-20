@@ -6,7 +6,7 @@
 /*   By: yviavant <yviavant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/12 21:53:21 by yviavant          #+#    #+#             */
-/*   Updated: 2021/03/13 12:54:45 by yviavant         ###   ########.fr       */
+/*   Updated: 2021/03/20 03:38:54 by yviavant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,8 +111,11 @@ int	redirection(t_copy *copy)
 			copy->redir.end = 1;
 			copy->i++;
 		}
-		if ((copy->redir.end == 0 && (copy->i == 2 || (copy->i > 3 && copy->wc[copy->i - 2] == '2' && copy->wc[copy->i - 3] == ' '))) ||
-			(copy->redir.end == 1 && (copy->i == 3 || (copy->i > 4 && copy->wc[copy->i - 3] == '2' && (copy->wc[copy->i - 4] == ' ' )))))
+		if ((copy->redir.end == 0 && (copy->i == 2 || (copy->i > 3
+			&& copy->wc[copy->i - 2] == '2' && copy->wc[copy->i - 3] == ' ')))
+			|| (copy->redir.end == 1 && (copy->i == 3 || (copy->i > 4
+			&& copy->wc[copy->i - 3] == '2'
+			&& (copy->wc[copy->i - 4] == ' ')))))
 			i = redir_out_error(copy);
 		else
 			i = redir_out(copy);

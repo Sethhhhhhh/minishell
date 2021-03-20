@@ -50,8 +50,7 @@ int				run_echo(char **args)
 	if ((ft_strequ(args[1], " ") && !args[2]))
 		return (1);
 	i = check_n(args);
-	if (i > 1)
-		n = 0;
+	n = i > 1 ? 0 : 1;
 	while (args[i])
 	{
 		ft_putstr_fd(args[i], 1);

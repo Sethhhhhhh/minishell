@@ -6,7 +6,7 @@
 /*   By: yviavant <yviavant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/12 21:53:21 by yviavant          #+#    #+#             */
-/*   Updated: 2021/03/13 12:54:45 by yviavant         ###   ########.fr       */
+/*   Updated: 2021/03/20 03:32:41 by yviavant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,15 +90,10 @@ char	*args(t_copy *copy, size_t i)
 	{
 		j = 0;
 		j = args_quoting(copy, j, i);
-		//if (i == 2)
-		//	printf("copy->args[2] avant : %s\n", copy->args[2]);
 		j = args_redir_env(copy, j, i);
-		//if (i == 2)
-		//	printf("copy->args[2] apres : %s\n", copy->args[2]);
 		if (j == -3)
 		{
-			//printf("ca passe\n");
-			copy->args[i][copy->j + 1] = 0; //tester avec echo bonjour1>test1
+			copy->args[i][copy->j + 1] = 0;
 			return (copy->args[i]);
 		}
 		if ((copy->wc[copy->i] == ' ' && copy->wc[copy->i - 1] != '\\')

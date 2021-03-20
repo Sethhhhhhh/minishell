@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   syntax_error.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: yviavant <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/03/20 03:33:35 by yviavant          #+#    #+#             */
+/*   Updated: 2021/03/20 03:33:51 by yviavant         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
 int	inside_quote(char *str, int i)
@@ -6,7 +18,6 @@ int	inside_quote(char *str, int i)
 
 	while (str[i] && (str[i] == '\'' || str[i] == '"'))
 	{
-		//printf("i = %d et str[i] = %c\n", i, str[i]);
 		quote = str[i];
 		i++;
 		while (str[i] && str[i] != quote)
@@ -20,8 +31,6 @@ int	inside_quote(char *str, int i)
 		else
 			i++;
 	}
-	//printf("en sortant i = %d et str[i] = %c\n", i, str[i]);
-	//printf("--------\n");
 	return (i);
 }
 
@@ -30,7 +39,6 @@ int	syntax_error_redir(char *str, char c)
 	int		i;
 	int		j;
 
-	//printf("ft_strlen de str = %d\n", (int)ft_strlen(str));
 	i = 0;
 	while (str[i])
 	{
@@ -39,7 +47,6 @@ int	syntax_error_redir(char *str, char c)
 			break ;
 		while (str[i] && (str[i] == c || str[i] == ' '))
 		{
-			//printf("avant i = %d et str[i] = %c\n", i, str[i]);
 			if (str[i] == c)
 				j++;
 			i++;
@@ -51,7 +58,6 @@ int	syntax_error_redir(char *str, char c)
 		if (i == (int)ft_strlen(str))
 			break ;
 		i++;
-		//printf("apres i = %d et str[i] = %c\n", i, str[i]);
 	}
 	return (0);
 }

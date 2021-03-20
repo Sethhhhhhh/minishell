@@ -6,51 +6,26 @@
 /*   By: yviavant <yviavant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/12 19:48:24 by yviavant          #+#    #+#             */
-/*   Updated: 2021/03/15 15:46:32 by yviavant         ###   ########.fr       */
+/*   Updated: 2021/03/20 03:10:18 by yviavant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../includes/minishell.h"
 
-int	set_env(char *env, char *new_env)
-{
-	char	*tmp;
-	char	*new;
-	ssize_t	i;
-	size_t	len;
-
-	if (!env || !new_env)
-		return (0);
-	len = ft_strlen(env);
-	i = -1;
-	if ((i = find_env(env)) != -1)
-	{
-		tmp = ft_substr(g_envs[i], 0, (len + 1));
-		new = ft_strjoin(tmp, new_env);
-		free(g_envs[i]);
-		free(tmp);
-		g_envs[i] = new;
-		return (1);
-	}
-	else
-	{
-		len = get_envs_count() + 1;
-		g_envs = realloc_envs(len);
-		tmp = ft_strjoin(env, "=");
-		g_envs[len - 1] = ft_strjoin(tmp, new_env);
-		free(tmp);
-		return (1);
-	}
-	return (0);
-}
-
 char	**get_path(void)
 {
-	char	*path;
+	char	**path;
+	char	*tmp;
 
-	if ((path = get_env("PATH")))
-		return (ft_split(path, ':'));
-	return (NULL);
+	if (!(tmp = get_env("PATH")))
+		return (NULL);
+	if (!(path = ft_split(tmp, ':')))
+	{
+		free(tmp);
+		return (NULL);
+	}
+	free(tmp);
+	return (path);
 }
 
 size_t	get_envs_count(void)

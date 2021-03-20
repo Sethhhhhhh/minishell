@@ -6,7 +6,7 @@
 /*   By: yviavant <yviavant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/12 21:53:21 by yviavant          #+#    #+#             */
-/*   Updated: 2021/03/13 12:54:45 by yviavant         ###   ########.fr       */
+/*   Updated: 2021/03/20 03:43:00 by yviavant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ t_sep	*create_cell(char *cmd_sep)
 	t_sep	*cell;
 
 	cell = malloc(sizeof(t_sep));
-	//printf("cell t_sep %p malloc\n", cell);
 	if (!(cell))
 		return (NULL);
 	cell->prev = NULL;

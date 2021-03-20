@@ -6,12 +6,11 @@
 /*   By: yviavant <yviavant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/12 21:53:21 by yviavant          #+#    #+#             */
-/*   Updated: 2021/03/13 12:54:45 by yviavant         ###   ########.fr       */
+/*   Updated: 2021/03/20 03:59:45 by yviavant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <stdio.h>
 
 static size_t	len_without_extra_spaces(char *str)
 {
@@ -19,9 +18,9 @@ static size_t	len_without_extra_spaces(char *str)
 	size_t		len;
 	char		found_space;
 
-	len = ft_strlen(str);
-	while (str[len - 1] && ft_isspace(str[len - 1]))
-		len--;
+	if (str && (len = ft_strlen(str)) > 0)
+		while ((len - 1) > 0 && str[len - 1] && ft_isspace(str[len - 1]))
+			len--;
 	str[len] = '\0';
 	i = 0;
 	while (str[i] && ft_isspace(str[i]))
@@ -71,7 +70,8 @@ void			add_space_after(char *tmp, char *whole_cmd, int v, char **new)
 	int j;
 
 	j = ft_strlen(*new);
-	i = ft_strlen(tmp) - 1;
+	if (!tmp || ((i = (ft_strlen(tmp) - 1)) < 0))
+		return ;
 	if (tmp[i] == ' ' && follow_env(v, whole_cmd) && whole_cmd[v] == '$')
 		return ;
 	if (tmp[i] == ' ' && (whole_cmd[v] == '"' || whole_cmd[v] == '\'' ||
@@ -82,6 +82,20 @@ void			add_space_after(char *tmp, char *whole_cmd, int v, char **new)
 		(*new)[j] = ' ';
 		(*new)[j + 1] = '\0';
 	}
+}
+
+static char		*add(char *tmp, char *whole_cmd, int v, char *new)
+{
+	if (add_space_before(tmp, whole_cmd, v, &new) == -1)
+	{
+		if (tmp)
+			free(tmp);
+		return (new);
+	}
+	add_space_after(tmp, whole_cmd, v, &new);
+	if (tmp)
+		free(tmp);
+	return (new);
 }
 
 char			*ft_strip_extra_spaces(char *str, char *whole_cmd, int v)
@@ -95,31 +109,20 @@ char			*ft_strip_extra_spaces(char *str, char *whole_cmd, int v)
 	tmp = NULL;
 	tmp = ft_strdup(str);
 	len = len_without_extra_spaces(str);
-	new = (char *)malloc(sizeof(char) * (len + 3));
-	if (!new)
+	if (!(new = (char *)malloc(sizeof(char) * (len + 3))))
 	{
 		if (tmp)
 			free(tmp);
 		return (NULL);
 	}
-	k = ft_strlen(str);
-	while (str[k - 1] && ft_isspace(str[k - 1]))
-		k--;
+	if (str && (k = ft_strlen(str)) > 0)
+		while ((k - 1) > 0 && str[k - 1] && ft_isspace(str[k - 1]))
+			k--;
 	str[k] = '\0';
 	i = 0;
 	while (str[i] && ft_isspace(str[i]))
 		i++;
 	copy(&new, str, i);
-	if (str)
-		free(str);
-	if (add_space_before(tmp, whole_cmd, v, &new) == -1)
-	{
-		if (tmp)
-			free(tmp);
-		return (new);
-	}
-	add_space_after(tmp, whole_cmd, v, &new);
-	if (tmp)
-		free(tmp);
-	return (new);
+	free(str);
+	return (add(tmp, whole_cmd, v, new));
 }

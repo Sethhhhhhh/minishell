@@ -6,7 +6,7 @@
 /*   By: yviavant <yviavant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/12 21:53:21 by yviavant          #+#    #+#             */
-/*   Updated: 2021/03/13 12:54:45 by yviavant         ###   ########.fr       */
+/*   Updated: 2021/03/20 03:30:59 by yviavant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ int	redir_out_error(t_copy *copy)
 int	redir_out(t_copy *copy)
 {
 	int		i;
-	
+
 	if (copy->redir.out1)
 		free(copy->redir.out1);
 	if (!(copy->redir.out1 = malloc(sizeof(char) * ft_strlen(copy->wc) + 1)))
@@ -82,9 +82,7 @@ int	redir_out(t_copy *copy)
 		copy->i++;
 	while (copy->wc[copy->i] && copy->wc[copy->i] != ' ')
 	{
-		//printf("redir out 1 avant = %s\n", copy->redir.out1);
 		i = redir_quoting(copy, 1, copy->redir.out1);
-		//printf("copy->i = %d, wc = %ld, copy->wc de i %c\n", copy->i, ft_strlen(copy->wc), copy->wc[copy->i]);
 		if (copy->i == (int)ft_strlen(copy->wc))
 			break ;
 		if (i != 0)

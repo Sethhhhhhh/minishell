@@ -6,7 +6,7 @@
 /*   By: yviavant <yviavant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/12 21:53:21 by yviavant          #+#    #+#             */
-/*   Updated: 2021/03/13 12:54:45 by yviavant         ###   ########.fr       */
+/*   Updated: 2021/03/20 03:39:59 by yviavant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,14 +70,12 @@ char	*cmd(t_copy *copy)
 						|| j == 1))))
 			break ;
 		if (copy->i < (int)ft_strlen(copy->wc) && ((copy->wc[copy->i] == '$'
-					&& (copy->i == 0 || copy->wc[copy->i - 1] == '\\')) || (copy->wc[copy->i]
-					!= '$' && j == -2)))
+			&& (copy->i == 0 || copy->wc[copy->i - 1] == '\\'))
+			|| (copy->wc[copy->i] != '$' && j == -2)))
 			copy->cmd[++copy->j] = copy->wc[copy->i];
 		if (copy->i < (int)ft_strlen(copy->wc))
 			copy->i++;
-		//printf("passe pour copy->wc[%d] = %c\n", copy->i, copy->wc[copy->i]);
 	}
-	//printf("copy->j = %d\n", copy->j);
 	copy->cmd[copy->j + 1] = 0;
 	return (copy->cmd);
 }
@@ -97,8 +95,6 @@ char	*parsing(char *whole_cmd, t_copy *copy)
 	copy->wc = whole_cmd;
 	g_error = 0;
 	copy->cmd = malloc(sizeof(char) * (ft_strlen(copy->wc) + 1));
-	//printf("ft_strlen(copy->wc) + 1 = %ld\n", ft_strlen(copy->wc) + 1);
-	//printf("copy->cmd : %p malloc\n", copy->cmd);
 	if (!(copy->cmd) || !(copy->wc))
 		return (NULL);
 	copy->cmd[0] = 0;
@@ -107,7 +103,6 @@ char	*parsing(char *whole_cmd, t_copy *copy)
 	if (cmd(copy) == NULL || g_error == -1)
 		return (NULL);
 	copy->args = (char **)malloc(sizeof(char *) * 1);
-	//printf("copy->args  char** : %p cmd malloc\n", copy->args);
 	if (!(copy->args) || options(copy, 1, 0) == -1)
 		return (NULL);
 	return (copy->cmd);

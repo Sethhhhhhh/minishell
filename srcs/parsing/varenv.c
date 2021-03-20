@@ -6,7 +6,7 @@
 /*   By: yviavant <yviavant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/12 21:53:21 by yviavant          #+#    #+#             */
-/*   Updated: 2021/03/13 12:54:45 by yviavant         ###   ########.fr       */
+/*   Updated: 2021/03/20 03:37:14 by yviavant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,11 +60,9 @@ int		find_name(t_copy *copy, int i, char **name)
 		if (i == 0 && (copy->wc[copy->i] == '\'' || copy->wc[copy->i] == '"'))
 			return (0);
 		(*name)[++count] = copy->wc[copy->i];
-		//printf("name[%d] = %c\n", count, (*name)[count]);
 		copy->i++;
 	}
 	(*name)[count + 1] = 0;
-	//printf("name[%d] = %c\n", count + 1, (*name)[count + 1]);
 	return (1);
 }
 

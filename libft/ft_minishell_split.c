@@ -6,25 +6,20 @@
 /*   By: yviavant <yviavant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/06 23:51:01 by yviavant          #+#    #+#             */
-/*   Updated: 2021/03/13 12:03:49 by yviavant         ###   ########.fr       */
+/*   Updated: 2021/03/20 04:07:40 by yviavant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <stdio.h>
-#include <string.h>
 
 int			ft_count_words_util(char const *s, t_split *sp)
 {
-	//printf("ft_strlen de s = %d\n", (int)ft_strlen(s));
 	while (s[sp->i] && (s[sp->i] == '\'' || s[sp->i] == '"'))
 	{
-		//printf("avant i = %d et s[i] = %c\n", sp->i, s[sp->i]);
 		while (s[sp->i] && s[sp->i] == '"')
 			sp->i = protection(s, sp->i, '"', sp);
 		while (s[sp->i] && s[sp->i] == '\'')
 			sp->i = protection(s, sp->i, '\'', sp);
-		//printf("apres i = %d et s[i] = %c\n", sp->i, s[sp->i]);
 	}
 	if (sp->i == sp->len)
 		return (-1);
@@ -36,7 +31,7 @@ int			ft_count_words_util(char const *s, t_split *sp)
 static int	ft_count_words(char const *s, char c, t_split *sp)
 {
 	sp->i = -1;
-	sp->len = (int)strlen(s);
+	sp->len = (int)ft_strlen(s);
 	sp->count_words = 0;
 	while (s[++sp->i])
 	{
@@ -48,7 +43,7 @@ static int	ft_count_words(char const *s, char c, t_split *sp)
 			sp->j = sp->i + 1;
 			while (s[sp->j] && sp->j == ' ')
 				sp->j++;
-			if (sp->j != (int)strlen(s))
+			if (sp->j != (int)ft_strlen(s))
 				sp->count_words++;
 		}
 		if (sp->i == sp->len)
@@ -72,13 +67,14 @@ int			ft_malloc_words_util(char const *s, char c, t_split *sp)
 		sp->j++;
 		sp->k++;
 	}
-	if ((s[sp->j] && s[sp->j] == '\0') || (s[sp->j] == c && s[sp->j - 1] != '\\'))
+	if ((s[sp->j] && s[sp->j] == '\0')
+		|| (s[sp->j] == c && s[sp->j - 1] != '\\'))
 		return (-1);
 	return (0);
 }
 
-int			ft_malloc_words(char const *s, char **str, int words,
-				t_split *sp)
+int			ft_malloc_words(char const *s, char **str,
+			int words, t_split *sp)
 {
 	sp->i = -1;
 	sp->j = -1;
@@ -117,7 +113,6 @@ char		**ft_minishell_split(char const *s, char c)
 	if (!s)
 		return (NULL);
 	count_words = ft_count_words(s, c, &split);
-	//printf("count_words = %d\n", count_words);
 	if ((str = (char **)malloc(sizeof(char *) * (count_words + 1))) == NULL)
 		return (NULL);
 	if (!ft_malloc_words(s, str, count_words, &split))

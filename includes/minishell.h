@@ -6,7 +6,7 @@
 /*   By: yviavant <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/07 11:10:16 by yviavant          #+#    #+#             */
-/*   Updated: 2019/11/14 18:28:42 by yviavant         ###   ########.fr       */
+/*   Updated: 2021/03/20 04:13:31 by seth             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,12 @@ typedef struct			s_copy
 }						t_copy;
 
 /*
+** loop
+*/
+void					loop(void);
+void					loop_tester(char *line);
+
+/*
 ** separation
 */
 t_sep					*parse_sep();
@@ -91,7 +97,7 @@ t_sep					*add_cell(t_sep *list, char *cmd_sep, int pos);
 void					parse_pip(t_sep *list);
 void					print_pip_list(t_pip *piplist);
 int						run_pipe(t_pip *pipcell, t_copy *cmdargs, int fdd);
-int						status_child(pid_t	g_pid);
+void					status_child(void);
 
 /*
 ** redirection
@@ -182,6 +188,7 @@ int						syntax_error(char *str, char c);
 int						error_msg(char *str, int i, char c);
 void					error_ambiguous(char *name);
 void					ft_exit(t_copy *copy);
+int						check_space_colon(char *line);
 
 /*
 ** free

@@ -6,33 +6,27 @@
 /*   By: yviavant <yviavant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/12 20:07:42 by yviavant          #+#    #+#             */
-/*   Updated: 2021/03/15 20:00:59 by yviavant         ###   ########.fr       */
+/*   Updated: 2021/03/20 03:41:20 by yviavant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void		free_cmdarg(t_copy *copy)
+void	free_cmdarg(t_copy *copy)
 {
 	int		i;
 
 	i = 0;
-	//	printf("copy->args[0] ap : %s\n", copy->args[0]);
 	if (copy->cmd)
 		free(copy->cmd);
 	if (copy->args)
 	{
 		while (copy->args[i])
 		{
-				//printf("copy->args[%d]: %s\n", i, copy->args[i]);
-				//printf("copy->args[%d] : %s parsing free\n", i, copy->args[i]);
-				free(copy->args[i]);
-				i++;
+			free(copy->args[i]);
+			i++;
 		}
-		//printf("copy->args[%d]: %s\n", i, copy->args[i]);
-		//printf("copy->args char **: %p parsing free\n", copy->args);
 		free(copy->args);
-		//printf("copy->args[%d]: %s\n", i, copy->args[i]);
 	}
 	if (copy->redir.out1)
 		free(copy->redir.out1);
@@ -50,18 +44,17 @@ void		free_cmdarg(t_copy *copy)
 void	free_list_pip(t_pip *pipcell)
 {
 	t_pip	*tmp;
+
 	if (pipcell == NULL)
 		return ;
 	while (pipcell)
 	{
 		if (pipcell->cmd_pip)
 		{
-			//printf("tmp t_pip : %p free\n", pipcell->cmd_pip);
 			free(pipcell->cmd_pip);
 		}
 		tmp = pipcell;
 		pipcell = pipcell->next;
-		//printf("tmp t_pip : %p free\n", tmp);
 		free(tmp);
 	}
 	pipcell = NULL;
@@ -80,7 +73,6 @@ void	free_list(t_sep *list)
 		free_list_pip(list->pipcell);
 		tmp = list;
 		list = list->next;
-		//printf("tmp t_sep : %p free\n", tmp);
 		free(tmp);
 	}
 	list = NULL;

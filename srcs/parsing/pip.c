@@ -6,7 +6,7 @@
 /*   By: yviavant <yviavant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/12 21:53:21 by yviavant          #+#    #+#             */
-/*   Updated: 2021/03/13 12:54:45 by yviavant         ###   ########.fr       */
+/*   Updated: 2021/03/20 03:42:48 by yviavant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,10 @@ t_pip	*create_pip_cell(char *cmd_pip)
 	cell = malloc(sizeof(t_pip));
 	if (!(cell))
 		return (NULL);
-	//printf("cell t_pip %p malloc\n", cell);
 	cell->cmd_pip = NULL;
 	cell->prev = NULL;
 	cell->next = NULL;
 	cell->cmd_pip = cmd_pip;
-	//if (cell->cmd_pip)
-		//printf("cell->cmd_pip char * %p malloc\n", cell->cmd_pip);
 	return (cell);
 }
 
@@ -77,7 +74,7 @@ int		pipeinstr(char c, char *str)
 		if (str[i] && str[i] == '\\')
 			i++;
 		if (i == (int)ft_strlen(str))
-			break;
+			break ;
 		if (str[i] && str[i] == c && str[i - 1] != '\\')
 			return (i);
 		i++;

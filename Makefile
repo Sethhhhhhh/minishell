@@ -23,6 +23,7 @@ SRCS		=	srcs/main.c \
 				srcs/parsing/error.c \
 				srcs/parsing/free_parsing.c \
 				srcs/parsing/syntax_error.c \
+				srcs/shell/loop.c \
 				srcs/shell/pipe.c \
 				srcs/shell/exec/exec.c \
 				srcs/shell/exec/additional.c \

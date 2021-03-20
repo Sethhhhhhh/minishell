@@ -6,7 +6,7 @@
 /*   By: yviavant <yviavant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/12 20:07:42 by yviavant          #+#    #+#             */
-/*   Updated: 2021/03/15 20:00:59 by yviavant         ###   ########.fr       */
+/*   Updated: 2021/03/20 03:15:15 by yviavant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,22 +50,19 @@ static void	redir_dup(t_copy *cmdarg)
 	int		saveout1;
 	int		saveout2;
 
-	savein = 0;
-	saveout1 = 0;
-	saveout2 = 0;
-	if (cmdarg->redir.in != NULL)
+	if (!(savein = 0) && cmdarg->redir.in != NULL)
 	{
 		savein = dup(0);
 		close(0);
 		dup2(cmdarg->redir.sstdin, 0);
 	}
-	if (cmdarg->redir.out1)
+	if (!(saveout1 = 0) && cmdarg->redir.out1)
 	{
 		saveout1 = dup(1);
 		close(1);
 		dup2(cmdarg->redir.sstdout, 1);
 	}
-	if (cmdarg->redir.out2)
+	if (!(saveout2 = 0) && cmdarg->redir.out2)
 	{
 		saveout2 = dup(2);
 		close(2);

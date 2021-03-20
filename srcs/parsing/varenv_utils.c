@@ -6,7 +6,7 @@
 /*   By: yviavant <yviavant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/12 21:53:21 by yviavant          #+#    #+#             */
-/*   Updated: 2021/03/13 12:54:45 by yviavant         ###   ########.fr       */
+/*   Updated: 2021/03/20 03:42:06 by yviavant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ char	*remalloc_redir(t_copy *copy, char *value, char *str)
 	char	*tmp;
 	int		j;
 
-	//printf("ca rentre");
 	j = -1;
 	tmp = NULL;
 	str[copy->redir.i + 1] = 0;
@@ -84,7 +83,8 @@ int		status_env(t_copy *copy, int arg, int i)
 		j += 1;
 	if (copy->wc[j] && copy->wc[j] == '$' && copy->wc[j + 1] == '?')
 	{
-		if (j == 0 || (j > 0 && copy->wc[j - 1] != '\\' && copy->wc[j - 1] != '$'))
+		if (j == 0 || (j > 0 && copy->wc[j - 1] != '\\'
+			&& copy->wc[j - 1] != '$'))
 		{
 			value = ft_itoa(g_status);
 			env_copy(copy, arg, i, value);

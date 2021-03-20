@@ -6,7 +6,7 @@
 /*   By: yviavant <yviavant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/06 23:51:01 by yviavant          #+#    #+#             */
-/*   Updated: 2021/03/13 12:03:49 by yviavant         ###   ########.fr       */
+/*   Updated: 2021/03/20 04:01:01 by yviavant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,17 +71,18 @@ void			ft_write_words_minishell(char const *s, int words, t_split *sp)
 {
 	sp->i = -1;
 	sp->j = 0;
-	
 	while (s && s[sp->j] && ++sp->i < words)
 	{
 		sp->k = 0;
 		while (s[sp->j] && s[sp->j] == sp->c)
 			sp->j++;
-		while ((s[sp->j] && (s[sp->j] != sp->c || (s[sp->j] == sp->c && sp->j > 0
+		while ((s[sp->j] && (s[sp->j] != sp->c
+			|| (s[sp->j] == sp->c && sp->j > 0
 			&& s[sp->j - 1] == '\\'))))
 		{
 			ft_write_words_util(s, sp);
-			if (sp->j && s[sp->j - 1] != '\\' && (s[sp->j] == sp->c || s[sp->j] == '\0'))
+			if (sp->j && s[sp->j - 1] != '\\' && (s[sp->j] == sp->c
+				|| s[sp->j] == '\0'))
 				break ;
 			if (sp->j == (int)ft_strlen(s))
 				break ;

@@ -159,7 +159,6 @@ then
 	printf "\n$RESET$BOLDRED[STATUS - DIFF]\n"
 	diff -u b_status m_status
 	printf "$RESET\n"
-	
 fi
 
 find . ! -name ".git" ! -name start.sh ! -name input ! -name script.sh ! -name b_stdout ! -name m_stdout ! -name m_stderr ! -name b_stderr ! -name core ! -name copy.c ! -name b_status ! -name m_status -delete >/dev/null
