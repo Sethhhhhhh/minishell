@@ -65,7 +65,7 @@ int		args_redir_env(t_copy *copy, int j, size_t i)
 	}
 	if ((copy->wc[copy->i] == '>' || copy->wc[copy->i] == '<')
 		&& copy->wc[copy->i - 1] != '\\')
-		j = redirection(copy);
+		j = redirection(copy, 0);
 	return (j);
 }
 
@@ -79,10 +79,8 @@ void	copy_arg(t_copy *copy, size_t i, int j)
 		copy->args[i][++copy->j] = copy->wc[copy->i];
 }
 
-char	*args(t_copy *copy, size_t i)
+char	*args(t_copy *copy, size_t i, int j)
 {
-	int		j;
-
 	if (init_malloc_args(copy, i) == -1)
 		return (NULL);
 	while (copy->wc[copy->i] && (copy->wc[++copy->i] != ' '

@@ -64,6 +64,8 @@ typedef	struct			s_redir
 	int					sstdin;
 	int					end;
 	int					i;
+	char				*name;
+	char				*value;
 }						t_redir;
 
 typedef struct			s_copy
@@ -76,6 +78,8 @@ typedef struct			s_copy
 	int					i;
 	int					j;
 	t_redir				redir;
+	char				**tmp;
+	char				*arg;
 }						t_copy;
 
 /*
@@ -102,18 +106,19 @@ void					status_child(void);
 /*
 ** redirection
 */
-int						redirection(t_copy *copy);
+int						redirection(t_copy *copy, int i);
 int						redir_quoting(t_copy *copy, int i, char *file);
-int						redir_out(t_copy *copy);
-int						redir_out_error(t_copy *copy);
+int						redir_out(t_copy *copy, int i);
+int						redir_out_error(t_copy *copy, int i);
 int						create_file(t_copy *copy, int type);
+void					redir_in_util(t_copy *copy, int i);
 
 /*
 ** cmd & arg
 */
 char					*parsing(char *whole_cmd, t_copy *copy);
 int						options(t_copy *copy, size_t i, size_t	j);
-char					*args(t_copy *copy, size_t i);
+char					*args(t_copy *copy, size_t i, int j);
 
 /*
 ** protect
@@ -161,6 +166,7 @@ int						env_redir(t_copy *copy, int arg, int space);
 int						no_value(t_copy *copy, char *value);
 int						status_env(t_copy *copy, int arg, int i);
 void					env_copy(t_copy *copy, int arg, int i, char *value);
+int						init_value_name(t_copy *copy);
 
 /*
 ** builtin
@@ -184,7 +190,7 @@ void					sigint_handler(int sign_num);
 ** errors
 */
 int						error_exit(char *str, char *msg);
-int						syntax_error(char *str, char c);
+int						syntax_error(char *str, char c, int i);
 int						error_msg(char *str, int i, char c);
 void					error_ambiguous(char *name);
 void					ft_exit(t_copy *copy, int i);
@@ -195,8 +201,6 @@ int						check_space_colon(char *line);
 */
 void					free_cmdarg(t_copy *copy);
 void					free_list(t_sep *list);
-
-void					print_parsing(char **args, t_redir *redir);
 void					free_list_pip(t_pip *pipcell);
 
 #endif

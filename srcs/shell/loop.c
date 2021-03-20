@@ -72,7 +72,8 @@ void		loop(void)
 			prompt();
 			continue;
 		}
-		if (syntax_error(line, '|') != -1 && syntax_error(line, ';') != -1)
+		if (syntax_error(line, '|', 0) != -1 && syntax_error(line, ';',
+			0) != -1)
 			start(&cmdarg, line);
 		else
 			free(line);
@@ -106,7 +107,7 @@ void		loop_tester(char *line)
 		ft_exit(&cmdarg, 1);
 	cmdarg.list = NULL;
 	i = -1;
-	if (syntax_error(line, '|') != -1 && syntax_error(line, ';') != -1)
+	if (syntax_error(line, '|', 0) != -1 && syntax_error(line, ';', 0) != -1)
 	{
 		cmdarg.list = NULL;
 		cmdarg.cmdssep = NULL;

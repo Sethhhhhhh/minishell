@@ -12,7 +12,27 @@
 
 #include "../../includes/minishell.h"
 
-int	redir_quoting(t_copy *copy, int i, char *file)
+void	redir_in_util(t_copy *copy, int i)
+{
+	if (i == 2)
+	{
+		if (copy->redir.out2)
+			free(copy->redir.out2);
+	}
+	if (i == 1)
+	{
+		if (copy->redir.out1)
+			free(copy->redir.out1);
+	}
+	else
+	{
+		copy->i++;
+		if (copy->redir.in)
+			free(copy->redir.in);
+	}
+}
+
+int		redir_quoting(t_copy *copy, int i, char *file)
 {
 	if (copy->wc[copy->i] == '$' && copy->wc[copy->i - 1] != '\\')
 		env_redir(copy, i, 1);
@@ -38,12 +58,9 @@ int	redir_quoting(t_copy *copy, int i, char *file)
 	return (0);
 }
 
-int	redir_out_error(t_copy *copy)
+int		redir_out_error(t_copy *copy, int i)
 {
-	int		i;
-
-	if (copy->redir.out2)
-		free(copy->redir.out2);
+	redir_in_util(copy, 2);
 	if (!(copy->redir.out2 = malloc(sizeof(char) * ft_strlen(copy->wc) + 1)))
 		return (-1);
 	while (copy->wc[copy->i] && copy->wc[copy->i] == ' ')
@@ -70,12 +87,9 @@ int	redir_out_error(t_copy *copy)
 	return (1);
 }
 
-int	redir_out(t_copy *copy)
+int		redir_out(t_copy *copy, int i)
 {
-	int		i;
-
-	if (copy->redir.out1)
-		free(copy->redir.out1);
+	redir_in_util(copy, 1);
 	if (!(copy->redir.out1 = malloc(sizeof(char) * ft_strlen(copy->wc) + 1)))
 		return (-1);
 	while (copy->wc[copy->i] && copy->wc[copy->i] == ' ')

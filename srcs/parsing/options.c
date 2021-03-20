@@ -47,41 +47,55 @@ void	ft_copy_tmp(t_copy *copy, char **tmp, size_t j)
 	}
 }
 
-int		options(t_copy *copy, size_t i, size_t j)
+int		init_options_after(t_copy *copy, size_t i)
 {
-	char	**tmp;
-	char	*arg;
+	copy->args[i] = NULL;
+	return (1);
+}
 
-	arg = NULL;
-	tmp = NULL;
-	copy->args[0] = ft_strdup(copy->cmd);
-	while (1)
+int		init_options_before(t_copy *copy, int j, int i)
+{
+	if (j == 1)
 	{
-		tmp = copy->args;
+		copy->arg = NULL;
+		copy->tmp = NULL;
+		copy->args[0] = ft_strdup(copy->cmd);
+	}
+	if (j == 2)
+	{
+		copy->tmp = copy->args;
 		copy->args = (char **)malloc(sizeof(char *) * (i + 2));
 		if (!(copy->args))
 			return (-1);
+	}
+	return (0);
+}
+
+int		options(t_copy *copy, size_t i, size_t j)
+{
+	init_options_before(copy, 1, 0);
+	while (1)
+	{
+		if (init_options_before(copy, 2, i) == -1)
+			return (-1);
 		j = i;
-		ft_copy_tmp(copy, tmp, j);
-		if (tmp)
-		{
-			free(tmp);
-		}
-		arg = args(copy, i);
+		ft_copy_tmp(copy, copy->tmp, j);
+		if (copy->tmp)
+			free(copy->tmp);
+		copy->arg = args(copy, i, 0);
 		if (g_error == -1)
 		{
 			copy->args[i + 1] = NULL;
 			return (-1);
 		}
-		if (options_special_case(arg, copy) == 1)
-			arg = args(copy, ++i);
-		if ((!arg) || (!arg[0] && !copy->wc[copy->i]))
+		if (options_special_case(copy->arg, copy) == 1)
+			copy->arg = args(copy, ++i, 0);
+		if ((!copy->arg) || (!copy->arg[0] && !copy->wc[copy->i]))
 		{
-			free(arg);
+			free(copy->arg);
 			break ;
 		}
 		i++;
 	}
-	copy->args[i] = NULL;
-	return (1);
+	return (init_options_after(copy, i));
 }

@@ -83,10 +83,8 @@ int		d_quote_arg(t_copy *copy, size_t i, int j)
 	return (0);
 }
 
-int		quote_util_redir(t_copy *copy, char *str, int std)
+int		quote_util_redir(t_copy *copy, char *str, int std, int j)
 {
-	int		j;
-
 	while (copy->wc[copy->i] && copy->wc[++copy->i] != '"')
 	{
 		j = 0;
@@ -127,7 +125,7 @@ int		d_quote_redir(t_copy *copy, char *str, int std)
 		copy->i = copy->i + 2;
 		return (-1);
 	}
-	if (quote_util_redir(copy, str, std) != 0
+	if (quote_util_redir(copy, str, std, 0) != 0
 		&& (copy->i == (int)ft_strlen(copy->wc) - 1))
 		return (-1);
 	if ((copy->i == (int)ft_strlen(copy->wc)) && copy->wc[copy->i] != '"')

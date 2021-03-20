@@ -12,6 +12,15 @@
 
 #include "../../includes/minishell.h"
 
+int		init_value_name(t_copy *copy)
+{
+	copy->redir.value = NULL;
+	copy->redir.name = NULL;
+	if (!(copy->redir.name = malloc(sizeof(char) * ft_strlen(copy->wc) + 1)))
+		return (-1);
+	return (0);
+}
+
 int		cmd_quoting(t_copy *copy, int j)
 {
 	while (copy->wc[copy->i] == '\'' || copy->wc[copy->i] == '"')
@@ -46,14 +55,12 @@ int		cmd_redir_env(t_copy *copy, int j)
 	}
 	if ((copy->wc[copy->i] == '>' || copy->wc[copy->i] == '<')
 		&& (copy->i == 0 || copy->wc[copy->i - 1] != '\\'))
-		j = redirection(copy);
+		j = redirection(copy, 0);
 	return (j);
 }
 
-char	*cmd(t_copy *copy)
+char	*cmd(t_copy *copy, int j)
 {
-	int		j;
-
 	while (copy->wc[copy->i] && copy->wc[copy->i] != ' ')
 	{
 		j = -2;
@@ -100,41 +107,10 @@ char	*parsing(char *whole_cmd, t_copy *copy)
 	copy->cmd[0] = 0;
 	while (copy->wc[copy->i] && copy->wc[copy->i] == ' ')
 		copy->i++;
-	if (cmd(copy) == NULL || g_error == -1)
+	if (cmd(copy, 0) == NULL || g_error == -1)
 		return (NULL);
 	copy->args = (char **)malloc(sizeof(char *) * 1);
 	if (!(copy->args) || options(copy, 1, 0) == -1)
 		return (NULL);
 	return (copy->cmd);
 }
-
-/* void print_parsing(char **args, t_redir *redir)
-{
-	int i = 0;
-	int j = 0;
-	int test = 0;
-
-	while (args[i])
-	{
-		printf("arg[%d] = %s\n", i, args[i]);
-		i++;
-	}
-	if (redir->in)
-	{
-		printf("file stdin = %s\n", redir->in);
-		printf("fd stdin = %d\n", redir->sstdin);
-	}
-	if (redir->out1)
-	{
-		printf("file stdout = %s\n", redir->out1);
-		printf("fd stdout = %d\n", redir->sstdout);
-		printf("fin du fichier ? = %d\n", redir->end);
-	}
-	if (redir->out2)
-	{
-		printf("file stderr = %s\n", redir->out2);
-		printf("fd stderr = %d\n", redir->sstderr);
-		printf("fin du fichier ? = %d\n", redir->end);
-	}
-	printf("g_status = %d\n", g_status);
-} */

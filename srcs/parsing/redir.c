@@ -64,13 +64,9 @@ int	create_file(t_copy *copy, int type)
 	return (0);
 }
 
-int	redir_in(t_copy *copy)
+int	redir_in(t_copy *copy, int i)
 {
-	int		i;
-
-	copy->i++;
-	if (copy->redir.in)
-		free(copy->redir.in);
+	redir_in_util(copy, 0);
 	if (!(copy->redir.in = malloc(sizeof(char) * ft_strlen(copy->wc) + 1)))
 		return (-1);
 	while (copy->wc[copy->i] && copy->wc[copy->i] == ' ')
@@ -97,10 +93,8 @@ int	redir_in(t_copy *copy)
 	return (1);
 }
 
-int	redirection(t_copy *copy)
+int	redirection(t_copy *copy, int i)
 {
-	int i;
-
 	copy->redir.i = -1;
 	if (copy->wc[copy->i] == '>')
 	{
@@ -116,12 +110,12 @@ int	redirection(t_copy *copy)
 			|| (copy->redir.end == 1 && (copy->i == 3 || (copy->i > 4
 			&& copy->wc[copy->i - 3] == '2'
 			&& (copy->wc[copy->i - 4] == ' ')))))
-			i = redir_out_error(copy);
+			i = redir_out_error(copy, 0);
 		else
-			i = redir_out(copy);
+			i = redir_out(copy, 0);
 	}
 	if (copy->wc[copy->i] == '<')
-		i = redir_in(copy);
+		i = redir_in(copy, 0);
 	if (copy->i >= (int)ft_strlen(copy->wc))
 		return (-3);
 	return (i);

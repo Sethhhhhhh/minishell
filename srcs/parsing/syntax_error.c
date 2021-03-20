@@ -97,11 +97,8 @@ int	syntax_error_go(char *str, int i, char c)
 	return (0);
 }
 
-int	syntax_error(char *str, char c)
+int	syntax_error(char *str, char c, int i)
 {
-	int		i;
-
-	i = 0;
 	if (!str)
 		return (0);
 	if (str[0] == c)

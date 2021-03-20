@@ -68,72 +68,72 @@ int		find_name(t_copy *copy, int i, char **name)
 
 int		env(t_copy *copy, int arg, int i, int space)
 {
-	char	*name;
-	char	*value;
-
-	value = NULL;
-	name = NULL;
 	if (multiple_dollars(copy, arg, i) != 0 || status_env(
 		copy, arg, i) == 1)
 		return (1);
-	if (!(name = malloc(sizeof(char) * ft_strlen(copy->wc) + 1)))
+	if (init_value_name(copy) == -1)
 		return (-1);
-	if (find_name(copy, 0, &name) != 1)
+	if (find_name(copy, 0, &copy->redir.name) != 1)
 	{
-		free(name);
+		free(copy->redir.name);
 		return (0);
 	}
-	value = get_env(name);
-	free(name);
-	if (space == 1 && value)
-		value = ft_strip_extra_spaces(value, copy->wc, copy->i);
-	if ((space = no_value(copy, value)) != 0)
+	copy->redir.value = get_env(copy->redir.name);
+	free(copy->redir.name);
+	if (space == 1 && copy->redir.value)
+		copy->redir.value = ft_strip_extra_spaces(copy->redir.value,
+		copy->wc, copy->i);
+	if ((space = no_value(copy, copy->redir.value)) != 0)
 	{
-		if (value)
-			free(value);
+		if (copy->redir.value)
+			free(copy->redir.value);
 		return (space);
 	}
-	env_copy(copy, arg, i, value);
-	free(value);
+	env_copy(copy, arg, i, copy->redir.value);
+	free(copy->redir.value);
 	copy->i--;
 	return (1);
 }
 
+void	env_redir_ambig(t_copy *copy, int spce)
+{
+	copy->redir.value = get_env(copy->redir.name);
+	if (spce == 1 && copy->redir.value)
+		copy->redir.value = ft_strip_extra_spaces(copy->redir.value,
+		copy->wc, copy->i);
+	if (copy->redir.value && spce == 1 && (only_spaces(copy->redir.value)
+		|| ft_space_in_middle(copy->redir.value)))
+		error_ambiguous(copy->redir.name);
+	if (!copy->redir.value && spce == 1)
+		error_ambiguous(copy->redir.name);
+	free(copy->redir.name);
+}
+
 int		env_redir(t_copy *copy, int std, int spce)
 {
-	char	*name;
-	char	*value;
 	int		count;
 
-	value = NULL;
-	if (!(name = malloc(sizeof(char) * ft_strlen(copy->wc) + 1)))
+	if (init_value_name(copy) == -1)
 		return (-1);
-	name[0] = 0;
+	copy->redir.name[0] = 0;
 	copy->i++;
 	if (copy->wc[copy->i] == '\'' || copy->wc[copy->i] == '"')
 	{
-		free(name);
+		free(copy->redir.name);
 		return (0);
 	}
 	if (status_env(copy, std + 2, 0) == 1)
 		return (1);
-	find_name(copy, 1, &name);
-	value = get_env(name);
-	if (spce == 1 && value)
-		value = ft_strip_extra_spaces(value, copy->wc, copy->i);
-	if (value && spce == 1 && (only_spaces(value) || ft_space_in_middle(value)))
-		error_ambiguous(name);
-	if (!value && spce == 1)
-		error_ambiguous(name);
-	free(name);
-	if ((count = no_value(copy, value)) != 0)
+	find_name(copy, 1, &copy->redir.name);
+	env_redir_ambig(copy, spce);
+	if ((count = no_value(copy, copy->redir.value)) != 0)
 	{
-		if (value)
-			free(value);
+		if (copy->redir.value)
+			free(copy->redir.value);
 		return (count);
 	}
-	env_copy(copy, std + 2, 0, value);
-	free(value);
+	env_copy(copy, std + 2, 0, copy->redir.value);
+	free(copy->redir.value);
 	copy->i--;
 	return (1);
 }
