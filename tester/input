@@ -5,7 +5,6 @@ echo $PWD; echo $OLDPWD; cd ../../..; pwd; echo $PWD; echo $OLDPWD
 echo $PWD; echo $OLDPWD; cd ../../../..; pwd; echo $PWD; echo $OLDPWD     
 echo $PWD; echo $OLDPWD; cd ../../../../..; pwd; echo $PWD; echo $OLDPWD  
 echo $PWD; echo $OLDPWD; cd /; pwd; echo $PWD; echo $OLDPWD               
-echo $PWD; echo $OLDPWD; cd ''; pwd; echo $PWD; echo $OLDPWD              
 echo $PWD; echo $OLDPWD; cd '' ''; pwd; echo $PWD; echo $OLDPWD           
 echo $PWD; echo $OLDPWD; cd '' '' ''; pwd; echo $PWD; echo $OLDPWD        
 echo $PWD; echo $OLDPWD; cd ' '; pwd; echo $PWD; echo $OLDPWD             
@@ -13,14 +12,12 @@ echo $PWD; echo $OLDPWD; cd /; pwd; echo $PWD; echo $OLDPWD
 echo $PWD; echo $OLDPWD; cd /.; pwd; echo $PWD; echo $OLDPWD              
 echo $PWD; echo $OLDPWD; cd /./; pwd; echo $PWD; echo $OLDPWD             
 echo $PWD; echo $OLDPWD; cd /././././; pwd; echo $PWD; echo $OLDPWD       
-echo $PWD; echo $OLDPWD; cd //; pwd; echo $PWD; echo $OLDPWD              
 echo $PWD; echo $OLDPWD; cd ///; pwd; echo $PWD; echo $OLDPWD             
 echo $PWD; echo $OLDPWD; cd ////; pwd; echo $PWD; echo $OLDPWD            
 echo $PWD; echo $OLDPWD; cd; echo $OLDPWD                                 
 echo $PWD; echo $OLDPWD; cd ' /'; pwd; echo $PWD; echo $OLDPWD            
 echo $PWD; echo $OLDPWD; cd ' / '; pwd; echo $PWD; echo $OLDPWD           
 echo $PWD; echo $OLDPWD; cd ' // '; pwd; echo $PWD; echo $OLDPWD          
-echo $PWD; echo $OLDPWD; cd //home; pwd; echo $PWD; echo $OLDPWD          
 echo $PWD; echo $OLDPWD; cd ' //home'; pwd; echo $PWD; echo $OLDPWD       
 mkdir -m 000 d; echo $PWD; echo $OLDPWD; cd d; echo $OLDPWD        
 mkdir -m 001 d; echo $PWD; echo $OLDPWD; cd d; echo $OLDPWD        
@@ -304,10 +301,7 @@ echo foo >bar
 echo foo> bar                                                             
 echo foo > bar                                                            
 touch a b c; /usr/bin/ls                                           
-touch a b c; /usr/bin/ls -l                                        
 touch a b c; cp /usr/bin/ls bonjour; ./bonjour                     
-touch a b c; cp /usr/bin/ls bonjour; ./bonjour -l                  
-touch a b c; echo bonjour > a; cp /usr/bin/cat ls; ./ls . a b c    
 touch a b c; echo bonjour > a; cp /usr/bin/cat ls; ls . a b c      
 echo > somefile
 chmod 000 somefile; ./somefile                    
@@ -343,17 +337,12 @@ mkdir somedir; somedir/
 mkdir somedir; somedir
 mkdir somedir; ./somedir                                           
 mkdir somedir; somedir
-ln -s somedir somedirsoftlink; somedirsoftlink/     
 ln -s somedir somedirsoftlink; ./somedirsoftlink/   
 ln -s somedir somedirsoftlink; somedirsoftlink      
-ln -s somedir somedirsoftlink; ./somedirsoftlink    
 ln -s somedir somedirsoftlink; somedirsoftlink      
-touch _; _                                                         
 touch -; '-'                                                       
 touch _; ./_                                                       
 touch a; mv a ./-; ./-                                             
-touch .; ./.                                                       
-touch ..; ./..                                                     
 mkdir -m 0777 somedir; ./somedir                                   
 mkdir -m 1000 somedir; ./somedir                                   
 mkdir -m 2000 somedir; ./somedir                                   
@@ -415,7 +404,6 @@ echo bonjour > a'b'c'd'e'f'g'h'i'j'k'l'm'n'o'p'q'r's't'u'v'w'x'y'z'
 echo bonjour > a"b"c"d"e"f"g"h"i"j"k"l"m"n"o"p"q"r"s"t"u"v"w"x"y"z"       
 echo bonjour > a'b'c"d"e'f'g"h"i'j'k"l"m'n'o"p'q'r"s't'u"v"w"x"y'z'       
 > file                                                                    
-echo bonjour > file; < file                                        
 >                                                                         
 >>                                                                        
 <                                                                         
@@ -476,8 +464,6 @@ cat -e /etc/shells | cat -e | cat -e | head -c 10
 echo bonjour | cat                                                        
 echo bonjour | cat -e                                                     
 touch a b c d; mkdir m1 m2 m3; ls | cat -e                         
-touch a b c d; mkdir m1 m2 m3; ls -l | cat -e                      
-touch a b c d; mkdir m1 m2 m3; ls -l | cat -e | cat | cat | cat    
 echo|                                                                     
 echo |                                                                    
 echo |                                                                    
@@ -515,16 +501,6 @@ echo b > foo; echo a > bar | cat -e < foo
 > a ; a                                                                   
 < a ; a                                                                   
 >> a ; a                                                                  
-echo $_                                                                   
-echo; echo $_                                                             
-env; echo $_                                                              
-export A=a; echo $_                                                       
-unset A; echo $_                                                          
-echo a b c d; echo $_                                                     
-cat -e /etc/shells; echo $_                                               
-echo a; echo "$_"                                                         
-echo a; echo '$_'                                                         
-echo a; echo "@$_@"                                                       
 echo $SHLVL                                                               
 export SHLVL=''; echo $SHLVL                                            
 export SHLVL=' 1'; echo $SHLVL                                          
@@ -590,7 +566,6 @@ export SHLVL=' _0'; echo $SHLVL
 export SHLVL=' 0123456789'; echo $SHLVL                                 
 export SHLVL=' -0123456789'; echo $SHLVL                                
 mkdir path && mkfifo path/a; a                                     
-mkdir path && mkfifo path/a && chmod 777 path/a; a                 
 export PATH='doesnotexits'; echo $PATH                                  
 export PATH='doesnotexits:asdfasdfas'; echo $PATH                       
 export PATH='________'; echo $PATH                                      
@@ -614,7 +589,6 @@ export PATH='     /usr/bin      '; whoami
 export PATH='/usr/bin:/usr/bin:/usr/bin:/usr/bin'; whoami               
 export PATH='     /sbin      '; whoami                                  
 export PATH='/sbin:/sbin:/sbin:/sbin'; whoami                           
-export PATH=''; whoami                                                  
 unset PATH; whoami                                                        
 export PATH=':'; whoami                                                 
 export PATH=':::::::::::::::::::'; whoami                               
@@ -627,8 +601,6 @@ export PATH='/usr/bIn'; whoami
 export PATH='/Usr/bin'; whoami                                          
 export PATH='/usr/bIn'; Whoami                                          
 export PATH='/Usr/bin'; wHoami                                          
-export PATH=''; Whoami                                                  
-export PATH=''; wHoami                                                  
 echo \a                                                                   
 \e\c\h\o bonjour                                                          
 echo charles\                                                             
@@ -844,3 +816,7 @@ echo\tfoo\t\t\t\t\t\t
                                                                           
 \t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t                                
             \t\t\t           \t\t\t                                       
+cd .. | cd -
+cd --
+cd . | cd -
+cd ~/Downloads/

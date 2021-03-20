@@ -6,11 +6,31 @@
 /*   By: yviavant <yviavant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/12 19:29:42 by yviavant          #+#    #+#             */
-/*   Updated: 2021/03/15 20:05:19 by yviavant         ###   ########.fr       */
+/*   Updated: 2021/03/20 12:59:00 by yviavant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+static char	*add_home_path(char *path)
+{
+	char		*tmp;
+	char		*tmpp;
+
+	if (!ft_strncmp(path, "~/", 2))
+	{
+		if ((tmp = get_env("HOME")))
+		{
+			tmpp = ft_substr(path, 1, ft_strlen(path));
+			free(path);
+			path = ft_strjoin(tmp, tmpp);
+			free(tmpp);
+			free(tmp);
+			return (path);
+		}
+	}
+	return (path);
+}
 
 static int	change(char *path, int home)
 {
@@ -67,11 +87,17 @@ int			s_path(char **args)
 
 	if (ft_strequ(args[1], "-"))
 	{
-		set_directory(get_env("OLDPWD"), 0);
-		tmp = get_env("PWD");
-		ft_putstr_fd(tmp, 1);
-		free(tmp);
-		ft_putchar_fd('\n', 1);
+		if ((tmp = get_env("OLDPWD")))
+		{
+			set_directory(tmp, 0);
+			free(tmp);
+		}
+		if ((tmp = get_env("PWD")))
+		{
+			ft_putstr_fd(tmp, 1);
+			free(tmp);
+			ft_putchar_fd('\n', 1);
+		}
 		return (1);
 	}
 	return (set_directory(args[1], 0));
@@ -88,6 +114,7 @@ int			run_cd(char **args)
 		ft_putstr_fd("minishell: cd: too many arguments\n", 2);
 		return (1);
 	}
+	args[1] = add_home_path(args[1]);
 	if (!args[1] || ft_strequ(args[1], "~") || ft_strequ(args[1], "--"))
 	{
 		if (!(home = get_env("HOME")))
