@@ -101,10 +101,11 @@ void	env_redir_ambig(t_copy *copy, int spce)
 	if (spce == 1 && copy->redir.value)
 		copy->redir.value = ft_strip_extra_spaces(copy->redir.value,
 		copy->wc, copy->i);
-	if (copy->redir.value && spce == 1 && (only_spaces(copy->redir.value)
+	if (copy->redir.value && spce == 1 && copy->wc[copy->i] != '$'
+		&& (only_spaces(copy->redir.value)
 		|| ft_space_in_middle(copy->redir.value)))
 		error_ambiguous(copy->redir.name);
-	if (!copy->redir.value && spce == 1)
+	if (!copy->redir.value && spce == 1 && copy->wc[copy->i] != '$')
 		error_ambiguous(copy->redir.name);
 	free(copy->redir.name);
 }

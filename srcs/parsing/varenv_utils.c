@@ -45,7 +45,8 @@ char	*remalloc_redir(t_copy *copy, char *value, char *str)
 	tmp = ft_strjoin(str, value);
 	if (str)
 		free(str);
-	if (!(str = malloc(sizeof(char) * (ft_strlen(tmp) + 1))))
+	if (!(str = malloc(sizeof(char) * (ft_strlen(tmp) +
+		ft_strlen(copy->wc) + 1))))
 		return (NULL);
 	while (tmp[++j])
 		str[j] = tmp[j];
@@ -79,9 +80,10 @@ int		status_env(t_copy *copy, int arg, int i)
 
 	value = NULL;
 	j = copy->i;
-	if (arg >= 2)
+	if (arg >= 2 && j != (int)ft_strlen(copy->wc))
 		j += 1;
-	if (copy->wc[j] && copy->wc[j] == '$' && copy->wc[j + 1] == '?')
+	if (copy->wc[j] && (j < (int)ft_strlen(copy->wc))
+		&& copy->wc[j] == '$' && copy->wc[j + 1] == '?')
 	{
 		if (j == 0 || (j > 0 && copy->wc[j - 1] != '\\'
 			&& copy->wc[j - 1] != '$'))
