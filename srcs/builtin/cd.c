@@ -6,7 +6,7 @@
 /*   By: yviavant <yviavant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/12 19:29:42 by yviavant          #+#    #+#             */
-/*   Updated: 2021/03/20 12:59:00 by yviavant         ###   ########.fr       */
+/*   Updated: 2021/03/20 13:16:01 by yviavant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,6 @@ int			run_cd(char **args)
 		ft_putstr_fd("minishell: cd: too many arguments\n", 2);
 		return (1);
 	}
-	args[1] = add_home_path(args[1]);
 	if (!args[1] || ft_strequ(args[1], "~") || ft_strequ(args[1], "--"))
 	{
 		if (!(home = get_env("HOME")))
@@ -124,5 +123,6 @@ int			run_cd(char **args)
 		}
 		return (set_directory(home, 1));
 	}
+	args[1] = add_home_path(args[1]);
 	return (s_path(args));
 }
