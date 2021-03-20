@@ -12,7 +12,7 @@
 
 #include "../includes/minishell.h"
 
-void		ft_exit(t_copy *copy)
+void		ft_exit(t_copy *copy, int i)
 {
 	free_cmdarg(copy);
 	if (g_envs)
@@ -21,7 +21,7 @@ void		ft_exit(t_copy *copy)
 		free_list(copy->list);
 	if (copy->cmdssep)
 		free(copy->cmdssep);
-	if (!g_tester)
+	if (!g_tester && i == 1)
 		ft_putstr_fd("exit\n", 2);
 	exit(g_status);
 }

@@ -187,7 +187,7 @@ int						error_exit(char *str, char *msg);
 int						syntax_error(char *str, char c);
 int						error_msg(char *str, int i, char c);
 void					error_ambiguous(char *name);
-void					ft_exit(t_copy *copy);
+void					ft_exit(t_copy *copy, int i);
 int						check_space_colon(char *line);
 
 /*

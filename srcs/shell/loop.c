@@ -78,7 +78,7 @@ void		loop(void)
 			free(line);
 		prompt();
 	}
-	ft_exit(&cmdarg);
+	ft_exit(&cmdarg, 1);
 }
 
 void		free_tester(t_copy *cmdarg)
@@ -103,7 +103,7 @@ void		loop_tester(char *line)
 	g_tester = 1;
 	ft_bzero(&cmdarg, sizeof(t_copy));
 	if (check_space_colon(line))
-		ft_exit(&cmdarg);
+		ft_exit(&cmdarg, 1);
 	cmdarg.list = NULL;
 	i = -1;
 	if (syntax_error(line, '|') != -1 && syntax_error(line, ';') != -1)
@@ -117,5 +117,5 @@ void		loop_tester(char *line)
 		minishell(cmdarg.list, &cmdarg);
 		free_tester(&cmdarg);
 	}
-	ft_exit(&cmdarg);
+	ft_exit(&cmdarg, 1);
 }
